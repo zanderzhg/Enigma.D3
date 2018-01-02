@@ -19,6 +19,8 @@ namespace Enigma.D3.MemoryModel.Core
         public string Name
             => ReadString(SymbolTable.Current.ACD.Name, SymbolTable.Current.ACD.NameLength);
 
+        public int AnnID => Read<int>(SymbolTable.Current.ACD.AnnID);
+
         public int ActorID
             => Read<int>(SymbolTable.Current.ACD.ActorID);
 

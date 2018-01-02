@@ -180,6 +180,7 @@ namespace Enigma.D3.MemoryModel
         public int ObjectFlags;
         public int Animation;
         public int CollisionFlags;
+        public int AnnID;
     }
 
     public struct LocalDataSymbols
