@@ -160,6 +160,7 @@ namespace Enigma.D3.MemoryModel
         public int ID;
         public int Name;
         public int NameLength;
+        public int ANNID;
         public int ActorID;
         public int ActorSNO;
         public int GBType;

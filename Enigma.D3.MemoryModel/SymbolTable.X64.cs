@@ -10,7 +10,7 @@ namespace Enigma.D3.MemoryModel
     {
         private void InitX64()
         {
-            Version = new Version(2, 6, 1, 47710);
+            Version = new Version(2, 6, 1, 48432);
             Platform = Platform.X64;
 
             DataSegment.Address = 0x141AF1000;
@@ -78,6 +78,7 @@ namespace Enigma.D3.MemoryModel
             ACD.ID = 0x0;
             ACD.Name = 0x4;
             ACD.NameLength = 0x80;
+            ACD.ANNID = 0x88;
             ACD.ActorID = 0x8C;
             ACD.ActorSNO = 0x90;
             ACD.GBType = 0xB0;
