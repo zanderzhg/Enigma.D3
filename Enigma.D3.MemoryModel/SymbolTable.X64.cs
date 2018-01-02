@@ -78,7 +78,7 @@ namespace Enigma.D3.MemoryModel
             ACD.ID = 0x0;
             ACD.Name = 0x4;
             ACD.NameLength = 0x80;
-            ACD.AnnID = 0x88;
+            ACD.ANNID = 0x88;
             ACD.ActorID = 0x8C;
             ACD.ActorSNO = 0x90;
             ACD.GBType = 0xB0;

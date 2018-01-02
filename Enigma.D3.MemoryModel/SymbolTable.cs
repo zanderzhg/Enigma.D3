@@ -160,7 +160,7 @@ namespace Enigma.D3.MemoryModel
         public int ID;
         public int Name;
         public int NameLength;
-        public int AnnID;
+        public int ANNID;
         public int ActorID;
         public int ActorSNO;
         public int GBType;
@@ -180,7 +180,7 @@ namespace Enigma.D3.MemoryModel
         public int TeamID;
         public int ObjectFlags;
         public int Animation;
-        public int CollisionFlags;        
+        public int CollisionFlags;
     }
 
     public struct LocalDataSymbols
