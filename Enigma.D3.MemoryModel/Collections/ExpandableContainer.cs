@@ -67,9 +67,9 @@ namespace Enigma.D3.MemoryModel.Collections
                 var remainingItems = (MaxIndex + 1) - blockSize * i;
 
                 segments[i].Address = blocks[i].ValueAddress;
-                segments[i].Size = (ulong)(remainingItems * ItemSize);
+                segments[i].Size = (ulong)(Math.Min(blockSize, remainingItems) * ItemSize);
 
-                Memory.Reader.ReadBytes(blocks[i].ValueAddress, buffer, offset, remainingItems * ItemSize);
+                Memory.Reader.ReadBytes(segments[i].Address, buffer, offset, (int)segments[i].Size);
                 offset += blockSize * ItemSize;
             }
 

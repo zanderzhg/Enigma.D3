@@ -165,14 +165,12 @@ namespace Enigma.D3.MemoryModel.Caching
         {
             var i = 0;
             var segment = segments[i];
-            var skipped = 0;
-            while (offset > (int)segment.Size)
+            while (offset >= (int)segment.Size)
             {
                 offset -= (int)segment.Size;
-                skipped += (int)segment.Size;
-                segment = segments[i + 1];
+                segment = segments[++i];
             }
-            return segment.Address + skipped + offset;
+            return segment.Address + offset;
         }
 
         private void OnItemRemoved(int index, T item)
