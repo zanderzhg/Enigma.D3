@@ -50,7 +50,7 @@ namespace Enigma.D3.ApplicationModel
             var value = default(AttributeValue);
             if (_attributeReader == null || ACD == null || _attributeReader.TryGetAttributeValue(ACD.FastAttribGroupID, attributeId, modifier, out value) == false)
                 return descriptor.DataType == typeof(int) ? descriptor.DefaultValue : new AttributeValue { Int32 = descriptor.DefaultValue }.Single;
-            return descriptor.GetType() == typeof(int) ? value.Int32 : value.Single;
+            return descriptor.DataType == typeof(int) ? value.Int32 : value.Single;
         }
 
         public Dictionary<AttributeKey, double> GetAttributes()
