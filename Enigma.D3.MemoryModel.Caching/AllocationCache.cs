@@ -20,7 +20,8 @@ namespace Enigma.D3.MemoryModel.Caching
 
         public void Update()
         {
-            _blocks = _allocator.Blocks
+            _blocks = _allocator.Blocks.Snapshot()
+                .Select(block => block.Snapshot())
                 .Select(block => new MemoryBlock
                 {
                     Address = block.PtrElements.ValueAddress,
