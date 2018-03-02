@@ -18,5 +18,15 @@ namespace Enigma.Memory
         {
             return MemoryObjectFactory.Create<TCast>(self.Memory, self.Address);
         }
+
+        public static T Snapshot<T>(this T self) where T : MemoryObject
+            => Snapshot(self, SnapshotBehavior.ReplaceExistingSnapshot);
+
+        public static T Snapshot<T>(this T self, SnapshotBehavior behavior) where T : MemoryObject
+        {
+            var clone = self.Memory.Reader.Read<T>(self.Address);
+            clone.TakeSnapshot(behavior);
+            return clone;
+        }
     }
 }
