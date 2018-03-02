@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IHasImageBase.cs" />
     <Compile Include="IMemory.cs" />
     <Compile Include="Factories\MemoryPointerFactory.cs" />
     <Compile Include="MemoryReaderImplementations\BufferMemoryReader.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="MemoryReaderImplementations\MemoryReader.cs" />
     <Compile Include="MemoryReaderImplementations\MiniDumpMemoryReader.cs" />
     <Compile Include="MemorySnapshot.cs" />
+    <Compile Include="PE\Export.cs" />
     <Compile Include="PE\PEHeaderReader.cs" />
     <Compile Include="PointerImplementations\Ptr.cs" />
     <Compile Include="Extensions\ProcessExtensions.cs" />

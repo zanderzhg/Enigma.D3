@@ -11,7 +11,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace Enigma.Memory
 {
-    public class ProcessMemoryReader : MemoryReader, IHasMainModuleVersion
+    public class ProcessMemoryReader : MemoryReader, IHasMainModuleVersion, IHasImageBase
     {
         private readonly Process _process;
         private readonly MemoryAddress _minValidAddress;
@@ -39,6 +39,7 @@ namespace Enigma.Memory
                 _maxValidAddress = process.IsLargeAddressAware() ? 0xBFFF0000 : 0x7FFEFFFF;
                 _pointerSize = 4;
             }
+            ImageBase = _process.MainModule.BaseAddress;
         }
 
         public override MemoryAddress MinValidAddress { get { return _minValidAddress; } }
@@ -50,6 +51,8 @@ namespace Enigma.Memory
         public override int PointerSize { get { return _pointerSize; } }
 
         public Version MainModuleVersion { get { return _process.GetFileVersion(); } }
+
+        public MemoryAddress ImageBase { get; private set; }
 
         public Process Process { get { return _process; } }
 

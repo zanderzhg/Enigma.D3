@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Enigma.Memory
 {
-    public class MiniDumpMemoryReader : MemoryReader, IHasMainModuleVersion
+    public class MiniDumpMemoryReader : MemoryReader, IHasMainModuleVersion, IHasImageBase
     {
         private readonly FileStream _fileStream;
         private readonly MemoryAddress _minValidAddress;
