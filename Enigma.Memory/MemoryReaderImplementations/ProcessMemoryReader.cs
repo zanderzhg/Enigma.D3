@@ -29,9 +29,12 @@ namespace Enigma.Memory
             _minValidAddress = 0x00010000;
             if (process.Is64BitProcess())
             {
-                _maxValidAddress = process.IsLargeAddressAware() ?
-                    ((8UL << 40) - 1) : // 8TB - 1 byte
-                    ((2UL << 30) - 1);  // 2GB - 1 byte
+                //// It appears these limits are only max addressable size, but memory can be
+                //// scattered around at both high and low addresses.
+                //_maxValidAddress = process.IsLargeAddressAware() ?
+                //    ((8UL << 40) - 1) : // 8TB - 1 byte
+                //    ((2UL << 30) - 1);  // 2GB - 1 byte
+                _maxValidAddress = ulong.MaxValue;
                 _pointerSize = 8;
             }
             else
