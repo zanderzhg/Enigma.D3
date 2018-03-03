@@ -71,9 +71,11 @@ namespace Enigma.D3.MemoryModel.Caching
             Buffer.BlockCopy(_currentData, 0, _previousData, 0, _currentData.Length);
 
             _currentSegments = _container.GetAllocatedBytes(ref _currentData);
+            var count = _currentData.Length / _container.ItemSize;
+
             if (_currentData.Length != _previousData.Length) // buffer was resized (and replaced), update underlying buffer for all items
             {
-                for (int i = 0; i < _items.Length; i++)
+                for (int i = 0; i < Math.Min(count, _items.Length); i++)
                 {
                     if (_items[i] == null)
                         continue;
@@ -87,7 +89,6 @@ namespace Enigma.D3.MemoryModel.Caching
             Buffer.BlockCopy(_currentMapping, 0, _previousMapping, 0, _currentMapping.Length * sizeof(int));
 
 
-            var count = _currentData.Length / _container.ItemSize;
             var mr = new BufferMemoryReader(_currentData);
             if (_currentMapping.Length != count)
                 Array.Resize(ref _currentMapping, count);
