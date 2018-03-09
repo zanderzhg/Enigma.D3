@@ -89,10 +89,11 @@ namespace Enigma.D3.MapHack.Markers
 				case 0x00001761: // treasureGoblin_B
 				case 0x00001763: // treasureGoblin_C
 				case 0x00001764: // treasureGoblin_D
-					return true;
+                case 0x00063d9d: // treasureGoblin_F
+                    return true;
 
 				default:
-					return false;
+                    return Acd.Name.IndexOf("treasureGoblin", StringComparison.Ordinal) != -1;
 			}
 		}
 	}
