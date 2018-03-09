@@ -39,6 +39,9 @@ namespace Enigma.D3.MapHack
         private ContainerCache<Scene> _scenesCache;
         private bool _isLocalActorReady;
         private MemoryModel.Controls.MinimapControl _localmap;
+        private MemoryModel.Controls.Control _tooltip2;
+        private MemoryModel.Controls.Control _tooltip1;
+        private MemoryModel.Controls.Control _tooltip0;
         private bool _showLargeMap;
         private bool _isInventoryOpen;
         //private AllocationCache<MemoryModel.Collections.LinkedListNode<SceneRevealInfo>> _sceneRevealCache;
@@ -145,9 +148,10 @@ namespace Enigma.D3.MapHack
                 //var asd = AttributeModel.Attributes.MinimapActive.GetValue(AttributeReader.Instance, _playerAcd.FastAttribGroupID);
 
                 var ui = _objectManager.UIManager;
-
-                //var ctrls = ui.PtrControlsMap.Dereference().Select(x => x.Value.Dereference()).Where(x => x != null).Where(x => x.UIID.Name.IndexOf("map", StringComparison.OrdinalIgnoreCase) != -1).ToArray();
+                var uimap = ui.PtrControlsMap.Dereference();
+                
                 _localmap = _localmap ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();
+
 
                 //var ctrls = ui.PtrControlsMap.Dereference().Select(x => x.Value.Dereference())
                 //    .Where(x => x != null).Where(x => x.UIID.Name.IndexOf("inventory", StringComparison.OrdinalIgnoreCase) != -1)
@@ -159,6 +163,24 @@ namespace Enigma.D3.MapHack
                 //    .ToArray();
                 var inventory = ui.PtrControlsMap.Dereference()["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
                 IsInventoryOpen = inventory?.IsVisible == true;
+
+                if (IsInventoryOpen && Options.ShowAncientRank)
+                {
+                    if (_tooltip2 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_2", out var tooltip2)) _tooltip2 = tooltip2.Dereference();
+                    if (_tooltip1 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_1", out var tooltip1)) _tooltip1 = tooltip1.Dereference();
+                    if (_tooltip0 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_0", out var tooltip0)) _tooltip0 = tooltip0.Dereference();
+
+                    var offset = inventory.UIRect.Left;
+                    Execute.OnUIThread(() =>
+                    {
+                        var clip = new GeometryGroup();
+                        if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
+                        if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
+                        if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
+                        
+                        _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
+                    });
+                }
 
                 foreach (var item in _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ItemLocation >= ItemLocation.PlayerBackpack && x.ItemLocation <= ItemLocation.PlayerNeck))
                 {
@@ -495,6 +517,9 @@ namespace Enigma.D3.MapHack
             _isLocalActorReady = false;
             _previousFrame = 0;
             _localmap = null;
+            _tooltip2 = null;
+            _tooltip1 = null;
+            _tooltip0 = null;
         }
     }
 }
