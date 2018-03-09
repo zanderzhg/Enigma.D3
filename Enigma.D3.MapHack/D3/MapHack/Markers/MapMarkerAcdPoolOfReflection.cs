@@ -44,7 +44,8 @@ namespace Enigma.D3.MapHack.Markers
 
         public static bool IsStillInterested(ACD acd)
         {
-            return Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
+            return MapMarkerOptions.Instance.ShowPoolsOfReflection &&
+                Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
         }
     }
 }
