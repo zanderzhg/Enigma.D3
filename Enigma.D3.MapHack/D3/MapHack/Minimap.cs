@@ -129,7 +129,7 @@ namespace Enigma.D3.MapHack
                 if (_playerAcd == null || _playerAcd.ActorType != ActorType.Player)
                     _playerAcd = GetLocalPlayerACD(ctx);
 
-                var gizmos = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Gizmo).ToArray();
+                //var gizmos = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Gizmo).ToArray();
                 ////var s = items.FirstOrDefault(x => x.x04_SceneId_ == _playerAcd.SSceneID);
                 ////var attribs = AttributeReader.Instance.GetAttributes(gizmos[0].FastAttribGroupID);
                 //var portals = gizmos.Where(x => x.GizmoType.ToString().Contains("Portal")).ToArray();

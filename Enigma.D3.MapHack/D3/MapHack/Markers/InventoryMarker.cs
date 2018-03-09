@@ -50,6 +50,12 @@ namespace Enigma.D3.MapHack.Markers
 
         public override void Update(int worldId, Point3D origo)
         {
+            if (MapMarkerOptions.Instance.ShowAncientRank == false)
+            {
+                IsVisible = false;
+                return;
+            }
+
             var isVisible = true;
             switch (Acd.ItemLocation)
             {

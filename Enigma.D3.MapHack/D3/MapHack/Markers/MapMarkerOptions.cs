@@ -31,6 +31,7 @@ namespace Enigma.D3.MapHack.Markers
         private bool _showPortals = true;
         private bool _showDeathBreaths = true;
         private bool _showPoolsOfReflection = true;
+        private bool _showAncientRank = true;
         private bool _isInitialized = true;
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -59,6 +60,8 @@ namespace Enigma.D3.MapHack.Markers
         public bool ShowDeathBreaths { get { return _showDeathBreaths; } set { if (_showDeathBreaths != value) { _showDeathBreaths = value; Refresh(nameof(ShowDeathBreaths)); } } }
         [DataMember]
         public bool ShowPoolsOfReflection { get { return _showPoolsOfReflection; } set { if (_showPoolsOfReflection != value) { _showPoolsOfReflection = value; Refresh(nameof(ShowPoolsOfReflection)); } } }
+        [DataMember]
+        public bool ShowAncientRank { get { return _showAncientRank; } set { if (_showAncientRank != value) { _showAncientRank = value; Refresh(nameof(ShowAncientRank)); } } }
 
         private void Refresh(string propertyName)
         {
