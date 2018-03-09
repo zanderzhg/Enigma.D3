@@ -21,6 +21,12 @@ namespace Enigma.D3.MemoryModel.Core
 
         public SNO LevelAreaSNO => this.PlatformRead<SNO>(0x18, 0x1C);
 
+        public SNO WorldSNO => this.PlatformRead<SNO>(0x50, 0x54);
+
         public SNO SceneSNO => this.PlatformRead<SNO>(0xE8, 0xEC);
+
+        public Vector3 MeshMin => Read<Vector3>(0x100);
+
+        public Vector3 MeshMax => Read<Vector3>(0x178);
     }
 }

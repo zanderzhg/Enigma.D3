@@ -10,7 +10,7 @@ namespace Enigma.D3.MemoryModel
     {
         private void InitX86()
         {
-            Version = new Version(2, 6, 1, 48432);
+            Version = new Version(0, 0);
             Platform = Platform.X86;
 
             DataSegment.Address = 0x1E29000;

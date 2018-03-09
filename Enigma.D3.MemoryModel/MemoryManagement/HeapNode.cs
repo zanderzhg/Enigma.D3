@@ -9,6 +9,8 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
 {
     public class HeapNode : MemoryObject
     {
+        public static int SizeOf => HeaderSize;
+
         public static int HeaderSize => SymbolTable.Current.HeapNode.HeaderSize;
 
         public uint Size
@@ -19,5 +21,8 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
 
         public Ptr Data
             => new Ptr(Memory, Address + HeaderSize);
+
+        public bool Contains(MemoryAddress address)
+            => Data.ValueAddress <= address && address < Data.ValueAddress + Size;
     }
 }

@@ -3,9 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Enigma.D3.MapHack"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300" Width="350" Height="350" Canvas.Right="27.5" Canvas.Top="55"
-             ClipToBounds="False">
+             d:DesignHeight="300" d:DesignWidth="300" Width="350" Height="350" Canvas.Right="27.5" Canvas.Top="55">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Options.RestrictMinimap}" Value="True" />
+                        <Condition Binding="{Binding ShowLargeMap}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="ClipToBounds" Value="True" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsInventoryOpen}" Value="True" />
+                        <Condition Binding="{Binding ShowLargeMap}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Visibility" Value="Hidden" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
@@ -13,7 +38,7 @@
         <ItemsControl ItemsSource="{Binding MinimapMarkers}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Background="Green">
+                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Canvas.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform ScaleX="-1" />

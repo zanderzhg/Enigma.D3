@@ -29,13 +29,13 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<int>(SymbolTable.Current.ObjectManager.Storage + SymbolTable.Current.Storage.GameTick);
 
         public PlayerDataManager PlayerDataManager
-            => Read<Ptr<PlayerDataManager>>(SymbolTable.Current.ObjectManager.Storage + SymbolTable.Current.Storage.PlayerDataManager).Dereference();
+            => Memory.Reader.Read<PlayerDataManager>(SymbolTable.Current.Dynamic.PlayerDataManager);
 
         public FastAttrib FastAttrib
             => Read<Ptr<FastAttrib>>(SymbolTable.Current.ObjectManager.Storage + SymbolTable.Current.Storage.FastAttrib).Dereference();
 
         public ACDManager ACDManager
-            => Read<Ptr<ACDManager>>(SymbolTable.Current.ObjectManager.Storage + SymbolTable.Current.Storage.ACDManager).Dereference();
+            => Memory.Reader.Read<ACDManager>(SymbolTable.Current.Dynamic.ACDManager);
 
         public QuestManager QuestManager
             => Read<Ptr<QuestManager>>(SymbolTable.Current.ObjectManager.Storage + SymbolTable.Current.Storage.QuestManager).Dereference();
@@ -56,7 +56,7 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<Ptr<Container<World>>>(SymbolTable.Current.ObjectManager.Worlds).Dereference();
 
         public Player Player
-            => Read<Ptr<Player>>(SymbolTable.Current.ObjectManager.Player).Dereference();
+            => Memory.Reader.Read<Player>(SymbolTable.Current.Dynamic.Player);
 
         public IReadOnlyCollection<TimedEvent> TimedEvents
             => Read<Ptr<LinkedListWithAllocatorB<TimedEvent>>>(SymbolTable.Current.ObjectManager.TimedEvents).Dereference();

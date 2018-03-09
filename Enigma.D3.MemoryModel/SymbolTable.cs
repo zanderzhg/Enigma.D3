@@ -37,6 +37,7 @@ namespace Enigma.D3.MemoryModel
         public Version Version;
         public Platform Platform;
 
+        public DynamicSymbols Dynamic;
         public DataSegmentSymbols DataSegment;
         public ObjectManagerSymbols ObjectManager;
         public GameGlobalsSymbols GameGlobals;
@@ -73,6 +74,14 @@ namespace Enigma.D3.MemoryModel
         public SubObjectGfxSymbols SubObjectGfx;
         public SNOFilesSymbols SNOFiles;
         public SNOGroupStorage SNOGroupStorage;
+    }
+
+    public struct DynamicSymbols
+    {
+        public ulong ObjectManager;
+        public ulong ACDManager;
+        public ulong PlayerDataManager;
+        public ulong Player;
     }
 
     public struct DataSegmentSymbols

@@ -1,4 +1,5 @@
-﻿using Enigma.Memory;
+﻿using Enigma.D3.MemoryModel.Collections;
+using Enigma.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Enigma.D3.MemoryModel.Core
     {
         public static int SizeOf => SymbolTable.Current.TrickleManager.SizeOf;
 
-        public IReadOnlyCollection<Trickle> Items
-            => Read<Ptr<Collections.LinkedListB<Trickle>>>(SymbolTable.Current.TrickleManager.Items).Dereference();
+        public LinkedListB<Trickle> Items
+            => Read<Ptr<LinkedListB<Trickle>>>(SymbolTable.Current.TrickleManager.Items).Dereference();
     }
 }

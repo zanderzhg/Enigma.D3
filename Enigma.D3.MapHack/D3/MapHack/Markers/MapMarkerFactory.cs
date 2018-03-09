@@ -18,8 +18,11 @@ namespace Enigma.D3.MapHack.Markers
             bool interested = false;
 
             if (TryCreateMonster(acd, out item, ref interested) ||
+                TryCreateItem(acd, out item, ref interested) ||
                 TryCreateChest(acd, out item, ref interested) ||
-                TryCreateWreckable(acd, out item, ref interested))
+                TryCreateWreckable(acd, out item, ref interested) ||
+                TryCreatePylon(acd, out item, ref interested) ||
+                TryCreatePortal(acd, out item, ref interested))
             {
                 // Successfull!
             }
@@ -39,6 +42,34 @@ namespace Enigma.D3.MapHack.Markers
                     item = new MapMarkerAcdMonster(acd, IsValidMonster);
                     return true;
                 }
+            }
+            return false;
+        }
+
+        private static bool TryCreateItem(ACD acd, out IMapMarker item, ref bool interested)
+        {
+            item = null;
+            if (acd.ActorType == ActorType.Item &&
+                (int)acd.ItemLocation == -1)
+            {
+                if (acd.ActorSNO == 401751) // GreaterRiftSoul
+                {
+                    interested = true;
+                    item = new MapMarkerAcdGreaterRiftSoul(acd, x => true);
+                    return true;
+                }
+                if (acd.ActorSNO == 436807) // RiftSoul
+                {
+                    interested = true;
+                    item = new MapMarkerAcdRiftSoul(acd, x => true);
+                    return true;
+                }
+            }
+            if (MapMarkerAcdItem.IsInterested(acd))
+            {
+                interested = true;
+                item = new MapMarkerAcdItem(acd, MapMarkerAcdItem.IsStillInterested);
+                return true;
             }
             return false;
         }
@@ -95,6 +126,30 @@ namespace Enigma.D3.MapHack.Markers
             return false;
         }
 
+        private static bool TryCreatePylon(ACD acd, out IMapMarker item, ref bool interested)
+        {
+            item = null;
+            if (MapMarkerAcdPylon.IsInterested(acd))
+            {
+                interested = true;
+                item = new MapMarkerAcdPylon(acd, MapMarkerAcdPylon.IsStillInterested);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool TryCreatePortal(ACD acd, out IMapMarker item, ref bool interested)
+        {
+            item = null;
+            if (MapMarkerAcdPortal.IsInterested(acd))
+            {
+                interested = true;
+                item = new MapMarkerAcdPortal(acd, MapMarkerAcdPortal.IsStillInterested);
+                return true;
+            }
+            return false;
+        }
+        
         private static bool IsValidMonster(ACD acd)
         {
             return acd.Hitpoints > 0.00001 &&

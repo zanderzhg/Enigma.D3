@@ -61,8 +61,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDisasm, Version=1.1.5.0, Culture=neutral, PublicKeyToken=71afd155bcebae3e, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDisasm.1.1.5\lib\net45\SharpDisasm.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -77,13 +81,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="D3\Bootloader\App.cs" />
+    <Compile Include="D3\MapHack\Inventory.xaml.cs">
+      <DependentUpon>Inventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="D3\MapHack\Markers\InventoryMarker.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdItem.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPortal.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPylon.cs" />
+    <Compile Include="D3\SymbolPatching\AssemblyCodeBuffer.cs" />
+    <Compile Include="D3\SymbolPatching\DisassemblerExtensions.cs" />
+    <Compile Include="D3\SymbolPatching\SymbolPatcher64.cs" />
+    <Compile Include="D3\SymbolPatching\Op.cs" />
+    <Compile Include="D3\SymbolPatching\Range.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdCursedChest.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGreaterRiftSoul.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdWreckable.cs" />
     <Compile Include="D3\MapHack\Markers\IMapMarker.cs" />
     <Compile Include="D3\MapHack\ControlHelper.cs" />
     <Compile Include="D3\MapHack\HalfConverter.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdChest.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerOptions.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdRiftSoul.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerScene.cs" />
     <Compile Include="D3\MapHack\Minimap.cs" />
     <Compile Include="D3\MapHack\Minimap.xaml.cs">
       <DependentUpon>Minimap.xaml</DependentUpon>
@@ -114,6 +133,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,6 +141,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="D3\MapHack\Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="D3\MapHack\Minimap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,6 +155,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Enigma.D3.Assets\Enigma.D3.Assets.csproj">
+      <Project>{4b2bf057-3425-4520-8535-3372d330c653}</Project>
+      <Name>Enigma.D3.Assets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Enigma.D3.Core\Enigma.D3.Core.csproj">
       <Project>{e01f9c34-f404-48dc-92e2-991da7adf9eb}</Project>
       <Name>Enigma.D3.Core</Name>

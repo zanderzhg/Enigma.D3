@@ -11,6 +11,8 @@ using Enigma.D3.MapHack;
 using Enigma.D3.MemoryModel;
 using System.Diagnostics;
 using Enigma.Memory;
+using Enigma.D3.SymbolPatching;
+using Enigma.D3.MapHack.Markers;
 
 namespace Enigma.D3.Bootloader
 {
@@ -21,6 +23,18 @@ namespace Enigma.D3.Bootloader
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            if (!e.Args.Any(x => x.ToLowerInvariant() == "--no-eula-prompt"))
+            {
+                if (MessageBox.Show("The use of this software breaks Blizzard EULA and may result in your account getting banned. This software may also cause the game client to crash.\r\n\r\n" +
+                    "Continue at your own risk.", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation) != MessageBoxResult.OK)
+                {
+                    Shutdown();
+                    return;
+                }
+            }
+            
+            MapMarkerOptions.Instance.Load();
+
             MainWindow = Shell.Instance;
             MainWindow.Show();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -30,8 +44,10 @@ namespace Enigma.D3.Bootloader
                 while (true)
                 {
                     using (var ctx = CreateMemoryContext())
-                    using (var watcher = new WatcherThread(ctx))
+                    using (var watcher = new WatcherThread2(ctx))
                     {
+                        Trace.WriteLine("Attached to process.");
+
                         Shell.Instance.IsAttached = true;
                         Minimap minimap = null;
                         OverlayWindow overlay = null;
@@ -58,13 +74,30 @@ namespace Enigma.D3.Bootloader
 
             // Wait for process attachment.
             while ((ctx = MemoryContext.FromProcess()) == null)
+            {
+                Trace.WriteLine("Could not find any process.");
                 Thread.Sleep(1000);
+            }
+            Trace.WriteLine("Found a process.");
 
-            // Wait for full initialization.
-            while (ctx.DataSegment.ApplicationLoopCount == 0)
-                Thread.Sleep(1000);
+            //// Wait for full initialization.
+            //while (ctx.DataSegment.ApplicationLoopCount == 0)
+            //    Thread.Sleep(1000);
 
-            return ctx;
+            while (true)
+            {
+                try
+                {
+                    SymbolPatcher64.UpdateSymbolTable(ctx);
+                    Trace.WriteLine("Symbol table updated.");
+                    return ctx;
+                }
+                catch (Exception exception)
+                {
+                    Trace.WriteLine($"Could not update symbol table, optimized for patch {SymbolPatcher64.VerifiedBuild}, running {ctx.MainModuleVersion.Revision}: " + exception.Message);
+                    Thread.Sleep(5000);
+                }
+            }
         }
     }
 }

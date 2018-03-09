@@ -10,7 +10,7 @@ namespace Enigma.D3.MemoryModel
     {
         private void InitX64()
         {
-            Version = new Version(2, 6, 1, 48432);
+            Version = new Version(0, 0);
             Platform = Platform.X64;
 
             DataSegment.Address = 0x141AF1000;
@@ -23,35 +23,35 @@ namespace Enigma.D3.MemoryModel
             DataSegment.LevelArea = 0x141D738B8;
             DataSegment.LevelAreaName = 0x141D738C0;
             DataSegment.LevelAreaNameLength = 0x80;
-            DataSegment.MapActID = 0x141D73BC8;
+            DataSegment.MapActID = 0x020A4C50;
             DataSegment.ScreenManagerRoot = 0x141D73DF0;
             DataSegment.TrickleManager = 0x141DC6CC0;
-            DataSegment.LocalData = 0x141DF3C28;
+            DataSegment.LocalData = 0x01F82138;
             DataSegment.ObjectManager = 0x141DF3D30;
             DataSegment.ApplicationLoopCount = 0x141DF3DB4;
-            DataSegment.AttributeDescriptors = 0x141E67870;
-            DataSegment.AttributeDescriptorsCount = 0x5BB;
-            DataSegment.MemoryManager = 0x141F02540;
+            DataSegment.AttributeDescriptors = 0x00000000021dfd50;
+            DataSegment.AttributeDescriptorsCount = 0x000005bb;
+            DataSegment.MemoryManager = 0x02090A60;
             DataSegment.SNOFiles = 0x141DEE150;
-            DataSegment.SNOGroups = 0x141DF1B20;
-            DataSegment.SNOGroupsByCode = 0x141DF18F0;
+            DataSegment.SNOGroups = 0x01F82040;
+            DataSegment.SNOGroupsByCode = 0x0216BE20;
             DataSegment.ContainerManager = 0x141F05E60;
             DataSegment.MessageDescriptor = 0x141369B58;
 
-            ObjectManager.SizeOf = 0xBC0;
+            ObjectManager.SizeOf = 0xBC0 - 0x30;
             ObjectManager.RenderTick = 0x4;
             ObjectManager.GameGlobals = 0x68;
             ObjectManager.GameState = 0x84;
-            ObjectManager.Storage = 0x7E8;
-            ObjectManager.Actors = 0xA50;
-            ObjectManager.Scenes = 0xAD0;
-            ObjectManager.SubObjectGfx = 0xB28;
-            ObjectManager.RWindowMgr = 0xB30;
-            ObjectManager.UIManager = 0xB38;
-            ObjectManager.Worlds = 0xB48;
-            ObjectManager.Player = 0xB58;
-            ObjectManager.TexAnim = 0xBA0;
-            ObjectManager.TimedEvents = 0xBA8;
+            ObjectManager.Storage = 0x7E8 - 0x30;
+            ObjectManager.Actors = 0xA50 - 0x30;
+            ObjectManager.Scenes = 0xAD0 - 0x30;
+            ObjectManager.SubObjectGfx = 0xB28 - 0x30;
+            ObjectManager.RWindowMgr = 0xB30 - 0x30;
+            ObjectManager.UIManager = 0xB38 - 0x30;
+            ObjectManager.Worlds = 0xB48 - 0x30;
+            ObjectManager.Player = 0xB58 - 0x30;
+            ObjectManager.TexAnim = 0xBA0 - 0x30;
+            ObjectManager.TimedEvents = 0xBA8 - 0x30;
 
             GameGlobals.SizeOf = 0x3A0;
             GameGlobals.GameServerAddress = 0x5C;
@@ -168,7 +168,7 @@ namespace Enigma.D3.MemoryModel
 
             TrickleManager.SizeOf = 0x10;
             TrickleManager.Allocator = 0x0;
-            TrickleManager.Items = 0x4;
+            TrickleManager.Items = 0x8;
 
             Trickle.SizeOf = 0x78;
 

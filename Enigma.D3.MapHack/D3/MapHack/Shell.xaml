@@ -1,34 +1,63 @@
 ﻿<Window x:Class="Enigma.D3.MapHack.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Enigma.D3.MapHack" Width="300" SizeToContent="Height" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/Enigma.D3.MapHack;component/enigma_icon.ico">
-    <StackPanel Background="WhiteSmoke">
-        <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="Background" Value="Tomato" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAttached}" Value="True">
-                            <Setter Property="Background" Value="LawnGreen" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <TextBlock Margin="10" FontSize="16">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Text" Value="Waiting for a D3 process..." />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsAttached}" Value="True">
-                                <Setter Property="Text" Value="Attached to D3!" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Border>
-        <CheckBox Content="Show Monsters" IsChecked="{Binding Options.ShowMonsters}" Margin="10,5" />
-        <CheckBox Content="Show Chests" IsChecked="{Binding Options.ShowChests}" Margin="10,5" />
-        <CheckBox Content="Show Wreckables" IsChecked="{Binding Options.ShowWreckables}" Margin="10,5" />
-    </StackPanel>
+        Title="Enigma.D3.MapHack" Width="300" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/Enigma.D3.MapHack;component/enigma_icon.ico">
+    <TabControl>
+        <TabItem Header="App">
+            <StackPanel Background="WhiteSmoke" Width="300">
+                <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Background" Value="Tomato" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsAttached}" Value="True">
+                                    <Setter Property="Background" Value="LawnGreen" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Margin="10" FontSize="16">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Text" Value="Waiting for a D3 process..." />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAttached}" Value="True">
+                                        <Setter Property="Text" Value="Attached to D3!" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Border>
+                <CheckBox Content="Restrict Minimap" ToolTip="Only draw inside the minimap boundaries." IsChecked="{Binding Options.RestrictMinimap}" Margin="10,5" />
+                <Separator />
+                <CheckBox Content="Show Monsters" IsChecked="{Binding Options.ShowMonsters}" Margin="10,5" />
+                <CheckBox Content="Show Chests" IsChecked="{Binding Options.ShowChests}" Margin="10,5" />
+                <CheckBox Content="Show Wreckables" IsChecked="{Binding Options.ShowWreckables}" Margin="10,5" />
+                <CheckBox Content="Show Rift Souls" IsChecked="{Binding Options.ShowRiftSouls}" Margin="10,5" />
+                <CheckBox Content="Show Portals" IsChecked="{Binding Options.ShowPortals}" Margin="10,5" />
+                <CheckBox Content="Show Death's Breath" IsChecked="{Binding Options.ShowDeathBreaths}" Margin="10,5" />
+                <CheckBox Content="Show Shrines/Pylons" IsChecked="{Binding Options.ShowShrines}" Margin="10,5" />
+                <Separator />
+                <CheckBox Content="Show Scenes" IsChecked="{Binding Options.ShowScenes}" Margin="10,5" />
+                <CheckBox Content="Show Scene Edges" IsChecked="{Binding Options.ShowSceneEdges}" IsEnabled="{Binding Options.ShowScenes}" Margin="10,5" />
+                <DockPanel Margin="10,5" ToolTip="Try changing this to increase performance." IsEnabled="{Binding Options.ShowScenes}">
+                    <TextBlock Text="Scene Render Mode: " VerticalAlignment="Center" />
+                    <ComboBox SelectedIndex="{Binding Options.SceneRenderMode}" Margin="10,0" VerticalAlignment="Top">
+                        <ComboBoxItem>Primitives</ComboBoxItem>
+                        <ComboBoxItem>Bitmaps</ComboBoxItem>
+                    </ComboBox>
+                </DockPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Log">
+            <DockPanel>
+                <WrapPanel DockPanel.Dock="Top">
+                    <Button Content="Start" Click="Button_Click" />
+                    <Button Content="Clear" Click="Button_Click_1" />
+                </WrapPanel>
+                <TextBox Name="Log" IsReadOnly="True" Height="300" Width="600" AcceptsReturn="True" AcceptsTab="True" MaxLines="3" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" TextWrapping="WrapWithOverflow" />
+            </DockPanel>
+        </TabItem>
+    </TabControl>
 </Window>

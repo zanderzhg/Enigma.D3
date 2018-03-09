@@ -156,7 +156,30 @@ namespace Enigma.D3.MapHack
 			return control;
 		}
 
-		public static Path CreateCross(double size, Brush stroke, double strokeThickness)
+        public static Ellipse CreateEllipse(double width, double height, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
+        {
+            var control = new Ellipse();
+            control.BeginInit();
+
+            control.Width = width;
+            control.Height = height;
+            control.Stroke = stroke;
+            control.StrokeThickness = strokeThickness;
+            control.Fill = fill;
+
+            var translateTransform = new TranslateTransform();
+            BindingOperations.SetBinding(translateTransform, TranslateTransform.XProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualWidthProperty), Converter = new HalfConverter() });
+            BindingOperations.SetBinding(translateTransform, TranslateTransform.YProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualHeightProperty), Converter = new HalfConverter() });
+            control.RenderTransform = new TransformGroup
+            {
+                Children = new TransformCollection { translateTransform }
+            };
+
+            control.EndInit();
+            return control;
+        }
+
+        public static Path CreateCross(double size, Brush stroke, double strokeThickness)
 		{
 			var geometry = new PathGeometry(new[]
 			{ 

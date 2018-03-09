@@ -45,8 +45,8 @@ namespace Enigma.D3.MemoryModel
         public static MemoryContext FromProcess()
         {
             var process = Process.GetProcessesByName("Diablo III64").FirstOrDefault();
-            if (process == null)
-                process = Process.GetProcessesByName("Diablo III").FirstOrDefault();
+            //if (process == null)
+            //    process = Process.GetProcessesByName("Diablo III").FirstOrDefault();
             if (process == null)
                 return null;
 
@@ -87,6 +87,8 @@ namespace Enigma.D3.MemoryModel
 
         public IMemory Memory { get; }
 
+        public MemoryAddress ImageBase { get; }
+
         public DataSegment DataSegment { get; }
 
         public Version MainModuleVersion { get; }
@@ -98,6 +100,7 @@ namespace Enigma.D3.MemoryModel
         {
             Memory = memory ?? throw new ArgumentNullException(nameof(memory));
             MainModuleVersion = (Memory.Reader as IHasMainModuleVersion)?.MainModuleVersion;
+            ImageBase = (Memory.Reader as IHasImageBase)?.ImageBase ?? throw new ArgumentException("Memory must have a known image base.");
 
             TypeHelper.PointerSize = Memory.Reader.PointerSize;
             SymbolTable.Current = new SymbolTable(this);

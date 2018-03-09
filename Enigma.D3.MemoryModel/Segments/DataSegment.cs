@@ -45,30 +45,30 @@ namespace Enigma.D3.MemoryModel.Segments
             => Memory.Reader.ReadString(SymbolTable.Current.DataSegment.LevelAreaName, SymbolTable.Current.DataSegment.LevelAreaNameLength);
 
         public int MapActID
-            => Memory.Reader.Read<int>(SymbolTable.Current.DataSegment.MapActID);
+            => Memory.Reader.Read<int>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.MapActID);
 
         public TrickleManager TrickleManager
             => Memory.Reader.Read<Ptr<TrickleManager>>(SymbolTable.Current.DataSegment.TrickleManager).Dereference();
 
         public LocalData LocalData
-            => Memory.Reader.Read<LocalData>(SymbolTable.Current.DataSegment.LocalData);
+            => Memory.Reader.Read<LocalData>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.LocalData);
 
         public ObjectManager ObjectManager
-            => Memory.Reader.Read<Ptr<ObjectManager>>(SymbolTable.Current.DataSegment.ObjectManager).Dereference();
+            => Memory.Reader.Read<ObjectManager>(SymbolTable.Current.Dynamic.ObjectManager);
 
         public int ApplicationLoopCount
             => Memory.Reader.Read<int>(SymbolTable.Current.DataSegment.ApplicationLoopCount);
 
         public AttributeDescriptor[] AttributeDescriptors
-            => Memory.Reader.Read<AttributeDescriptor>(SymbolTable.Current.DataSegment.AttributeDescriptors, SymbolTable.Current.DataSegment.AttributeDescriptorsCount);
+            => Memory.Reader.Read<AttributeDescriptor>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.AttributeDescriptors, SymbolTable.Current.DataSegment.AttributeDescriptorsCount);
 
         public MemoryManager MemoryManager
-            => Memory.Reader.Read<Ptr<MemoryManager>>(SymbolTable.Current.DataSegment.MemoryManager).Dereference();
+            => Memory.Reader.Read<Ptr<MemoryManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.MemoryManager).Dereference();
 
         public SNOFiles SNOFiles
             => Memory.Reader.Read<Ptr<SNOFiles>>(SymbolTable.Current.DataSegment.SNOFiles).Dereference();
 
         public Ptr[] SNOGroupStorage
-            => Memory.Reader.Read<Ptr>(SymbolTable.Current.DataSegment.SNOGroupsByCode, 70);
+            => Memory.Reader.Read<Ptr>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SNOGroupsByCode, 70);
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Collections\Map.cs" />
     <Compile Include="Collections\Vector.cs" />
     <Compile Include="Controls\Control.cs" />
+    <Compile Include="Controls\MinimapControl.cs" />
     <Compile Include="Core\ACD.cs" />
     <Compile Include="Core\ACDManager.cs" />
     <Compile Include="Core\ActiveSkillSavedData.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Core\Quest.cs" />
     <Compile Include="Core\QuestManager.cs" />
     <Compile Include="Core\Scene.cs" />
+    <Compile Include="Core\SceneRevealInfo.cs" />
     <Compile Include="Core\TimedEvent.cs" />
     <Compile Include="Core\Trickle.cs" />
     <Compile Include="Core\TrickleManager.cs" />
@@ -103,6 +105,8 @@
     <Compile Include="SymbolTable.cs" />
     <Compile Include="SymbolTable.X64.cs" />
     <Compile Include="SymbolTable.X86.cs" />
+    <Compile Include="Text\RefString.cs" />
+    <Compile Include="Text\RefStringData.cs" />
     <Compile Include="TypeSystem\AttributeDescriptor.cs" />
     <Compile Include="TypeSystem\FieldDescriptor.cs" />
     <Compile Include="TypeSystem\SymbolDescriptor.cs" />
