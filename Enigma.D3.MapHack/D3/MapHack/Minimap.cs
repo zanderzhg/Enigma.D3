@@ -129,7 +129,7 @@ namespace Enigma.D3.MapHack
                 if (_playerAcd == null || _playerAcd.ActorType != ActorType.Player)
                     _playerAcd = GetLocalPlayerACD(ctx);
 
-                //var gizmos = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Gizmo).ToArray();
+                var gizmos = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Gizmo).ToArray();
                 ////var s = items.FirstOrDefault(x => x.x04_SceneId_ == _playerAcd.SSceneID);
                 ////var attribs = AttributeReader.Instance.GetAttributes(gizmos[0].FastAttribGroupID);
                 //var portals = gizmos.Where(x => x.GizmoType.ToString().Contains("Portal")).ToArray();
@@ -143,9 +143,8 @@ namespace Enigma.D3.MapHack
                 //}
                 //
                 //var asd = AttributeModel.Attributes.MinimapActive.GetValue(AttributeReader.Instance, _playerAcd.FastAttribGroupID);
-
-                var ul = ctx.DataSegment.ObjectManager.Read<ulong>(0, SymbolTable.Current.ObjectManager.SizeOf / 8);
-                var ui = ctx.DataSegment.ObjectManager.UIManager;
+                
+                var ui = _objectManager.UIManager;
 
                 //var ctrls = ui.PtrControlsMap.Dereference().Select(x => x.Value.Dereference()).Where(x => x != null).Where(x => x.UIID.Name.IndexOf("map", StringComparison.OrdinalIgnoreCase) != -1).ToArray();
                 _localmap = _localmap ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();

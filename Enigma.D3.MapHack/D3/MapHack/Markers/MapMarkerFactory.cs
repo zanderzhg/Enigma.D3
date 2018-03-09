@@ -22,7 +22,8 @@ namespace Enigma.D3.MapHack.Markers
                 TryCreateChest(acd, out item, ref interested) ||
                 TryCreateWreckable(acd, out item, ref interested) ||
                 TryCreatePylon(acd, out item, ref interested) ||
-                TryCreatePortal(acd, out item, ref interested))
+                TryCreatePortal(acd, out item, ref interested) ||
+                TryCreatePoolOfReflection(acd, out item, ref interested))
             {
                 // Successfull!
             }
@@ -149,7 +150,19 @@ namespace Enigma.D3.MapHack.Markers
             }
             return false;
         }
-        
+
+        private static bool TryCreatePoolOfReflection(ACD acd, out IMapMarker item, ref bool interested)
+        {
+            item = null;
+            if (MapMarkerAcdPoolOfReflection.IsInterested(acd))
+            {
+                interested = true;
+                item = new MapMarkerAcdPoolOfReflection(acd, MapMarkerAcdPoolOfReflection.IsStillInterested);
+                return true;
+            }
+            return false;
+        }
+
         private static bool IsValidMonster(ACD acd)
         {
             return acd.Hitpoints > 0.00001 &&

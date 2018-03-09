@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="D3\MapHack\Markers\InventoryMarker.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdItem.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPoolOfReflection.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdPortal.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdPylon.cs" />
     <Compile Include="D3\SymbolPatching\AssemblyCodeBuffer.cs" />
