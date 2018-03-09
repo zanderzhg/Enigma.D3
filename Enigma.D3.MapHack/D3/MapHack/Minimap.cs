@@ -143,7 +143,7 @@ namespace Enigma.D3.MapHack
                 //}
                 //
                 //var asd = AttributeModel.Attributes.MinimapActive.GetValue(AttributeReader.Instance, _playerAcd.FastAttribGroupID);
-                
+
                 var ui = _objectManager.UIManager;
 
                 //var ctrls = ui.PtrControlsMap.Dereference().Select(x => x.Value.Dereference()).Where(x => x != null).Where(x => x.UIID.Name.IndexOf("map", StringComparison.OrdinalIgnoreCase) != -1).ToArray();
@@ -181,9 +181,6 @@ namespace Enigma.D3.MapHack
                         Trace.WriteLine("Removing " + acd.Name);
                         itemsToRemove.Add(marker);
                         _minimapItemsDic.Remove(acd.Address);
-
-                        if (acd.ActorType == ActorType.Item)
-                            Execute.OnUIThread(() => _inventoryItems.Remove(marker));
                     }
                 }
 
@@ -440,7 +437,8 @@ namespace Enigma.D3.MapHack
                 {
                     itemsToRemove.ForEach(x => _minimapItems.Remove(x));
                     itemsToAdd.ForEach(a => _minimapItems.Add(a));
-                    itemsToRemove.Where(x => x is InventoryMarker).Select(x => _inventoryItems.Remove(x));
+                    foreach (var item in itemsToRemove.OfType<InventoryMarker>())
+                        _inventoryItems.Remove(item);
                 });
                 //itemsToRemove.ForEach(a => _minimapItemsDic.Remove(a.Id));
             }
@@ -482,8 +480,12 @@ namespace Enigma.D3.MapHack
         private void Reset()
         {
             _minimapItemsDic.Clear();
-            if (_minimapItems.Count > 0)
-                Execute.OnUIThread(() => _minimapItems.Clear());
+            if (_minimapItems.Count > 0 || _inventoryItems.Count > 0)
+                Execute.OnUIThread(() =>
+                {
+                    _minimapItems.Clear();
+                    _inventoryItems.Clear();
+                });
             _acdsObserver = null;
             _scenesCache = null;
             _playerAcd = null;
