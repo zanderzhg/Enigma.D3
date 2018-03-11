@@ -44,7 +44,7 @@ namespace Enigma.D3.Bootloader
                 while (true)
                 {
                     using (var ctx = CreateMemoryContext())
-                    using (var watcher = new WatcherThread2(ctx))
+                    using (var watcher = new WatcherThread(ctx))
                     {
                         Trace.WriteLine("Attached to process.");
 
@@ -79,11 +79,7 @@ namespace Enigma.D3.Bootloader
                 Thread.Sleep(1000);
             }
             Trace.WriteLine("Found a process.");
-
-            //// Wait for full initialization.
-            //while (ctx.DataSegment.ApplicationLoopCount == 0)
-            //    Thread.Sleep(1000);
-
+            
             while (true)
             {
                 try

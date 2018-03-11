@@ -33,7 +33,6 @@ namespace Enigma.D3.MapHack
         private int _previousFrame;
         private readonly HashSet<int> _ignoredSnoIds = new HashSet<int>();
         private ACD _playerAcd;
-        //private LocalData _localData;
         private ObjectManager _objectManager;
         private ContainerCache<ACD> _acdsObserver;
         private ContainerCache<Scene> _scenesCache;
@@ -44,7 +43,6 @@ namespace Enigma.D3.MapHack
         private MemoryModel.Controls.Control _tooltip0;
         private bool _showLargeMap;
         private bool _isInventoryOpen;
-        //private AllocationCache<MemoryModel.Collections.LinkedListNode<SceneRevealInfo>> _sceneRevealCache;
 
         public Minimap(Canvas overlay)
         {
@@ -97,8 +95,7 @@ namespace Enigma.D3.MapHack
             _sse = MapMarkerOptions.Instance.ShowSceneEdges;
             _srm = MapMarkerOptions.Instance.SceneRenderMode;
 
-            _sw.Start();
-            //_sw.Restart();
+            _sw.Restart();
 
             if (ctx == null)
                 throw new ArgumentNullException(nameof(ctx));
@@ -121,46 +118,15 @@ namespace Enigma.D3.MapHack
                 if (MapMarkerOptions.Instance.ShowScenes)
                     _scenesCache.Update();
 
-                //_sceneRevealCache = _sceneRevealCache ?? new AllocationCache<MemoryModel.Collections.LinkedListNode<SceneRevealInfo>>(
-                //    ctx.DataSegment.LevelArea.SceneRevealInfo.Allocator);
-                //_sceneRevealCache.Update();
-                //_sceneRevealCache.GetItems();
-                //
-                //var items = _sceneRevealCache.GetItems().Select(x => x.Value).ToArray();
-
                 // Must have a local ACD to base coords on.
                 if (_playerAcd == null || _playerAcd.ActorType != ActorType.Player)
                     _playerAcd = GetLocalPlayerACD(ctx);
 
-                //var gizmos = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Gizmo).ToArray();
-                ////var s = items.FirstOrDefault(x => x.x04_SceneId_ == _playerAcd.SSceneID);
-                ////var attribs = AttributeReader.Instance.GetAttributes(gizmos[0].FastAttribGroupID);
-                //var portals = gizmos.Where(x => x.GizmoType.ToString().Contains("Portal")).ToArray();
-                //
-                //var ground = _acdsObserver.Items.Where(x => x != null && x.ActorType == ActorType.Item && (int)x.ItemLocation == -1).ToArray();
-                //
-                //var powerup = gizmos.FirstOrDefault(x => x.GizmoType == GizmoType.PowerUp);
-                //if (powerup != null)
-                //{
-                //    var attribs = AttributeReader.Instance.GetAttributes(powerup.FastAttribGroupID);
-                //}
-                //
-                //var asd = AttributeModel.Attributes.MinimapActive.GetValue(AttributeReader.Instance, _playerAcd.FastAttribGroupID);
-
                 var ui = _objectManager.UIManager;
                 var uimap = ui.PtrControlsMap.Dereference();
-                
+
                 _localmap = _localmap ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();
 
-
-                //var ctrls = ui.PtrControlsMap.Dereference().Select(x => x.Value.Dereference())
-                //    .Where(x => x != null).Where(x => x.UIID.Name.IndexOf("inventory", StringComparison.OrdinalIgnoreCase) != -1)
-                //    .Where(x => x.Type != ControlType.Text)
-                //    .Where(x => x.Type != ControlType.Timer)
-                //    .Where(x => x.Type != ControlType.Window)
-                //    .Where(x => x.Type != ControlType.Blinker)
-                //    .OrderBy(x => x.UIID.Name)
-                //    .ToArray();
                 var inventory = ui.PtrControlsMap.Dereference()["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
                 IsInventoryOpen = inventory?.IsVisible == true;
 
@@ -177,7 +143,7 @@ namespace Enigma.D3.MapHack
                         if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
                         if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
                         if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
-                        
+
                         _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
                     });
                 }
@@ -208,12 +174,8 @@ namespace Enigma.D3.MapHack
 
                 foreach (var scene in _scenesCache.OldItems)
                 {
-                    //if (_minimapItemsDic.TryGetValue(scene.Address, out var marker))
-                    //{
-                    //    Trace.WriteLine("Removing Scene " + scene.ID);
-                    //    itemsToRemove.Add(marker);
-                    //    _minimapItemsDic.Remove(scene.Address);
-                    //}
+                    // TODO: Release scenes. They're only stored in container while near them, so can't immediately remove as that would shrink the visible map.
+                    //       When player triggers loading screen, Reset() method is typicaly called, so it should not be likely that not removing causes memory leak.
                 }
 
                 foreach (var acd in _acdsObserver.NewItems)
@@ -255,23 +217,11 @@ namespace Enigma.D3.MapHack
 
                         if (snoScene != null)
                         {
-                            //var width = Math.Abs(scene.MeshMax.X - scene.MeshMin.X);
-                            //var height = Math.Abs(scene.MeshMax.Y - scene.MeshMin.Y);
-                            //var origo = new Point3D(_playerAcd.Position.X, _playerAcd.Position.Y, _playerAcd.Position.Z);
-                            //var dist = (new System.Windows.Media.Media3D.Point3D(scene.MeshMin.X, scene.MeshMin.Y, scene.MeshMin.Z) - origo).Length;
-                            //
-                            //if (width != 0 && height != 0 && dist < 200)
-                            //{
-                            //    if (_i != 0)
-                            //    {
                             var snapshot = snoScene.Value.Read<byte>(0, snoScene.Def.Size);
                             snoScene.Value.SetSnapshot(snapshot, 0, snapshot.Length);
                             var minimapItem = new MapMarkerScene(scene, snoScene.Value);
                             _minimapItemsDic.Add(scene.SSceneID, minimapItem);
                             itemsToAdd.Add(minimapItem);
-                            //    }
-                            //    _i++;
-                            //}
                         }
                         else
                         {
@@ -294,46 +244,10 @@ namespace Enigma.D3.MapHack
             _sw.Stop();
             //Trace.WriteLine("UI Update: " + _sw.Elapsed.TotalMilliseconds + "ms");
         }
-        static bool _b;
-        static int _i;
 
         private ACD GetLocalPlayerACD(MemoryContext ctx)
         {
             return _acdsObserver.Items[(short)ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ACDID];
-
-            //if (_localData.PlayerCount == 1)
-            //{
-            //    Trace.WriteLine("Single player, using index 0.");
-            //    var playerAcdId = ctx.DataSegment.ObjectManager.PlayerDataManager[0].ACDID;
-            //    return _acdsObserver.Items[(short)playerAcdId];
-            //}
-            //else
-            //{
-            //    var playerACDs = ctx.DataSegment.ObjectManager.PlayerDataManager
-            //        .Where(x => x.ACDID != -1)
-            //        .Select(x => new { x.Index, ACD = _acdsObserver.Items[(short)x.ACDID] })
-            //        .ToArray();
-            //
-            //    var candidates = playerACDs.Where(x => x.ACD.ActorSNO == _localData.PlayerActorSNO).ToArray();
-            //    if (candidates.Length == 1)
-            //    {
-            //        Trace.WriteLine("Found single player with matching ActorSNO, using index " + candidates.First().Index + ".");
-            //        return candidates.First().ACD;
-            //    }
-            //
-            //    var playerACD = candidates.OrderBy(x => (
-            //        new Vector3D(x.ACD.Position.X, x.ACD.Position.Y, x.ACD.Position.Z) -
-            //        new Vector3D(_localData.WorldPos.X, _localData.WorldPos.Y, _localData.WorldPos.Z)
-            //        ).Length).FirstOrDefault();
-            //    if (playerACD != null)
-            //    {
-            //        Trace.WriteLine("Found player using position match, using index " + playerACD.Index + ".");
-            //        return playerACD.ACD;
-            //    }
-            //
-            //    Trace.WriteLine("Unable to determine local player. Player count: " + _localData.PlayerCount);
-            //    return null;
-            //}
         }
 
         private bool IsLocalActorValid(MemoryContext ctx)
@@ -357,37 +271,6 @@ namespace Enigma.D3.MapHack
                 }
                 return false;
             }
-
-            //_localData = _localData ?? ctx.DataSegment.LocalData;
-            //_localData.TakeSnapshot();
-            //
-            //if (_localData.Read<byte>(0) == 0xCD ||
-            //    (_localData.PlayerCount & 0xCD000000) != 0) // structure is being updated, everything is cleared with 0xCD ('-')
-            //{
-            //    if (!_isLocalActorReady)
-            //        return false;
-            //}
-            //else
-            //{
-            //    if (!_localData.IsStartUpGame)
-            //    {
-            //        if (!_isLocalActorReady)
-            //        {
-            //            _isLocalActorReady = true;
-            //            OnLocalActorCreated();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (_isLocalActorReady)
-            //        {
-            //            _isLocalActorReady = false;
-            //            OnLocalActorDisposed();
-            //        }
-            //        return false;
-            //    }
-            //}
-            //return true;
         }
 
         private bool IsObjectManagerOnNewFrame(MemoryContext ctx)
@@ -454,15 +337,15 @@ namespace Enigma.D3.MapHack
             if (itemsToRemove.Count > 0 ||
                 itemsToAdd.Count > 0)
             {
-                //Trace.WriteLine("Removing " + itemsToRemove.Count + " items...");
                 Execute.OnUIThread(() =>
                 {
+                    //Trace.WriteLine("Removing " + itemsToRemove.Count + " items...");
                     itemsToRemove.ForEach(x => _minimapItems.Remove(x));
+                    //Trace.WriteLine("Adding " + itemsToAdd.Count + " items...");
                     itemsToAdd.ForEach(a => _minimapItems.Add(a));
                     foreach (var item in itemsToRemove.OfType<InventoryMarker>())
                         _inventoryItems.Remove(item);
                 });
-                //itemsToRemove.ForEach(a => _minimapItemsDic.Remove(a.Id));
             }
 
             if (_playerAcd != null)
@@ -480,12 +363,6 @@ namespace Enigma.D3.MapHack
                 foreach (var invItem in _inventoryItems)
                     invItem.Update(world, origo);
             }
-
-            //if (itemsToAdd.Count > 0)
-            //{
-            //    //Trace.WriteLine("Adding " + itemsToAdd.Count + " items...");
-            //    Execute.OnUIThread(() => itemsToAdd.ForEach(a => _minimapItems.Add(a)));
-            //}
         }
 
         private void OnLocalActorCreated()
@@ -512,7 +389,6 @@ namespace Enigma.D3.MapHack
             _scenesCache = null;
             _playerAcd = null;
             _ignoredSnoIds.Clear();
-            //_localData = null;
             _objectManager = null;
             _isLocalActorReady = false;
             _previousFrame = 0;

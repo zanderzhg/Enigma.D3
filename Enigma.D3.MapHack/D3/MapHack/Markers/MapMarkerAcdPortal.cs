@@ -32,13 +32,6 @@ namespace Enigma.D3.MapHack.Markers
         public static bool IsStillInterested(ACD acd)
         {
             return MapMarkerOptions.Instance.ShowPortals;
-            return true;
-            return acd.Animation.IsInvalid;
-            var attribs = AttributeReader.Instance.GetAttributes(acd.FastAttribGroupID);
-            var v = Attributes.MinimapActive.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
-            var b = Attributes.MinimapActive.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
-            return true;
-            return b;
         }
     }
 }

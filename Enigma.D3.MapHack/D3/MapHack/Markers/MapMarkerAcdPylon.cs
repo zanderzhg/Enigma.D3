@@ -19,8 +19,7 @@ namespace Enigma.D3.MapHack.Markers
         {
             return ControlHelper.CreateCross(8, Brushes.Orange, 2)
                 .AnimateScale(0.5, 5, 0.5)
-                .SpinRight(0.5)
-                /*.BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowChests)*/;
+                .SpinRight(0.5);
         }
 
         public static bool IsInterested(ACD acd)
@@ -33,7 +32,6 @@ namespace Enigma.D3.MapHack.Markers
         {
             return MapMarkerOptions.Instance.ShowShrines &&
                 Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
-            //Attributes.MinimapActive.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1; // This only indicates it should be shown, not when.
         }
     }
 }

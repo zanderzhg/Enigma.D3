@@ -40,7 +40,6 @@ namespace Enigma.D3.MapHack.Markers
             _noWalkBrush.Freeze();
             _walkEdgePen.Freeze();
         }
-        private static int _count;
         private static Brush _borderBrush;
         private static Brush _fillBrush;
 
@@ -50,28 +49,12 @@ namespace Enigma.D3.MapHack.Markers
             var height = Math.Abs(_scene.MeshMax.Y - _scene.MeshMin.Y);
             if (width == 0 || height == 0)
                 return null;
-            //
-            //Interlocked.Increment(ref _count);
-            //System.Diagnostics.Trace.WriteLine("Scene Count: " + _count);
-
-            //return ControlHelper
-            //                .CreateCircle(10, Brushes.White, Brushes.Black, 1)
-            //                .SetOpacity(Math.Max(0.3, 1 - 0.06 * 2 * 10))
-            //                .BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowMonsters);
 
             if (_borderBrush == null)
             {
                 _borderBrush = ControlHelper.CreateAnimatedBrush(Colors.Red, Colors.Orange, 0.5);
                 _fillBrush = ControlHelper.CreateAnimatedBrush(Colors.Black, Colors.DarkSlateGray, 0.5);
             }
-
-            //ZIndex = 100;
-            //return ControlHelper.CreateCircle(10, _fillBrush, _borderBrush, 1)
-            //    .AnimateScale(0.8, 2, 0.5)
-            //    .BindVisibilityTo(MapMarkerOptions.Instance, x => x.ShowRiftSouls);
-            //
-            //return ControlHelper.CreateCross(10, _walkBrush, 2);
-            //return new System.Windows.Shapes.Rectangle { Width = width, Height = height, Fill = _walkBrush };
 
             if (MapMarkerOptions.Instance.SceneRenderMode == 0)
                 return new SceneVisual(width, height, _asset.x180_NavZoneDefinition.x08_NavCells);
@@ -128,14 +111,9 @@ namespace Enigma.D3.MapHack.Markers
                 _height = height;
                 _cells = cells;
             }
-
-            private bool _rendered;
+            
             protected override void OnRender(DrawingContext drawingContext)
             {
-                if (_rendered)
-                    ;
-                _rendered = true;
-
                 base.OnRender(drawingContext);
 
                 var dc = drawingContext;
@@ -164,28 +142,15 @@ namespace Enigma.D3.MapHack.Markers
                 }
             }
         }
-
-        bool _lb;
+        
         public override void Update(int worldId, Point3D origo)
         {
-            //var dist = (new System.Windows.Media.Media3D.Point3D(_scene.MeshMin.X, _scene.MeshMin.Y, _scene.MeshMin.Z) - origo).Length;
-            //IsVisible = dist < 300;
             IsVisible = worldId == _scene.SWorldID && MapMarkerOptions.Instance.ShowScenes;
             if (IsVisible)
             {
                 X = _scene.MeshMin.X - origo.X;
                 Y = _scene.MeshMin.Y - origo.Y;
             }
-
-            //var isVisible = IsVisible;
-            //if (isVisible != IsVisible)
-            //{
-            //    if (IsVisible)
-            //        System.Diagnostics.Trace.WriteLine("Showing scene - sid:" + _scene.ID + "   ssid:" + _scene.SSceneID + "   sno:" + _scene.SceneSNO);
-            //    else System.Diagnostics.Trace.WriteLine("Hiding scene - sid:" + _scene.ID + "   ssid:" + _scene.SSceneID + "   sno:" + _scene.SceneSNO);
-            //}
-            //
-            //ZIndex = 100000;
         }
     }
 }
