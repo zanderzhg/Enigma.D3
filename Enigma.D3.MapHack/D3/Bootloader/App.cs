@@ -11,7 +11,7 @@ using Enigma.D3.MapHack;
 using Enigma.D3.MemoryModel;
 using System.Diagnostics;
 using Enigma.Memory;
-using Enigma.D3.SymbolPatching;
+using Enigma.D3.MemoryModel.SymbolPatching;
 using Enigma.D3.MapHack.Markers;
 
 namespace Enigma.D3.Bootloader

@@ -48,7 +48,6 @@ namespace Enigma.D3.Bootloader
                 lock (_tasksLock)
                 {
                     var now = DateTime.UtcNow;
-                    //System.Diagnostics.Trace.WriteLine("DeltaTick: " + (now - _lastUpdate).TotalMilliseconds + "ms");
                     _lastUpdate = now;
 
                     foreach (var task in _tasks)

@@ -14,8 +14,9 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
     {
         public static int VerifiedBuild = 49508;
 
-        public static void UpdateSymbolTable(MemoryContext ctx, SymbolTable symbols)
+        public static void UpdateSymbolTable(MemoryContext ctx, SymbolTable symbols = null)
         {
+            symbols = symbols ?? SymbolTable.Current;
             symbols.Version = ctx.MainModuleVersion;
 
             var mm = ctx.DataSegment.MemoryManager;

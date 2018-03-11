@@ -61,9 +61,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDisasm, Version=1.1.5.0, Culture=neutral, PublicKeyToken=71afd155bcebae3e, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDisasm.1.1.5\lib\net45\SharpDisasm.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -89,11 +86,6 @@
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdPoolOfReflection.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdPortal.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdPylon.cs" />
-    <Compile Include="D3\SymbolPatching\AssemblyCodeBuffer.cs" />
-    <Compile Include="D3\SymbolPatching\DisassemblerExtensions.cs" />
-    <Compile Include="D3\SymbolPatching\SymbolPatcher64.cs" />
-    <Compile Include="D3\SymbolPatching\Op.cs" />
-    <Compile Include="D3\SymbolPatching\Range.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdCursedChest.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdGreaterRiftSoul.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdWreckable.cs" />
@@ -134,7 +126,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
