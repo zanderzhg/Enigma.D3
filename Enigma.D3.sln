@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.CodeGen", "Enigma.D3.CodeGen\Enigma.D3.CodeGen.csproj", "{964EF49B-060C-4006-AF29-C2B94D71D892}"
 EndProject
@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.ApplicationModel"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.MemoryModel.Caching", "Enigma.D3.MemoryModel.Caching\Enigma.D3.MemoryModel.Caching.csproj", "{DD846721-049F-4155-86DB-07EEE2D9E562}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.MemoryModel.SymbolPatching", "Enigma.D3.MemoryModel.SymbolPatching\Enigma.D3.MemoryModel.SymbolPatching.csproj", "{04388369-1C00-4B91-8C01-16F1809A5047}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Enigma.D3.Assets.Generated\Enigma.D3.Assets.Generated.projitems*{4b2bf057-3425-4520-8535-3372d330c653}*SharedItemsImports = 4
@@ -51,7 +53,8 @@ Global
 		{964EF49B-060C-4006-AF29-C2B94D71D892}.Debug|x86.ActiveCfg = Debug|x86
 		{964EF49B-060C-4006-AF29-C2B94D71D892}.Debug|x86.Build.0 = Debug|x86
 		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|Any CPU.ActiveCfg = Release|x86
-		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|x64.ActiveCfg = Release|x86
+		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|x64.ActiveCfg = Release|x64
+		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|x64.Build.0 = Release|x64
 		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|x86.ActiveCfg = Release|x86
 		{964EF49B-060C-4006-AF29-C2B94D71D892}.Release|x86.Build.0 = Release|x86
 		{4B2BF057-3425-4520-8535-3372D330C653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -148,6 +151,18 @@ Global
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x64.Build.0 = Release|Any CPU
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x86.Build.0 = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x64.Build.0 = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x86.Build.0 = Debug|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x64.ActiveCfg = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x64.Build.0 = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x86.ActiveCfg = Release|Any CPU
+		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,5 +171,8 @@ Global
 		{75F91ECC-DF5A-4650-878E-4411BCC97D94} = {476EFEB8-6EAE-40C7-9BD5-F10CB82B9B0B}
 		{3A385F29-42E2-4CAF-B1F2-2A1A7B90A971} = {A3E2BA70-51BA-480B-984D-23FC65BC690D}
 		{FDAB0808-F6E9-44D7-A411-121CCEC2E61E} = {A3E2BA70-51BA-480B-984D-23FC65BC690D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5963147C-54B9-4BC6-AC7F-E679EDBAD6A8}
 	EndGlobalSection
 EndGlobal

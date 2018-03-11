@@ -168,6 +168,10 @@
       <Project>{DD846721-049F-4155-86DB-07EEE2D9E562}</Project>
       <Name>Enigma.D3.MemoryModel.Caching</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Enigma.D3.MemoryModel.SymbolPatching\Enigma.D3.MemoryModel.SymbolPatching.csproj">
+      <Project>{04388369-1c00-4b91-8c01-16f1809a5047}</Project>
+      <Name>Enigma.D3.MemoryModel.SymbolPatching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Enigma.D3.MemoryModel\Enigma.D3.MemoryModel.csproj">
       <Project>{92e7130d-9363-458c-abe5-a71f240a9b78}</Project>
       <Name>Enigma.D3.MemoryModel</Name>
