@@ -12,183 +12,121 @@ namespace Enigma.D3.MapHack.Markers
 {
     public static class MapMarkerFactory
     {
-        public static IMapMarker Create(ACD acd, out bool ignore)
+        public static IMapMarker Create(ACD acd)
         {
-            IMapMarker item;
-            bool interested = false;
-
-            if (TryCreateMonster(acd, out item, ref interested) ||
-                TryCreateItem(acd, out item, ref interested) ||
-                TryCreateChest(acd, out item, ref interested) ||
-                TryCreateWreckable(acd, out item, ref interested) ||
-                TryCreatePylon(acd, out item, ref interested) ||
-                TryCreatePortal(acd, out item, ref interested) ||
-                TryCreatePoolOfReflection(acd, out item, ref interested))
+            switch (acd.ActorType)
             {
-                // Successfull!
+                case ActorType.Invalid:
+                    break;
+                case ActorType.Monster:
+                    return new MapMarkerAcdMonster(acd);
+                case ActorType.Gizmo:
+                    switch (acd.GizmoType)
+                    {
+                        case GizmoType.Invalid:
+                            break;
+                        case GizmoType.Door:
+                            break;
+                        case GizmoType.Chest:
+                            return new MapMarkerAcdGizmoChest(acd);
+                        case GizmoType.Portal:
+                            return new MapMarkerAcdGizmoPortal(acd);
+                        case GizmoType.Waypoint:
+                            break;
+                        case GizmoType.Item:
+                            break;
+                        case GizmoType.Checkpoint:
+                            break;
+                        case GizmoType.Sign:
+                            break;
+                        case GizmoType.HealingWell:
+                            break;
+                        case GizmoType.PowerUp:
+                            return new MapMarkerAcdGizmoPowerUp(acd);
+                        case GizmoType.TownPortal:
+                            break;
+                        case GizmoType.HearthPortal:
+                            break;
+                        case GizmoType.Headstone:
+                            break;
+                        case GizmoType.PortalDestination:
+                            break;
+                        case GizmoType.BreakableChest:
+                            return new MapMarkerAcdGizmoBreakableChest(acd);
+                        case GizmoType.SharedStash:
+                            break;
+                        case GizmoType.Spawner:
+                            break;
+                        case GizmoType.PageOfFatePortal:
+                            break;
+                        case GizmoType.Trigger:
+                            break;
+                        case GizmoType.SecretPortal:
+                            break;
+                        case GizmoType.DestroyableObject:
+                            return new MapMarkerAcdGizmoDestroyableObject(acd);
+                        case GizmoType.BreakableDoor:
+                            return new MapMarkerAcdGizmoBreakableDoor(acd);
+                        case GizmoType.Switch:
+                            return new MapMarkerAcdGizmoSwitch(acd);
+                        case GizmoType.PressurePlate:
+                            break;
+                        case GizmoType.Gate:
+                            break;
+                        case GizmoType.DestroySelfWhenNear:
+                            break;
+                        case GizmoType.ActTransitionObject:
+                            break;
+                        case GizmoType.ReformingDestroyableObject:
+                            break;
+                        case GizmoType.Banner:
+                            break;
+                        case GizmoType.LoreChest:
+                            return new MapMarkerAcdGizmoLoreChest(acd);
+                        case GizmoType.BossPortal:
+                            break;
+                        case GizmoType.PlacedLoot:
+                            break;
+                        case GizmoType.SavePoint:
+                            break;
+                        case GizmoType.ReturnPointPortal:
+                            break;
+                        case GizmoType.DungeonPortal:
+                            break;
+                        case GizmoType.IdentifyAll:
+                            break;
+                        case GizmoType.ReturnPortal:
+                            break;
+                        case GizmoType.RecreateGameWithParty:
+                            break;
+                        case GizmoType.Mailbox:
+                            break;
+                        case GizmoType.LootRunSwitch:
+                            break;
+                        case GizmoType.PoolOfReflection:
+                            return new MapMarkerAcdGizmoPoolOfReflection(acd);
+                    }
+                    break;
+                case ActorType.ClientEffect:
+                    break;
+                case ActorType.ServerProp:
+                    break;
+                case ActorType.Environment:
+                    break;
+                case ActorType.Critter:
+                    break;
+                case ActorType.Player:
+                    break;
+                case ActorType.Item:
+                    return new MapMarkerAcdItem(acd);
+                case ActorType.AxeSymbol:
+                    break;
+                case ActorType.Projectile:
+                    break;
+                case ActorType.CustomBrain:
+                    break;
             }
-
-            ignore = !interested;
-            return item;
-        }
-
-        private static bool TryCreateMonster(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (acd.ActorType == ActorType.Monster)
-            {
-                interested = true;
-                if (IsValidMonster(acd))
-                {
-                    item = new MapMarkerAcdMonster(acd, IsValidMonster);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static bool TryCreateItem(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (acd.ActorType == ActorType.Item &&
-                (int)acd.ItemLocation == -1)
-            {
-                if (acd.ActorSNO == 401751) // GreaterRiftSoul
-                {
-                    interested = true;
-                    item = new MapMarkerAcdGreaterRiftSoul(acd, x => true);
-                    return true;
-                }
-                if (acd.ActorSNO == 436807) // RiftSoul
-                {
-                    interested = true;
-                    item = new MapMarkerAcdRiftSoul(acd, x => true);
-                    return true;
-                }
-            }
-            if (MapMarkerAcdItem.IsInterested(acd))
-            {
-                interested = true;
-                item = new MapMarkerAcdItem(acd, MapMarkerAcdItem.IsStillInterested);
-                return true;
-            }
-            return false;
-        }
-
-        private static bool TryCreateChest(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (acd.GizmoType == GizmoType.Chest)
-            {
-                interested = true;
-                if (IsValidGizmoChest(acd))
-                {
-                    item = new MapMarkerAcdChest(acd, IsValidGizmoChest);
-                    return true;
-                }
-            }
-            else if (acd.GizmoType == GizmoType.LoreChest)
-            {
-                interested = true;
-                if (IsValidGizmoLoreChest(acd))
-                {
-                    item = new MapMarkerAcdChest(acd, IsValidGizmoLoreChest);
-                    return true;
-                }
-            }
-            else if (acd.GizmoType == GizmoType.Switch)
-            {
-                interested = true;
-                switch ((int)acd.ActorSNO)
-                {
-                    case 0x0005900F: // x1_Global_Chest_CursedChest
-                    case 0x00059229: // x1_Global_Chest_CursedChest_B
-                        item = new MapMarkerAcdCursedChest(acd, IsValidSwitchCursedChest);
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        private static bool TryCreateWreckable(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (acd.GizmoType == GizmoType.BreakableChest ||
-                acd.GizmoType == GizmoType.BreakableDoor ||
-                acd.GizmoType == GizmoType.DestroyableObject)
-            {
-                interested = true;
-                if (IsValidGizmoWreckableObject(acd))
-                {
-                    item = new MapMarkerAcdWreckable(acd, IsValidGizmoWreckableObject);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static bool TryCreatePylon(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (MapMarkerAcdPylon.IsInterested(acd))
-            {
-                interested = true;
-                item = new MapMarkerAcdPylon(acd, MapMarkerAcdPylon.IsStillInterested);
-                return true;
-            }
-            return false;
-        }
-
-        private static bool TryCreatePortal(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (MapMarkerAcdPortal.IsInterested(acd))
-            {
-                interested = true;
-                item = new MapMarkerAcdPortal(acd, MapMarkerAcdPortal.IsStillInterested);
-                return true;
-            }
-            return false;
-        }
-
-        private static bool TryCreatePoolOfReflection(ACD acd, out IMapMarker item, ref bool interested)
-        {
-            item = null;
-            if (MapMarkerAcdPoolOfReflection.IsInterested(acd))
-            {
-                interested = true;
-                item = new MapMarkerAcdPoolOfReflection(acd, MapMarkerAcdPoolOfReflection.IsStillInterested);
-                return true;
-            }
-            return false;
-        }
-
-        private static bool IsValidMonster(ACD acd)
-        {
-            return acd.Hitpoints > 0.00001 &&
-                (acd.ObjectFlags & 1) == 0 &&
-                acd.TeamID == 10;
-        }
-
-        private static bool IsValidGizmoChest(ACD acd)
-        {
-            return (acd.CollisionFlags & 0x400) == 0 &&
-                Attributes.ChestOpen.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
-        }
-
-        private static bool IsValidGizmoLoreChest(ACD acd)
-        {
-            return Attributes.ChestOpen.GetValue(AttributeReader.Instance, acd.FastAttribGroupID, 0xA0000) != 1;
-        }
-
-        private static bool IsValidGizmoWreckableObject(ACD acd)
-        {
-            return acd.Hitpoints == 0.001f;
-        }
-
-        private static bool IsValidSwitchCursedChest(ACD acd)
-        {
-            return true;
+            return null;
         }
     }
 }

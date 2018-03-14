@@ -10,10 +10,10 @@ using System.Windows.Media;
 
 namespace Enigma.D3.MapHack.Markers
 {
-    public class MapMarkerAcdPoolOfReflection : MapMarkerAcd
+    public class MapMarkerAcdGizmoPoolOfReflection : MapMarkerAcd
     {
-        public MapMarkerAcdPoolOfReflection(ACD acd, Func<ACD, bool> isValid)
-            : base(acd, isValid) { }
+        public MapMarkerAcdGizmoPoolOfReflection(ACD acd)
+            : base(acd, IsInterested) { }
 
         public override object CreateControl()
         {
@@ -35,16 +35,10 @@ namespace Enigma.D3.MapHack.Markers
             text.RenderTransform = new TranslateTransform(-text.DesiredSize.Width / 2, -text.DesiredSize.Height / 2);
             return text;
         }
-
+        
         public static bool IsInterested(ACD acd)
         {
-            return acd.ActorType == Enums.ActorType.Gizmo
-                && acd.GizmoType == Enums.GizmoType.PoolOfReflection;
-        }
-
-        public static bool IsStillInterested(ACD acd)
-        {
-            return MapMarkerOptions.Instance.ShowPoolsOfReflection &&
+            return MapMarkerOptions.Instance.ShowPoolsOfReflection && // TODO: Implement as BindVisibility
                 Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
         }
     }

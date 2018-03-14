@@ -186,13 +186,12 @@ namespace Enigma.D3.MapHack
 
                     if (!_minimapItemsDic.ContainsKey(acd.Address))
                     {
-                        bool ignore;
-                        var minimapItem = MapMarkerFactory.Create(acd, out ignore);
-                        if (ignore)
+                        var minimapItem = MapMarkerFactory.Create(acd);
+                        if (minimapItem == null)
                         {
                             _ignoredSnoIds.Add(actorSnoId);
                         }
-                        else if (minimapItem != null)
+                        else
                         {
                             _minimapItemsDic.Add(acd.Address, minimapItem);
                             itemsToAdd.Add(minimapItem);
@@ -225,6 +224,7 @@ namespace Enigma.D3.MapHack
                         }
                         else
                         {
+                            // TODO: Scene asset might not be loaded yet. Should add some retry mechanism.
                             Trace.WriteLine("Failed to find Scene Asset - sid:" + scene.ID + "   ssid:" + scene.SSceneID + "   sno:" + scene.SceneSNO);
                         }
                     }

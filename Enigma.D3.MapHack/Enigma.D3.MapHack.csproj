@@ -82,19 +82,20 @@
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
     <Compile Include="D3\MapHack\Markers\InventoryMarker.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoBreakableChest.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoBreakableDoor.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoDestroyableObject.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdItem.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPoolOfReflection.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPortal.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdPylon.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdCursedChest.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGreaterRiftSoul.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdWreckable.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoPoolOfReflection.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoPortal.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoPowerUp.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoSwitch.cs" />
     <Compile Include="D3\MapHack\Markers\IMapMarker.cs" />
     <Compile Include="D3\MapHack\ControlHelper.cs" />
     <Compile Include="D3\MapHack\HalfConverter.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdChest.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoChest.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerAcdGizmoLoreChest.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerOptions.cs" />
-    <Compile Include="D3\MapHack\Markers\MapMarkerAcdRiftSoul.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerScene.cs" />
     <Compile Include="D3\MapHack\Minimap.cs" />
     <Compile Include="D3\MapHack\Minimap.xaml.cs">

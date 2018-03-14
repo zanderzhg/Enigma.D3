@@ -14,8 +14,8 @@ namespace Enigma.D3.MapHack.Markers
 {
 	public class MapMarkerAcdMonster : MapMarkerAcd
 	{
-		public MapMarkerAcdMonster(ACD monster, Func<ACD, bool> isValid)
-			: base(monster, isValid)
+		public MapMarkerAcdMonster(ACD monster)
+			: base(monster, IsInterested)
 		{
 			ZIndex = (int)Acd.MonsterQuality;
 		}
@@ -96,5 +96,12 @@ namespace Enigma.D3.MapHack.Markers
                     return Acd.Name.IndexOf("treasureGoblin", StringComparison.Ordinal) != -1;
 			}
 		}
+
+        public static bool IsInterested(ACD acd)
+        {
+            return acd.Hitpoints > 0.00001 &&
+                   (acd.ObjectFlags & 1) == 0 &&
+                   acd.TeamID == 10;
+        }
 	}
 }

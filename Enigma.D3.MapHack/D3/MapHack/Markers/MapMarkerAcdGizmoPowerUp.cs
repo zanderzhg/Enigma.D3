@@ -10,10 +10,10 @@ using System.Windows.Media;
 
 namespace Enigma.D3.MapHack.Markers
 {
-    public class MapMarkerAcdPylon : MapMarkerAcd
+    public class MapMarkerAcdGizmoPowerUp : MapMarkerAcd
     {
-        public MapMarkerAcdPylon(ACD acd, Func<ACD, bool> isVisible)
-            : base(acd, isVisible) { }
+        public MapMarkerAcdGizmoPowerUp(ACD acd)
+            : base(acd, IsInterested) { }
 
         public override object CreateControl()
         {
@@ -21,14 +21,8 @@ namespace Enigma.D3.MapHack.Markers
                 .AnimateScale(0.5, 5, 0.5)
                 .SpinRight(0.5);
         }
-
+        
         public static bool IsInterested(ACD acd)
-        {
-            return acd.ActorType == ActorType.Gizmo &&
-                acd.GizmoType == GizmoType.PowerUp;
-        }
-
-        public static bool IsStillInterested(ACD acd)
         {
             return MapMarkerOptions.Instance.ShowShrines &&
                 Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
