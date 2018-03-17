@@ -25,6 +25,7 @@ namespace Enigma.D3.MapHack.Markers
         public static bool IsInterested(ACD acd)
         {
             return MapMarkerOptions.Instance.ShowShrines &&
+                Attributes.GizmoDisabledByScript.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1 &&
                 Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
         }
     }
