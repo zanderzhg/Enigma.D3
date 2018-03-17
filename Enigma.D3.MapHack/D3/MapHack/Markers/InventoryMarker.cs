@@ -14,11 +14,14 @@ namespace Enigma.D3.MapHack.Markers
 {
     public class InventoryMarker : MapMarkerAcd
     {
+        private bool _isVisibleInInventory;
+        private bool _isVisibleInStash;
         private int _rank;
         private int _quality;
 
         private static Brush _legendaryBrush;
         private static Brush _setBrush;
+        private static Brush _primalBrush;
 
         public InventoryMarker(ACD acd)
             : base(acd, x => true)
@@ -30,22 +33,43 @@ namespace Enigma.D3.MapHack.Markers
                 _quality = (int)ItemQuality.Set;
         }
 
+        public bool IsVisibleInInventory
+        {
+            get { return _isVisibleInInventory; }
+            set
+            {
+                if (_isVisibleInInventory != value)
+                {
+                    _isVisibleInInventory = value;
+                    Refresh(nameof(IsVisibleInInventory));
+                }
+            }
+        }
+
+        public bool IsVisibleInStash
+        {
+            get { return _isVisibleInStash; }
+            set
+            {
+                if (_isVisibleInStash != value)
+                {
+                    _isVisibleInStash = value;
+                    Refresh(nameof(IsVisibleInStash));
+                }
+            }
+        }
+
         public override object CreateControl()
         {
             if (_legendaryBrush == null)
             {
                 _legendaryBrush = ControlHelper.CreateAnimatedBrush(Colors.Black, Colors.DarkOrange, 0.5);
                 _setBrush = ControlHelper.CreateAnimatedBrush(Colors.Black, Colors.Green, 0.5);
+                _primalBrush = ControlHelper.CreateAnimatedBrush(Colors.Black, Colors.Red, 0.5);
             }
-
-            var panel = new StackPanel();
-            for (int i = 0; i < _rank; i++)
-            {
-                panel.Children.Add(ControlHelper.CreateCircle(10,
-                    _quality == (int)ItemQuality.Legendary ? _legendaryBrush : _setBrush,
-                    Brushes.Black, 1));
-            }
-            return panel;
+            
+            var brush = _rank >= 2 ? _primalBrush : (_quality == (int)ItemQuality.Legendary ? _legendaryBrush : _setBrush);
+            return ControlHelper.CreateCircle(10, brush, Brushes.Black, 1);
         }
 
         public override void Update(int worldId, Point3D origo)
@@ -53,15 +77,25 @@ namespace Enigma.D3.MapHack.Markers
             if (MapMarkerOptions.Instance.ShowAncientRank == false)
             {
                 IsVisible = false;
+                IsVisibleInInventory = false;
+                IsVisibleInStash = false;
                 return;
             }
 
+            IsVisibleInInventory = Acd.ItemLocation == ItemLocation.PlayerBackpack;// <= Acd.ItemLocation && Acd.ItemLocation < ItemLocation.Stash;
+            IsVisibleInStash = Acd.ItemLocation == ItemLocation.Stash && GetStashIndex() == Minimap.Instance.SelectedStashIndex;
+            
             var isVisible = true;
             switch (Acd.ItemLocation)
             {
                 case ItemLocation.PlayerBackpack:
                     X = 46 + Acd.ItemSlotX * 56;
                     Y = 628 + Acd.ItemSlotY * 56;
+                    break;
+
+                case ItemLocation.Stash:
+                    X = 102 + Acd.ItemSlotX * 64;
+                    Y = 252 + (Acd.ItemSlotY % 10) * 64;
                     break;
 
                 //case ItemLocation.PlayerHead:
@@ -123,5 +157,8 @@ namespace Enigma.D3.MapHack.Markers
             }
             IsVisible = isVisible;
         }
+
+        private int GetStashIndex()
+            => Acd.ItemSlotY / 10;
     }
 }

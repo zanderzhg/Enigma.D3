@@ -50,7 +50,7 @@
                     </ComboBox>
                 </DockPanel>
                 <Separator />
-                <CheckBox Content="Show Ancient Rank (Inventory only)" IsChecked="{Binding Options.ShowAncientRank}" Margin="10,5" />
+                <CheckBox Content="Show Ancient Rank" IsChecked="{Binding Options.ShowAncientRank}" Margin="10,5" />
             </StackPanel>
         </TabItem>
         <TabItem Header="Log">

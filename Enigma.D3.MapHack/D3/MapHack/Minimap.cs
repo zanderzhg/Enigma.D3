@@ -29,7 +29,9 @@ namespace Enigma.D3.MapHack
         private readonly ObservableCollection<IMapMarker> _minimapItems;
         private readonly Dictionary<int, IMapMarker> _minimapItemsDic = new Dictionary<int, IMapMarker>();
         private readonly InventoryControl _inventoryControl;
+        private readonly StashControl _stashControl;
         private readonly ObservableCollection<IMapMarker> _inventoryItems;
+        private readonly ObservableCollection<IMapMarker> _stashItems;
         private int _previousFrame;
         private readonly HashSet<int> _ignoredSnoIds = new HashSet<int>();
         private ACD _playerAcd;
@@ -38,11 +40,21 @@ namespace Enigma.D3.MapHack
         private ContainerCache<Scene> _scenesCache;
         private bool _isLocalActorReady;
         private MemoryModel.Controls.MinimapControl _localmap;
+        private MemoryModel.Controls.Control _inventory;
         private MemoryModel.Controls.Control _tooltip2;
         private MemoryModel.Controls.Control _tooltip1;
         private MemoryModel.Controls.Control _tooltip0;
+        private MemoryModel.Controls.Control _stash;
+        private MemoryModel.Controls.RadioButtonControl _stashPage1;
+        private MemoryModel.Controls.RadioButtonControl _stashPage2;
+        private MemoryModel.Controls.RadioButtonControl _stashTab1;
+        private MemoryModel.Controls.RadioButtonControl _stashTab2;
+        private MemoryModel.Controls.RadioButtonControl _stashTab3;
+        private MemoryModel.Controls.RadioButtonControl _stashTab4;
+        private MemoryModel.Controls.RadioButtonControl _stashTab5;
         private bool _showLargeMap;
         private bool _isInventoryOpen;
+        private bool _isStashOpen;
 
         public Minimap(Canvas overlay)
         {
@@ -51,6 +63,7 @@ namespace Enigma.D3.MapHack
 
             _minimapItems = new ObservableCollection<IMapMarker>();
             _inventoryItems = new ObservableCollection<IMapMarker>();
+            _stashItems = new ObservableCollection<IMapMarker>();
 
             _root = new Canvas() { Height = (int)(PresentationSource.FromVisual(overlay).CompositionTarget.TransformToDevice.M22 * 1200 + 0.5) };
             _window = overlay;
@@ -59,12 +72,16 @@ namespace Enigma.D3.MapHack
 
             _root.Children.Add(_minimapControl = new MinimapControl { DataContext = this });
             _root.Children.Add(_inventoryControl = new InventoryControl { DataContext = this });
+            _root.Children.Add(_stashControl = new StashControl { DataContext = this });
 
             UpdateSizeAndPosition();
+            Instance = this;
         }
+        public static Minimap Instance;
 
         public ObservableCollection<IMapMarker> MinimapMarkers => _minimapItems;
         public ObservableCollection<IMapMarker> InventoryMarkers => _inventoryItems;
+        public ObservableCollection<IMapMarker> StashMarkers => _stashItems;
         public MapMarkerOptions Options { get; } = MapMarkerOptions.Instance;
 
         public bool ShowLargeMap
@@ -77,6 +94,14 @@ namespace Enigma.D3.MapHack
             get { return _isInventoryOpen; }
             set { if (_isInventoryOpen != value) { _isInventoryOpen = value; Refresh(nameof(IsInventoryOpen)); } }
         }
+        public bool IsStashOpen
+        {
+            get { return _isStashOpen; }
+            set { if (_isStashOpen != value) { _isStashOpen = value; Refresh(nameof(IsStashOpen)); } }
+        }
+        public int SelectedStashPage { get; private set; }
+        public int SelectedStashTab { get; private set; }
+        public int SelectedStashIndex => (SelectedStashPage - 1) * 5 + (SelectedStashTab - 1);
 
         private void UpdateSizeAndPosition()
         {
@@ -125,30 +150,56 @@ namespace Enigma.D3.MapHack
                 var ui = _objectManager.UIManager;
                 var uimap = ui.PtrControlsMap.Dereference();
 
+                _stash = _stash ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage"].Dereference();
+                _stashPage1 = _stashPage1 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashPage2 = _stashPage2 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashTab1 = _stashTab1 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashTab2 = _stashTab2 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashTab3 = _stashTab3 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_3"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashTab4 = _stashTab4 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_4"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                _stashTab5 = _stashTab5 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_5"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
                 _localmap = _localmap ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();
 
-                var inventory = ui.PtrControlsMap.Dereference()["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
-                IsInventoryOpen = inventory?.IsVisible == true;
+                _inventory = _inventory ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
+                IsInventoryOpen = _inventory?.IsVisible == true;
+                IsStashOpen = _stash?.IsVisible == true;
 
-                if (IsInventoryOpen && Options.ShowAncientRank)
+                if ((IsInventoryOpen || IsStashOpen) && Options.ShowAncientRank)
                 {
                     if (_tooltip2 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_2", out var tooltip2)) _tooltip2 = tooltip2.Dereference();
                     if (_tooltip1 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_1", out var tooltip1)) _tooltip1 = tooltip1.Dereference();
                     if (_tooltip0 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_0", out var tooltip0)) _tooltip0 = tooltip0.Dereference();
 
-                    var offset = inventory.UIRect.Left;
+                    if (IsStashOpen)
+                    {
+                        SelectedStashPage = _stashPage1.IsSelected ? 1 : 2;
+                        if (_stashTab1.IsVisible && _stashTab1.IsSelected) SelectedStashTab = 1;
+                        else if (_stashTab2.IsVisible && _stashTab2.IsSelected) SelectedStashTab = 2;
+                        else if (_stashTab3.IsVisible && _stashTab3.IsSelected) SelectedStashTab = 3;
+                        else if (_stashTab4.IsVisible && _stashTab4.IsSelected) SelectedStashTab = 4;
+                        else if (_stashTab5.IsVisible && _stashTab5.IsSelected) SelectedStashTab = 5;
+                    }
+
                     Execute.OnUIThread(() =>
                     {
+                        var offset = _inventory.UIRect.Left;
                         var clip = new GeometryGroup();
                         if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
                         if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
                         if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
 
                         _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
+
+                        offset = _stash.UIRect.Left;
+                        var clip2 = new GeometryGroup();
+                        if (_tooltip2.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
+                        if (_tooltip1.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
+                        if (_tooltip0.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
+                        _stashControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _stashControl.RenderSize)), clip2, GeometryCombineMode.Exclude, null);
                     });
                 }
 
-                foreach (var item in _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ItemLocation >= ItemLocation.PlayerBackpack && x.ItemLocation <= ItemLocation.Stash))
+                foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1))
                 {
                     if (_minimapItemsDic.ContainsKey(item.Address))
                         continue;
@@ -157,7 +208,9 @@ namespace Enigma.D3.MapHack
                         continue;
 
                     var itemMarker = new InventoryMarker(item);
+                    var stashMarker = new InventoryMarker(item);
                     Execute.OnUIThread(() => _inventoryItems.Add(itemMarker));
+                    Execute.OnUIThread(() => _stashItems.Add(stashMarker));
                     _minimapItemsDic.Add(item.Address, itemMarker);
                 }
 
@@ -344,7 +397,10 @@ namespace Enigma.D3.MapHack
                     //Trace.WriteLine("Adding " + itemsToAdd.Count + " items...");
                     itemsToAdd.ForEach(a => _minimapItems.Add(a));
                     foreach (var item in itemsToRemove.OfType<InventoryMarker>())
+                    {
                         _inventoryItems.Remove(item);
+                        _stashItems.Remove(item);
+                    }
                 });
             }
 
@@ -361,6 +417,8 @@ namespace Enigma.D3.MapHack
                     mapItem.Update(world, origo);
 
                 foreach (var invItem in _inventoryItems)
+                    invItem.Update(world, origo);
+                foreach (var invItem in _stashItems)
                     invItem.Update(world, origo);
             }
         }
@@ -379,11 +437,12 @@ namespace Enigma.D3.MapHack
         private void Reset()
         {
             _minimapItemsDic.Clear();
-            if (_minimapItems.Count > 0 || _inventoryItems.Count > 0)
+            if (_minimapItems.Count > 0 || _inventoryItems.Count > 0 || _stashItems.Count > 0)
                 Execute.OnUIThread(() =>
                 {
                     _minimapItems.Clear();
                     _inventoryItems.Clear();
+                    _stashItems.Clear();
                 });
             _acdsObserver = null;
             _scenesCache = null;
@@ -392,10 +451,20 @@ namespace Enigma.D3.MapHack
             _objectManager = null;
             _isLocalActorReady = false;
             _previousFrame = 0;
+
             _localmap = null;
+            _inventory = null;
             _tooltip2 = null;
             _tooltip1 = null;
             _tooltip0 = null;
+            _stash = null;
+            _stashPage1 = null;
+            _stashPage2 = null;
+            _stashTab1 = null;
+            _stashTab2 = null;
+            _stashTab3 = null;
+            _stashTab4 = null;
+            _stashTab5 = null;
         }
     }
 }

@@ -54,6 +54,7 @@
     <Compile Include="Collections\Vector.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\MinimapControl.cs" />
+    <Compile Include="Controls\RadioButtonControl.cs" />
     <Compile Include="Core\ACD.cs" />
     <Compile Include="Core\ACDManager.cs" />
     <Compile Include="Core\ActiveSkillSavedData.cs" />
