@@ -14,120 +14,120 @@ namespace Enigma.D3.MapHack
 {
 	public static class ControlHelper
 	{
-		public static Shape SetOpacity(this Shape shape, double opacity)
+		public static UIElement SetOpacity(this UIElement element, double opacity)
 		{
-			shape.Opacity = opacity;
-			return shape;
+			element.Opacity = opacity;
+			return element;
 		}
 
-		public static Shape AnimateOpacity(this Shape shape, double fromValue, double toValue, double durationInSeconds)
+		public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, double durationInSeconds)
 		{
-			return shape.AnimateOpacity(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
+			return element.AnimateOpacity(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
 		}
 
-		public static Shape AnimateOpacity(this Shape shape, double fromValue, double toValue, TimeSpan duration)
+		public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, TimeSpan duration)
 		{
-			shape.BeginAnimation(FrameworkElement.OpacityProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			return shape;
+			element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
+			return element;
 		}
 
-		public static Shape AnimateScale(this Shape shape, double fromValue, double toValue, double durationInSeconds)
+		public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, double durationInSeconds)
 		{
-			return shape.AnimateScale(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
+			return element.AnimateScale(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
 		}
 
-		public static Shape AnimateScale(this Shape shape, double fromValue, double toValue, TimeSpan duration)
+		public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, TimeSpan duration)
 		{
 			var scale = new ScaleTransform(fromValue, fromValue);
-			shape.AddRenderTransform(scale);
+			element.AddRenderTransform(scale);
 			scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
 			scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			return shape;
+			return element;
 		}
 
-		public static Shape SpinRight(this Shape shape, double revolutionsPerSecond)
+		public static UIElement SpinRight(this UIElement element, double revolutionsPerSecond)
 		{
-			return shape.AnimateRotation(0, -360, 1d / revolutionsPerSecond, false);
+			return element.AnimateRotation(0, -360, 1d / revolutionsPerSecond, false);
 		}
 
-		public static Shape SpinLeft(this Shape shape, double revolutionsPerSecond)
+		public static UIElement SpinLeft(this UIElement element, double revolutionsPerSecond)
 		{
-			return shape.AnimateRotation(0, 360, 1d / revolutionsPerSecond, false);
+			return element.AnimateRotation(0, 360, 1d / revolutionsPerSecond, false);
 		}
 
-		public static Shape AnimateRotation(this Shape shape, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false)
+		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false)
 		{
-			return shape.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds));
+			return element.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds));
 		}
 
-		public static Shape AnimateRotation(this Shape shape, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false)
+		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false)
 		{
 			var scale = new RotateTransform(fromAngle);
-			shape.AddRenderTransform(scale);
+			element.AddRenderTransform(scale);
 			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
 			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
-			return shape;
+			return element;
 		}
 
-		public static void AddLayoutTransform(this Shape shape, Transform transform)
+		public static void AddLayoutTransform(this FrameworkElement element, Transform transform)
 		{
-			if (shape.LayoutTransform == null)
+			if (element.LayoutTransform == null)
 			{
-				shape.LayoutTransform = transform;
+				element.LayoutTransform = transform;
 			}
 			else
 			{
-				var group = shape.LayoutTransform as TransformGroup;
+				var group = element.LayoutTransform as TransformGroup;
 				if (group == null)
 				{
 					group = new TransformGroup();
-					group.Children.Add(shape.RenderTransform);
+					group.Children.Add(element.RenderTransform);
 				}
 				group.Children.Add(transform);
-				shape.LayoutTransform = group;
+				element.LayoutTransform = group;
 			}
 		}
 
-		public static void AddRenderTransform(this Shape shape, Transform transform)
+		public static void AddRenderTransform(this UIElement element, Transform transform)
 		{
-			if (shape.RenderTransform == null)
+			if (element.RenderTransform == null)
 			{
-				shape.RenderTransform = transform;
+				element.RenderTransform = transform;
 			}
 			else
 			{
-				var group = shape.RenderTransform as TransformGroup;
+				var group = element.RenderTransform as TransformGroup;
 				if (group == null)
 				{
 					group = new TransformGroup();
-					group.Children.Add(shape.RenderTransform);
+					group.Children.Add(element.RenderTransform);
 				}
 				group.Children.Add(transform);
-				shape.RenderTransform = group;
+				element.RenderTransform = group;
 			}
 		}
 
 
-		public static Shape If(this Shape shape, bool condition, Func<Shape, Shape> func)
+		public static UIElement If(this UIElement element, bool condition, Func<UIElement, UIElement> func)
 		{
 			if (condition)
-				return func.Invoke(shape);
-			return shape;
+				return func.Invoke(element);
+			return element;
 		}
 
-		public static Shape Do(this Shape shape, Action<Shape> func)
+		public static UIElement Do(this UIElement element, Action<UIElement> func)
 		{
-			func.Invoke(shape);
-			return shape;
+			func.Invoke(element);
+			return element;
 		}
 
 
-		public static Shape BindVisibilityTo<T>(this Shape shape, T source, Expression<Func<T,bool>> propertySelector)
+		public static UIElement BindVisibilityTo<T>(this UIElement element, T source, Expression<Func<T,bool>> propertySelector)
 		{
 			var memberExpression = propertySelector.Body as MemberExpression;
 			var propertyName = memberExpression.Member.Name;
-			BindingOperations.SetBinding(shape, FrameworkElement.VisibilityProperty, new Binding(propertyName) { Source = source, Converter = new BooleanToVisibilityConverter() });
-			return shape;
+			BindingOperations.SetBinding(element, UIElement.VisibilityProperty, new Binding(propertyName) { Source = source, Converter = new BooleanToVisibilityConverter() });
+			return element;
 		}
 
 
