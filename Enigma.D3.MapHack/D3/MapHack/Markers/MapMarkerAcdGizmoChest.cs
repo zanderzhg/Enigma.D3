@@ -17,7 +17,7 @@ namespace Enigma.D3.MapHack.Markers
 
         public override object CreateControl()
         {
-            if (Acd.Name.IndexOf("Chest_Rare-", StringComparison.OrdinalIgnoreCase) != -1)
+            if (Acd.Name.IndexOf("_Chest_Rare", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 var grid = new System.Windows.Controls.Grid();
                 grid.Children.Add(ControlHelper.CreateCross(9, Brushes.Orange, 3));
@@ -27,7 +27,7 @@ namespace Enigma.D3.MapHack.Markers
                     .SpinRight(0.5)
                     .AnimateScale(0.5, 2, 0.5);
             }
-            else if (Acd.Name.IndexOf("Chest_StartsClean-", StringComparison.OrdinalIgnoreCase) != -1)
+            else if (Acd.Name.IndexOf("_Chest_StartsClean", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 var grid = new System.Windows.Controls.Grid();
                 grid.Children.Add(ControlHelper.CreateCross(9, Brushes.LightBlue, 3));
@@ -37,7 +37,7 @@ namespace Enigma.D3.MapHack.Markers
                     .SpinRight(0.5)
                     .AnimateScale(0.5, 2, 0.5);
             }
-            else if (Acd.Name.IndexOf("Chest-", StringComparison.OrdinalIgnoreCase) != -1)
+            else if (Acd.Name.IndexOf("_Chest", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 var grid = new System.Windows.Controls.Grid();
                 grid.Children.Add(ControlHelper.CreateCross(9, Brushes.White, 3));
