@@ -150,53 +150,58 @@ namespace Enigma.D3.MapHack
                 var ui = _objectManager.UIManager;
                 var uimap = ui.PtrControlsMap.Dereference();
 
-                _stash = _stash ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage"].Dereference();
-                _stashPage1 = _stashPage1 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashPage2 = _stashPage2 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashTab1 = _stashTab1 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashTab2 = _stashTab2 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashTab3 = _stashTab3 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_3"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashTab4 = _stashTab4 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_4"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _stashTab5 = _stashTab5 ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.stash_dialog_mainPage.tab_5"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
-                _localmap = _localmap ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();
+                _localmap = _localmap ?? uimap["Root.NormalLayer.map_dialog_mainPage.localmap"].Cast<MemoryModel.Controls.MinimapControl>().Dereference();
 
-                _inventory = _inventory ?? ui.PtrControlsMap.Dereference()["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
+                _inventory = _inventory ?? uimap["Root.NormalLayer.inventory_dialog_mainPage"].Dereference();
                 IsInventoryOpen = _inventory?.IsVisible == true;
-                IsStashOpen = _stash?.IsVisible == true;
 
-                if ((IsInventoryOpen || IsStashOpen) && Options.ShowAncientRank)
+                if (Options.ShowAncientRank)
                 {
-                    if (_tooltip2 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_2", out var tooltip2)) _tooltip2 = tooltip2.Dereference();
-                    if (_tooltip1 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_1", out var tooltip1)) _tooltip1 = tooltip1.Dereference();
-                    if (_tooltip0 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_0", out var tooltip0)) _tooltip0 = tooltip0.Dereference();
+                    _stash = _stash ?? uimap["Root.NormalLayer.stash_dialog_mainPage"].Dereference();
+                    _stashPage1 = _stashPage1 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashPage2 = _stashPage2 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashTab1 = _stashTab1 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashTab2 = _stashTab2 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashTab3 = _stashTab3 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_3"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashTab4 = _stashTab4 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_4"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashTab5 = _stashTab5 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_5"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
 
-                    if (IsStashOpen)
+                    IsStashOpen = _stash?.IsVisible == true;
+
+                    if ((IsInventoryOpen || IsStashOpen) && Options.ShowAncientRank)
                     {
-                        SelectedStashPage = _stashPage1.IsSelected ? 1 : 2;
-                        if (_stashTab1.IsVisible && _stashTab1.IsSelected) SelectedStashTab = 1;
-                        else if (_stashTab2.IsVisible && _stashTab2.IsSelected) SelectedStashTab = 2;
-                        else if (_stashTab3.IsVisible && _stashTab3.IsSelected) SelectedStashTab = 3;
-                        else if (_stashTab4.IsVisible && _stashTab4.IsSelected) SelectedStashTab = 4;
-                        else if (_stashTab5.IsVisible && _stashTab5.IsSelected) SelectedStashTab = 5;
+                        if (_tooltip2 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_2", out var tooltip2)) _tooltip2 = tooltip2.Dereference();
+                        if (_tooltip1 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_1", out var tooltip1)) _tooltip1 = tooltip1.Dereference();
+                        if (_tooltip0 == null && uimap.TryGetValue("Root.TopLayer.tooltip_dialog_background.tooltip_0", out var tooltip0)) _tooltip0 = tooltip0.Dereference();
+
+                        if (IsStashOpen)
+                        {
+                            SelectedStashPage = _stashPage1.IsSelected ? 1 : 2;
+                            if (_stashTab1.IsVisible && _stashTab1.IsSelected) SelectedStashTab = 1;
+                            else if (_stashTab2.IsVisible && _stashTab2.IsSelected) SelectedStashTab = 2;
+                            else if (_stashTab3.IsVisible && _stashTab3.IsSelected) SelectedStashTab = 3;
+                            else if (_stashTab4.IsVisible && _stashTab4.IsSelected) SelectedStashTab = 4;
+                            else if (_stashTab5.IsVisible && _stashTab5.IsSelected) SelectedStashTab = 5;
+                        }
+
+                        Execute.OnUIThread(() =>
+                        {
+                            var offset = _inventory.UIRect.Left;
+                            var clip = new GeometryGroup();
+                            if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
+                            if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
+                            if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
+
+                            _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
+
+                            offset = _stash.UIRect.Left;
+                            var clip2 = new GeometryGroup();
+                            if (_tooltip2.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
+                            if (_tooltip1.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
+                            if (_tooltip0.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
+                            _stashControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _stashControl.RenderSize)), clip2, GeometryCombineMode.Exclude, null);
+                        });
                     }
-
-                    Execute.OnUIThread(() =>
-                    {
-                        var offset = _inventory.UIRect.Left;
-                        var clip = new GeometryGroup();
-                        if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
-                        if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
-                        if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
-
-                        _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
-
-                        offset = _stash.UIRect.Left;
-                        var clip2 = new GeometryGroup();
-                        if (_tooltip2.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
-                        if (_tooltip1.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
-                        if (_tooltip0.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
-                        _stashControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _stashControl.RenderSize)), clip2, GeometryCombineMode.Exclude, null);
-                    });
                 }
 
                 foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1))
