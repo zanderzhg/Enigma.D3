@@ -17,10 +17,20 @@ namespace Enigma.D3.MapHack.Markers
 
         public override object CreateControl()
         {
-            if (Acd.Name.Contains("Chest_Rare"))
+            if (Acd.Name.IndexOf("Chest_Rare-", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 var grid = new System.Windows.Controls.Grid();
-                grid.Children.Add(ControlHelper.CreateCross(10, Brushes.Orange, 4).SetOpacity(0.4));
+                grid.Children.Add(ControlHelper.CreateCross(9, Brushes.Orange, 3));
+                grid.Children.Add(ControlHelper.CreateCross(8, Brushes.DarkGreen, 2));
+                return grid
+                    .BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowChests)
+                    .SpinRight(0.5)
+                    .AnimateScale(0.5, 2, 0.5);
+            }
+            else if (Acd.Name.IndexOf("Chest-", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                var grid = new System.Windows.Controls.Grid();
+                grid.Children.Add(ControlHelper.CreateCross(9, Brushes.White, 3));
                 grid.Children.Add(ControlHelper.CreateCross(8, Brushes.DarkGreen, 2));
                 return grid
                     .BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowChests)
