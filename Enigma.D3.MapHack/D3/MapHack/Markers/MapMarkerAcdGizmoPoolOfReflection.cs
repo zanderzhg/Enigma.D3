@@ -33,12 +33,13 @@ namespace Enigma.D3.MapHack.Markers
             text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             text.LayoutTransform = transform;
             text.RenderTransform = new TranslateTransform(-text.DesiredSize.Width / 2, -text.DesiredSize.Height / 2);
+            text.BindVisibilityTo(MapMarkerOptions.Instance, x => x.ShowPoolsOfReflection);
             return text;
         }
-        
+
         public static bool IsInterested(ACD acd)
         {
-            return MapMarkerOptions.Instance.ShowPoolsOfReflection && // TODO: Implement as BindVisibility
+            return Attributes.GizmoCharges.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 0 &&
                 Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
         }
     }
