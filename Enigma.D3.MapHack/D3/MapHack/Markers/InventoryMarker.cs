@@ -82,7 +82,7 @@ namespace Enigma.D3.MapHack.Markers
                 return;
             }
 
-            IsVisibleInInventory = Acd.ItemLocation == ItemLocation.PlayerBackpack;// <= Acd.ItemLocation && Acd.ItemLocation < ItemLocation.Stash;
+            IsVisibleInInventory = ItemLocation.PlayerBackpack <= Acd.ItemLocation && Acd.ItemLocation < ItemLocation.Stash;
             IsVisibleInStash = Acd.ItemLocation == ItemLocation.Stash && GetStashIndex() == Minimap.Instance.SelectedStashIndex;
             
             var isVisible = true;
@@ -90,7 +90,7 @@ namespace Enigma.D3.MapHack.Markers
             {
                 case ItemLocation.PlayerBackpack:
                     X = 46 + Acd.ItemSlotX * 56;
-                    Y = 628 + Acd.ItemSlotY * 56;
+                    Y = 628 + Acd.ItemSlotY * 55.5;
                     break;
 
                 case ItemLocation.Stash:
@@ -98,58 +98,70 @@ namespace Enigma.D3.MapHack.Markers
                     Y = 252 + (Acd.ItemSlotY % 10) * 64;
                     break;
 
-                //case ItemLocation.PlayerHead:
-                //    X = 390;
-                //    Y = 190;
-                //    break;
-                //
-                //case ItemLocation.PlayerTorso:
-                //    X = 390;
-                //    Y = 270;
-                //    break;
-                //
-                //case ItemLocation.PlayerRightHand:
-                //    break;
-                //
-                //case ItemLocation.PlayerLeftHand:
-                //    break;
-                //
-                //case ItemLocation.PlayerHands:
-                //    X = 282;
-                //    Y = 316;
-                //    break;
-                //
-                //case ItemLocation.PlayerWaist:
-                //    X = 390;
-                //    Y = 380;
-                //    break;
-                //
-                //case ItemLocation.PlayerFeet:
-                //    X = 390;
-                //    Y = 512;
-                //    break;
-                //
-                //case ItemLocation.PlayerShoulders:
-                //    break;
-                //
-                //case ItemLocation.PlayerLegs:
-                //    X = 390;
-                //    Y = 420;
-                //    break;
-                //
-                //case ItemLocation.PlayerBracers:
-                //    X = 498;
-                //    Y = 316;
-                //    break;
-                //
-                //case ItemLocation.PlayerLeftFinger:
-                //    break;
-                //
-                //case ItemLocation.PlayerRightFinger:
-                //    break;
-                //
-                //case ItemLocation.PlayerNeck:
-                //    break;
+                case ItemLocation.PlayerHead:
+                    X = 390;
+                    Y = 194;
+                    break;
+                
+                case ItemLocation.PlayerTorso:
+                    X = 390;
+                    Y = 270;
+                    break;
+                
+                case ItemLocation.PlayerRightHand:
+                    X = 500;
+                    Y = 470;
+                    break;
+                
+                case ItemLocation.PlayerLeftHand:
+                    X = 282;
+                    Y = 470;
+                    break;
+                
+                case ItemLocation.PlayerHands:
+                    X = 282;
+                    Y = 316;
+                    break;
+                
+                case ItemLocation.PlayerWaist:
+                    X = 390;
+                    Y = 384;
+                    break;
+                
+                case ItemLocation.PlayerFeet:
+                    X = 390;
+                    Y = 512;
+                    break;
+                
+                case ItemLocation.PlayerShoulders:
+                    X = 308;
+                    Y = 216;
+                    break;
+                
+                case ItemLocation.PlayerLegs:
+                    X = 390;
+                    Y = 420;
+                    break;
+                
+                case ItemLocation.PlayerBracers:
+                    X = 498;
+                    Y = 316;
+                    break;
+                
+                case ItemLocation.PlayerLeftFinger:
+                    X = 283;
+                    Y = 416;
+                    break;
+                
+                case ItemLocation.PlayerRightFinger:
+                    X = 499;
+                    Y = 416;
+                    break;
+                
+                case ItemLocation.PlayerNeck:
+                    X = 469;
+                    Y = 236;
+                    break;
 
                 default:
                     isVisible = false;
