@@ -47,6 +47,7 @@ namespace Enigma.D3.MapHack
         private MemoryModel.Controls.Control _stash;
         private MemoryModel.Controls.RadioButtonControl _stashPage1;
         private MemoryModel.Controls.RadioButtonControl _stashPage2;
+        private MemoryModel.Controls.RadioButtonControl _stashPage3;
         private MemoryModel.Controls.RadioButtonControl _stashTab1;
         private MemoryModel.Controls.RadioButtonControl _stashTab2;
         private MemoryModel.Controls.RadioButtonControl _stashTab3;
@@ -160,6 +161,7 @@ namespace Enigma.D3.MapHack
                     _stash = _stash ?? uimap["Root.NormalLayer.stash_dialog_mainPage"].Dereference();
                     _stashPage1 = _stashPage1 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
                     _stashPage2 = _stashPage2 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
+                    _stashPage3 = _stashPage3 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.stash_pages.page_3"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
                     _stashTab1 = _stashTab1 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_1"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
                     _stashTab2 = _stashTab2 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_2"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
                     _stashTab3 = _stashTab3 ?? uimap["Root.NormalLayer.stash_dialog_mainPage.tab_3"].Cast<MemoryModel.Controls.RadioButtonControl>().Dereference();
@@ -176,7 +178,7 @@ namespace Enigma.D3.MapHack
 
                         if (IsStashOpen)
                         {
-                            SelectedStashPage = _stashPage1.IsSelected ? 1 : 2;
+                            SelectedStashPage = _stashPage1.IsSelected ? 1 : _stashPage2.IsSelected ? 2 : 3;
                             if (_stashTab1.IsVisible && _stashTab1.IsSelected) SelectedStashTab = 1;
                             else if (_stashTab2.IsVisible && _stashTab2.IsSelected) SelectedStashTab = 2;
                             else if (_stashTab3.IsVisible && _stashTab3.IsSelected) SelectedStashTab = 3;
