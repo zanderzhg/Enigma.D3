@@ -148,7 +148,7 @@ namespace Enigma.D3.MapHack
                     });
                 }
 
-                foreach (var item in _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ItemLocation >= ItemLocation.PlayerBackpack && x.ItemLocation <= ItemLocation.PlayerNeck))
+                foreach (var item in _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ItemLocation >= ItemLocation.PlayerBackpack && x.ItemLocation <= ItemLocation.Stash))
                 {
                     if (_minimapItemsDic.ContainsKey(item.Address))
                         continue;
