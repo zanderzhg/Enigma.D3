@@ -18,8 +18,8 @@ namespace Enigma.D3.Enums
 		PlayerShoulders = 8,
 		PlayerLegs = 9,
 		PlayerBracers = 10,
-		PlayerLeftFinger = 11,
-		PlayerRightFinger = 12,
+		PlayerRightFinger = 11,
+		PlayerLeftFinger = 12,
 		PlayerNeck = 13,
 		// Empty
 		Stash = 15,
