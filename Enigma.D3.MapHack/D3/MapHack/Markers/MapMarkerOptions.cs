@@ -21,6 +21,8 @@ namespace Enigma.D3.MapHack.Markers
         private bool _isLoading;
         private bool _showWreckables = false;
         private bool _showChests = true;
+        private bool _showHiddenChests = false;
+        private bool _showLoreChests = false;
         private bool _showMonsters = true;
         private bool _showScenes = true;
         private bool _showSceneEdges = true;
@@ -40,6 +42,10 @@ namespace Enigma.D3.MapHack.Markers
         public bool ShowWreckables { get { return _showWreckables; } set { if (_showWreckables != value) { _showWreckables = value; Refresh(nameof(ShowWreckables)); } } }
         [DataMember]
         public bool ShowChests { get { return _showChests; } set { if (_showChests != value) { _showChests = value; Refresh(nameof(ShowChests)); } } }
+        [DataMember]
+        public bool ShowLoreChests { get { return _showLoreChests; } set { if (_showLoreChests != value) { _showLoreChests = value; Refresh(nameof(ShowLoreChests)); } } }
+        [DataMember]
+        public bool ShowHiddenChests { get { return _showHiddenChests; } set { if (_showHiddenChests != value) { _showHiddenChests = value; Refresh(nameof(ShowHiddenChests)); } } }
         [DataMember]
         public bool ShowMonsters { get { return _showMonsters; } set { if (_showMonsters != value) { _showMonsters = value; Refresh(nameof(ShowMonsters)); } } }
         [DataMember]

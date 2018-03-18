@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Enigma.D3.MapHack.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Enigma.D3.MapHack" Width="300" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/Enigma.D3.MapHack;component/enigma_icon.ico">
+        Title="Enigma.D3.MapHack" Width="300" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/Enigma.D3.MapHack;component/enigma_icon.ico"
+        UseLayoutRounding="True">
     <TabControl>
         <TabItem Header="App">
             <StackPanel Background="WhiteSmoke" Width="300">
@@ -32,7 +33,11 @@
                 <CheckBox Content="Restrict Minimap" ToolTip="Only draw inside the minimap boundaries." IsChecked="{Binding Options.RestrictMinimap}" Margin="10,5" />
                 <Separator />
                 <CheckBox Content="Show Monsters" IsChecked="{Binding Options.ShowMonsters}" Margin="10,5" />
+                <Separator />
                 <CheckBox Content="Show Chests" IsChecked="{Binding Options.ShowChests}" Margin="10,5" />
+                <CheckBox Content="Show Lore Chests" IsChecked="{Binding Options.ShowLoreChests}" Margin="10,5" />
+                <CheckBox Content="Show Hidden Chests (Bodies etc.)" IsChecked="{Binding Options.ShowHiddenChests}" Margin="10,5" />
+                <Separator />
                 <CheckBox Content="Show Wreckables" IsChecked="{Binding Options.ShowWreckables}" Margin="10,5" />
                 <CheckBox Content="Show Rift Souls" IsChecked="{Binding Options.ShowRiftSouls}" Margin="10,5" />
                 <CheckBox Content="Show Portals" IsChecked="{Binding Options.ShowPortals}" Margin="10,5" />

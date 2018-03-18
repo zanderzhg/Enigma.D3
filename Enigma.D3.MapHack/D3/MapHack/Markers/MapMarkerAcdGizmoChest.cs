@@ -50,7 +50,7 @@ namespace Enigma.D3.MapHack.Markers
             return ControlHelper.CreateCross(8, Brushes.DarkGreen, 2)
                 .AnimateScale(0.5, 2, 0.5)
                 .SpinRight(0.5)
-                .BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowChests);
+                .BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowHiddenChests);
         }
 
         public static bool IsInterested(ACD acd)
