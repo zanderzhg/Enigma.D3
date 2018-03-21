@@ -206,27 +206,12 @@ namespace Enigma.D3.MapHack
                     }
                 }
 
-                foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1))
-                {
-                    if (_minimapItemsDic.ContainsKey(item.Address))
-                        continue;
-
-                    if (Attributes.AncientRank.GetValue(AttributeReader.Instance, item.FastAttribGroupID) <= 0)
-                        continue;
-
-                    var itemMarker = new InventoryMarker(item);
-                    var stashMarker = new InventoryMarker(item);
-                    Execute.OnUIThread(() => _inventoryItems.Add(itemMarker));
-                    Execute.OnUIThread(() => _stashItems.Add(stashMarker));
-                    _minimapItemsDic.Add(item.Address, itemMarker);
-                }
-
                 foreach (var acd in _acdsObserver.OldItems)
                 {
                     var marker = default(IMapMarker);
                     if (_minimapItemsDic.TryGetValue(acd.Address, out marker))
                     {
-                        Trace.WriteLine("Removing " + acd.Name);
+                        Trace.WriteLine("Removing " + acd.Name + " " + acd.ID);
                         itemsToRemove.Add(marker);
                         _minimapItemsDic.Remove(acd.Address);
                     }
@@ -236,6 +221,19 @@ namespace Enigma.D3.MapHack
                 {
                     // TODO: Release scenes. They're only stored in container while near them, so can't immediately remove as that would shrink the visible map.
                     //       When player triggers loading screen, Reset() method is typicaly called, so it should not be likely that not removing causes memory leak.
+                }
+                
+                foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Item).Where(x => (int)x.ItemLocation != -1))
+                {
+                    if (_minimapItemsDic.ContainsKey(item.Address))
+                        continue;
+                    
+                    Trace.WriteLine("Adding (item) " + item.Name + " " + item.ID);
+                    var itemMarker = new InventoryMarker(item);
+                    var stashMarker = new InventoryMarker(item);
+                    Execute.OnUIThread(() => _inventoryItems.Add(itemMarker));
+                    Execute.OnUIThread(() => _stashItems.Add(stashMarker));
+                    _minimapItemsDic.Add(item.Address, itemMarker);
                 }
 
                 foreach (var acd in _acdsObserver.NewItems)

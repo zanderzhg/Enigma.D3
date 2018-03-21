@@ -1,6 +1,7 @@
 ﻿using Enigma.D3.AttributeModel;
 using Enigma.D3.Enums;
 using Enigma.D3.MemoryModel.Core;
+using Enigma.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +81,19 @@ namespace Enigma.D3.MapHack.Markers
                 IsVisibleInInventory = false;
                 IsVisibleInStash = false;
                 return;
+            }
+            
+            // If the item was created through cube, the ACD starts of as whatever item was the source.
+            // If there is no ancient rank on a backpack item, try to update it. If value changed, re-create control.
+            if (_rank == 0 && Acd.ItemLocation == ItemLocation.PlayerBackpack)
+            {
+                _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, Acd.FastAttribGroupID);
+                if (_rank == 0)
+                {
+                    IsVisible = IsVisibleInInventory = IsVisibleInStash = false;
+                    return;
+                }
+                else Execute.OnUIThread(() => Control = CreateControl());
             }
 
             IsVisibleInInventory = ItemLocation.PlayerBackpack <= Acd.ItemLocation && Acd.ItemLocation < ItemLocation.Stash;

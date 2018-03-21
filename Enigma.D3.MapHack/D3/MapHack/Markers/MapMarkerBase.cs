@@ -70,6 +70,14 @@ namespace Enigma.D3.MapHack.Markers
 			{
 				return (_control = _control ?? CreateControl());
 			}
+            set
+            {
+                if (_control != value)
+                {
+                    _control = value;
+                    Refresh(nameof(Control));
+                }
+            }
 		}
 
 		public abstract void Update(int worldId, Point3D origo);
