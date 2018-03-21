@@ -42,6 +42,27 @@ namespace Enigma.D3.MemoryModel.Core
         public float Radius
             => Read<float>(SymbolTable.Current.ACD.Radius);
 
+        /// <summary>
+        /// Appears to match hit radius.
+        /// </summary>
+        public float HitRadius
+            => Read<float>(61 * 4);
+
+        /// <summary>
+        /// Appears to match collision radius, as in blocking the player from moving through.
+        /// </summary>
+        public float CollisionRadius
+             => Read<float>(65 * 4);
+
+        public float Scale
+            => Read<float>(57 * 4);
+
+        /// <summary>
+        /// Appears to match height of actors.
+        /// </summary>
+        public float Height
+            => Read<float>(188 * 4);
+
         public int SWorldID
             => Read<int>(SymbolTable.Current.ACD.SWorldID);
 
