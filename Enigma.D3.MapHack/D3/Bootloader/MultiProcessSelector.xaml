@@ -1,0 +1,19 @@
+﻿<Window x:Class="Enigma.D3.Bootloader.MultiProcessSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Enigma.D3.Bootloader"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="20">
+        <TextBlock>Select process (double click)</TextBlock>
+        <ListBox ItemsSource="{Binding Processes}" DisplayMemberPath="Id">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnMouseDoubleClicked" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </StackPanel>
+</Window>

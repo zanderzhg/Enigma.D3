@@ -32,7 +32,7 @@ namespace Enigma.D3.Bootloader
                     return;
                 }
             }
-            
+
             MapMarkerOptions.Instance.Load();
 
             MainWindow = Shell.Instance;
@@ -71,15 +71,41 @@ namespace Enigma.D3.Bootloader
         private MemoryContext CreateMemoryContext()
         {
             var ctx = default(MemoryContext);
-
-            // Wait for process attachment.
-            while ((ctx = MemoryContext.FromProcess()) == null)
+            while (ctx == null)
             {
-                Trace.WriteLine("Could not find any process.");
+                var processes = Process.GetProcessesByName("Diablo III64");
+                if (processes.Any())
+                {
+                    var process = default(Process);
+                    if (processes.Length == 1)
+                    {
+                        ctx = MemoryContext.FromProcess(processes[0]);
+                        break;
+                    }
+                    else
+                    {
+                        Execute.OnUIThread(() =>
+                        {
+                            var selector = new MultiProcessSelector(processes);
+                            selector.Owner = Shell.Instance;
+                            selector.ShowDialog();
+                            process = selector.SelectedProcess;
+                        });
+                    }
+                    if (process != null)
+                    {
+                        ctx = MemoryContext.FromProcess(process);
+                        break;
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine("Could not find any process.");
+                }
                 Thread.Sleep(1000);
             }
             Trace.WriteLine("Found a process.");
-            
+
             while (true)
             {
                 try

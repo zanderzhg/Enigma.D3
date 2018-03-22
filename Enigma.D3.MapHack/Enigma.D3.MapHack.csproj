@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="D3\Bootloader\App.cs" />
+    <Compile Include="D3\Bootloader\MultiProcessSelector.xaml.cs">
+      <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="D3\MapHack\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="D3\Bootloader\MultiProcessSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="D3\MapHack\Stash.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
