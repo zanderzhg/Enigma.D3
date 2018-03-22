@@ -17,7 +17,7 @@ namespace Enigma.D3.MapHack.Markers
 
         public override object CreateControl()
         {
-            var text = new System.Windows.Controls.TextBlock
+            return new System.Windows.Controls.TextBlock
             {
                 Text = "XP",
                 FontSize = 10,
@@ -26,15 +26,9 @@ namespace Enigma.D3.MapHack.Markers
                 Background = Brushes.Black,
                 Padding = new Thickness(2),
                 Opacity = 0.6
-            };
-            var transform = new TransformGroup();
-            transform.Children.Add(new ScaleTransform(1, -1));
-            transform.Children.Add(new RotateTransform(45 + 90));
-            text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            text.LayoutTransform = transform;
-            text.RenderTransform = new TranslateTransform(-text.DesiredSize.Width / 2, -text.DesiredSize.Height / 2);
-            text.BindVisibilityTo(MapMarkerOptions.Instance, x => x.ShowPoolsOfReflection);
-            return text;
+            }
+            .RevertMinimapTransform()
+            .BindVisibilityTo(MapMarkerOptions.Instance, x => x.ShowPoolsOfReflection);
         }
 
         public static bool IsInterested(ACD acd)
