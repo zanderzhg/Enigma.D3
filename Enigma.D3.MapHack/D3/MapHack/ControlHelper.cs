@@ -110,14 +110,20 @@ namespace Enigma.D3.MapHack
         /// <summary>
         /// Reverts the transform applied to all minimap items. Call this to not have the element rotated on minimap.
         /// </summary>
-        public static UIElement RevertMinimapTransform(this FrameworkElement element)
+        public static FrameworkElement RevertMinimapTransform(this FrameworkElement element)
         {
             var transform = new TransformGroup();
             transform.Children.Add(new ScaleTransform(1, -1));
             transform.Children.Add(new RotateTransform(45 + 90));
+            element.AddLayoutTransform(transform);
+            AddCenterTransform(element);
+            return element;
+        }
+
+        public static UIElement AddCenterTransform(this FrameworkElement element)
+        {
             element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            element.LayoutTransform = transform;
-            element.RenderTransform = new TranslateTransform(-element.DesiredSize.Width / 2, -element.DesiredSize.Height / 2);
+            element.AddRenderTransform(new TranslateTransform(-element.DesiredSize.Width / 2, -element.DesiredSize.Height / 2));
             return element;
         }
 

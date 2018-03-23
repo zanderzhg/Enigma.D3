@@ -223,7 +223,7 @@ namespace Enigma.D3.MapHack
                     //       When player triggers loading screen, Reset() method is typicaly called, so it should not be likely that not removing causes memory leak.
                 }
                 
-                foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Item).Where(x => (int)x.ItemLocation != -1))
+                foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Item))
                 {
                     if (_minimapItemsDic.ContainsKey(item.Address))
                         continue;
