@@ -29,7 +29,7 @@ namespace Enigma.D3.MemoryModel.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return Items.ToArray(Count).AsEnumerable().GetEnumerator();
+            return (Items.ToArray(Count) ?? Enumerable.Empty<T>()).AsEnumerable().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

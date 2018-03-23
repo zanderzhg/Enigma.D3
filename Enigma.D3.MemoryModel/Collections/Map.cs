@@ -42,17 +42,21 @@ namespace Enigma.D3.MemoryModel.Collections
 
             var hash = key.GetHashCode();
             var index = hash & Mask;
-            var bucket = Buckets[index].Dereference();
-            var entry = bucket;
-            while (entry != null)
+            try
             {
-                if (entry.Key.Equals(key))
+                var bucket = Buckets[index].Dereference();
+                var entry = bucket;
+                while (entry != null)
                 {
-                    value = entry.Value;
-                    return true;
+                    if (entry.Key.Equals(key))
+                    {
+                        value = entry.Value;
+                        return true;
+                    }
+                    entry = entry.GetNext();
                 }
-                entry = entry.GetNext();
             }
+            catch { }
             value = default(TValue);
             return false;
         }
