@@ -47,8 +47,7 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
                 .FindBlockThatPointsTo(acds_block.Data.ValueAddress, out int acdmgr_acds);
             if (acdmgr_block == null)
                 throw new Exception("040D5BE5-EF81-4253-9FA3-742F1F732C63");
-
-            //var test = mm.LocalHeap.GetBlock(0x000002424cb752e0);
+            
             var pdm_block = mm.LocalHeap.MainBlocks.Where(x => x.IsUsed).OrderByDescending(x => x.Size)
                 .FirstOrDefault(blk => blk.Data.Cast<Allocator<MemoryObject>>().Dereference().GoodFood == 0x600DF00D);
             if (pdm_block == null)
