@@ -31,7 +31,9 @@ namespace Enigma.D3.MapHack
         private readonly InventoryControl _inventoryControl;
         private readonly StashControl _stashControl;
         private readonly ObservableCollection<IMapMarker> _inventoryItems;
+        private readonly Dictionary<int, IMapMarker> _inventoryItemsDic = new Dictionary<int, IMapMarker>();
         private readonly ObservableCollection<IMapMarker> _stashItems;
+        private readonly Dictionary<int, IMapMarker> _stashItemsDic = new Dictionary<int, IMapMarker>();
         private int _previousFrame;
         private readonly HashSet<int> _ignoredSnoIds = new HashSet<int>();
         private ACD _playerAcd;
@@ -211,9 +213,22 @@ namespace Enigma.D3.MapHack
                     var marker = default(IMapMarker);
                     if (_minimapItemsDic.TryGetValue(acd.Address, out marker))
                     {
-                        Trace.WriteLine("Removing " + acd.Name + " " + acd.ID);
+                        Trace.WriteLine("Removing Map Item " + acd.Name + " " + acd.ID);
                         itemsToRemove.Add(marker);
                         _minimapItemsDic.Remove(acd.Address);
+                    }
+                    if (_inventoryItemsDic.TryGetValue(acd.Address, out marker))
+                    {
+                        Trace.WriteLine("Removing Inventory Item " + acd.Name + " " + acd.ID);
+                        itemsToRemove.Add(marker);
+                        _inventoryItemsDic.Remove(acd.Address);
+                    }
+
+                    if (_stashItemsDic.TryGetValue(acd.Address, out marker))
+                    {
+                        Trace.WriteLine("Removing Stash Item " + acd.Name + " " + acd.ID);
+                        itemsToRemove.Add(marker);
+                        _stashItemsDic.Remove(acd.Address);
                     }
                 }
 
@@ -225,15 +240,13 @@ namespace Enigma.D3.MapHack
                 
                 foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Item))
                 {
-                    if (_minimapItemsDic.ContainsKey(item.Address))
-                        continue;
-                    
                     Trace.WriteLine("Adding (item) " + item.Name + " " + item.ID);
                     var itemMarker = new InventoryMarker(item);
                     var stashMarker = new InventoryMarker(item);
                     Execute.OnUIThread(() => _inventoryItems.Add(itemMarker));
                     Execute.OnUIThread(() => _stashItems.Add(stashMarker));
-                    _minimapItemsDic.Add(item.Address, itemMarker);
+                    _inventoryItemsDic.Add(item.Address, itemMarker);
+                    _stashItemsDic.Add(item.Address, itemMarker);
                 }
 
                 foreach (var acd in _acdsObserver.NewItems)
@@ -442,6 +455,8 @@ namespace Enigma.D3.MapHack
         private void Reset()
         {
             _minimapItemsDic.Clear();
+            _inventoryItemsDic.Clear();
+            _stashItemsDic.Clear();
             if (_minimapItems.Count > 0 || _inventoryItems.Count > 0 || _stashItems.Count > 0)
                 Execute.OnUIThread(() =>
                 {
