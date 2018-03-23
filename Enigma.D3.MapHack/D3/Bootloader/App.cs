@@ -79,8 +79,7 @@ namespace Enigma.D3.Bootloader
                     var process = default(Process);
                     if (processes.Length == 1)
                     {
-                        ctx = MemoryContext.FromProcess(processes[0]);
-                        break;
+                        process = processes[0];
                     }
                     else
                     {
@@ -92,6 +91,7 @@ namespace Enigma.D3.Bootloader
                             process = selector.SelectedProcess;
                         });
                     }
+
                     if (process != null)
                     {
                         ctx = MemoryContext.FromProcess(process);
