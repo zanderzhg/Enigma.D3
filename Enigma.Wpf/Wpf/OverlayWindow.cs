@@ -82,20 +82,28 @@ namespace Enigma.Wpf
 
         private void OnRefreshLayout()
         {
-            Int32Rect clientRect = GetClientRect(_parentHandle);
-            if (clientRect.IsEmpty)
+            Int32Rect clientRect;
+            if (Win32.GetForegroundWindow() != _parentHandle)
             {
-                _process.Refresh();
-                try
+                clientRect = default(Int32Rect);
+            }
+            else
+            {
+                clientRect = GetClientRect(_parentHandle);
+                if (clientRect.IsEmpty)
                 {
-                    if (!_process.HasExited && _process.MainWindowHandle != _parentHandle)
+                    _process.Refresh();
+                    try
                     {
-                        SetParentHandle(_process.MainWindowHandle);
+                        if (!_process.HasExited && _process.MainWindowHandle != _parentHandle)
+                        {
+                            SetParentHandle(_process.MainWindowHandle);
+                        }
                     }
-                }
-                catch (InvalidOperationException)
-                {
-                    // There is a chance that _process is disposed but timer triggers late.
+                    catch (InvalidOperationException)
+                    {
+                        // There is a chance that _process is disposed but timer triggers late.
+                    }
                 }
             }
 
@@ -154,6 +162,9 @@ namespace Enigma.Wpf
 
             [DllImport(User32)]
             internal static extern int SetWindowLong(IntPtr windowHandle, int index, int newStyle);
+
+            [DllImport(User32)]
+            public static extern IntPtr GetForegroundWindow();
         }
     }
 }
