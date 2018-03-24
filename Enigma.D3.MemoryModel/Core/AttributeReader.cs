@@ -16,15 +16,18 @@ namespace Enigma.D3.MemoryModel.Core
 
         public bool TryGetAttributeValue(int groupId, AttributeId attribId, int modifier, out AttributeValue value)
         {
-            int key = (modifier << 12) + ((int)attribId & 0xFFF);
-            var group = MemoryContext.Current.DataSegment.ObjectManager.FastAttrib.FastAttribGroups[groupId];
-            if (group != null)
+            if (groupId != -1)
             {
-                value = default(AttributeValue);
-                if (((group.Flags & 4) != 0 && group.PtrMap.Dereference()?.TryGetValue(key, out value) == true) ||
-                    group.Map != null && group.Map.TryGetValue(key, out value))
+                int key = (modifier << 12) + ((int)attribId & 0xFFF);
+                var group = MemoryContext.Current.DataSegment.ObjectManager.FastAttrib.FastAttribGroups[groupId];
+                if (group != null)
                 {
-                    return true;
+                    value = default(AttributeValue);
+                    if (((group.Flags & 4) != 0 && group.PtrMap.Dereference()?.TryGetValue(key, out value) == true) ||
+                        group.Map != null && group.Map.TryGetValue(key, out value))
+                    {
+                        return true;
+                    }
                 }
             }
             value = default(AttributeValue);
@@ -35,13 +38,16 @@ namespace Enigma.D3.MemoryModel.Core
         {
             AttributeValue value;
             var descriptor = MemoryContext.Current.DataSegment.AttributeDescriptors[(int)attributeId];
-            if (!TryGetAttributeValue(groupId, attributeId, modifier, out value))
+            if (groupId == -1 || !TryGetAttributeValue(groupId, attributeId, modifier, out value))
                 value = new AttributeValue { Int32 = descriptor.DefaultValue };
             return descriptor.DataType == typeof(int) ? value.Int32 : value.Single;
         }
 
         public Dictionary<AttributeKey, double> GetAttributes(int groupId)
         {
+            if (groupId == -1)
+                return new Dictionary<AttributeKey, double>();
+
             var group = MemoryContext.Current.DataSegment.ObjectManager.FastAttrib.FastAttribGroups[groupId];
             var values = new Dictionary<AttributeKey, double>();
             var descriptors = MemoryContext.Current.DataSegment.AttributeDescriptors;
