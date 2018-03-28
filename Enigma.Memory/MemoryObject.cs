@@ -104,6 +104,11 @@ namespace Enigma.Memory
             return Address + offset;
         }
 
+        public void SetSnapshot(byte[] buffer)
+        {
+            SetSnapshot(buffer, 0, buffer.Length);
+        }
+
         public void SetSnapshot(byte[] buffer, int offset, int count)
         {
             Snapshot = new MemorySnapshot(Memory, Address - offset, buffer, offset, count);
