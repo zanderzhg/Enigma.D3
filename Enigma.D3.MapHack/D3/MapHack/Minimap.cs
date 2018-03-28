@@ -17,7 +17,6 @@ using Enigma.D3.MemoryModel.Core;
 using Enigma.D3.MemoryModel.Caching;
 using Enigma.D3.MemoryModel.Assets;
 using Enigma.D3.Enums;
-using Enigma.D3.AttributeModel;
 
 namespace Enigma.D3.MapHack
 {
@@ -34,6 +33,7 @@ namespace Enigma.D3.MapHack
         private readonly Dictionary<int, IMapMarker> _inventoryItemsDic = new Dictionary<int, IMapMarker>();
         private readonly ObservableCollection<IMapMarker> _stashItems;
         private readonly Dictionary<int, IMapMarker> _stashItemsDic = new Dictionary<int, IMapMarker>();
+        private readonly Dictionary<Scene, int> _pendingScenes = new Dictionary<Scene, int>();
         private int _previousFrame;
         private readonly HashSet<int> _ignoredSnoIds = new HashSet<int>();
         private ACD _playerAcd;
@@ -135,6 +135,7 @@ namespace Enigma.D3.MapHack
 
                 if (!IsObjectManagerOnNewFrame(ctx))
                     return;
+                var tick = _objectManager.GameTick;
 
                 var itemsToAdd = new List<IMapMarker>();
                 var itemsToRemove = new List<IMapMarker>();
@@ -237,7 +238,7 @@ namespace Enigma.D3.MapHack
                     // TODO: Release scenes. They're only stored in container while near them, so can't immediately remove as that would shrink the visible map.
                     //       When player triggers loading screen, Reset() method is typicaly called, so it should not be likely that not removing causes memory leak.
                 }
-                
+
                 foreach (var item in _acdsObserver.NewItems.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Item))
                 {
                     Trace.WriteLine("Adding (item) " + item.Name + " " + item.ID);
@@ -270,7 +271,7 @@ namespace Enigma.D3.MapHack
                     }
                 }
 
-                foreach (var scene in _scenesCache.NewItems)
+                foreach (var scene in _scenesCache.NewItems.Concat(_pendingScenes.Select(x => x.Key)))
                 {
                     Trace.WriteLine("Adding Scene - sid:" + scene.ID + "   ssid:" + scene.SSceneID + "   sno:" + scene.SceneSNO);
                     if (!_minimapItemsDic.ContainsKey(scene.SSceneID))
@@ -292,11 +293,22 @@ namespace Enigma.D3.MapHack
                             var minimapItem = new MapMarkerScene(scene, snoScene.Value);
                             _minimapItemsDic.Add(scene.SSceneID, minimapItem);
                             itemsToAdd.Add(minimapItem);
+
+                            if (_pendingScenes.Remove(scene))
+                                Trace.WriteLine("Found scene on retry - sid:" + scene.ID + "   ssid:" + scene.SSceneID + "   sno:" + scene.SceneSNO);
                         }
                         else
                         {
-                            // TODO: Scene asset might not be loaded yet. Should add some retry mechanism.
                             Trace.WriteLine("Failed to find Scene Asset - sid:" + scene.ID + "   ssid:" + scene.SSceneID + "   sno:" + scene.SceneSNO);
+                            if (_pendingScenes.TryGetValue(scene, out var detectionTick))
+                            {
+                                if ((tick - detectionTick) / 60d > 5)
+                                {
+                                    Trace.WriteLine("Scene removed from retry - sid:" + scene.ID + "   ssid:" + scene.SSceneID + "   sno:" + scene.SceneSNO);
+                                    _pendingScenes.Remove(scene);
+                                }
+                            }
+                            else _pendingScenes[scene] = tick;
                         }
                     }
                     else
@@ -457,6 +469,7 @@ namespace Enigma.D3.MapHack
             _minimapItemsDic.Clear();
             _inventoryItemsDic.Clear();
             _stashItemsDic.Clear();
+            _pendingScenes.Clear();
             if (_minimapItems.Count > 0 || _inventoryItems.Count > 0 || _stashItems.Count > 0)
                 Execute.OnUIThread(() =>
                 {
