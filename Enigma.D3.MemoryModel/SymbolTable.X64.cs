@@ -71,7 +71,7 @@ namespace Enigma.D3.MemoryModel
             Actor.NameLength = 0x80;
             Actor.SSceneID = 0xE4;
 
-            ACDManager.SizeOf = 0x150;
+            ACDManager.SizeOf = 0x60E0;
             ACDManager.ActorCommonData = 0x0;
 
             ACD.SizeOf = 0x3A0;
@@ -178,7 +178,7 @@ namespace Enigma.D3.MemoryModel
 
             Player.SizeOf = 0xA3C8;
             Player.LocalPlayerIndex = 0x0;
-            Player.FloatingNumbers = 0xA238;
+            Player.FloatingNumbers = 0xA218;
             Player.LatencySamples = 0xA348;
 
             AttributeDescriptor.SizeOf = 0x40;

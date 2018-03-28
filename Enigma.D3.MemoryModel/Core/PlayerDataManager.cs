@@ -10,6 +10,8 @@ namespace Enigma.D3.MemoryModel.Core
 {
     public class PlayerDataManager : MemoryObject, IEnumerable<PlayerData>
     {
+        public static int SizeOf = SymbolTable.Current.PlayerDataManager.SizeOf;
+
         public PlayerData this[int index]
             => new Ptr<PlayerData>(Memory, Address + SymbolTable.Current.PlayerDataManager.Items)[index];
 
