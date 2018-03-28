@@ -30,8 +30,6 @@ namespace Enigma.D3.MapHack.Markers
         {
             _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
             _quality = (ItemQuality)Attributes.ItemQualityLevel.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
-            if (acd.FastAttribGroupID == -1)
-                ;
             var attribs = AttributeReader.Instance.GetAttributes(acd.FastAttribGroupID);
             if (attribs.Any(x => x.Key.Id == AttributeId.SetItemCount && x.Value > 0))
                 _quality = ItemQuality.Set;
