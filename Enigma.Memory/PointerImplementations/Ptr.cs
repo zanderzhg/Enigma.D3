@@ -9,6 +9,8 @@ namespace Enigma.Memory
 {
     public class Ptr
     {
+        public static implicit operator MemoryAddress(Ptr ptr) => ptr.ValueAddress;
+
         public Ptr(IMemory memory, MemoryAddress value)
         {
             Memory = memory;
