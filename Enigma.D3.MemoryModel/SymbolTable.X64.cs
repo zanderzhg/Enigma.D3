@@ -16,7 +16,7 @@ namespace Enigma.D3.MemoryModel
             DataSegment.Address = 0x141AF1000;
             DataSegment.VideoPreferences = 0x141B7E150;
             DataSegment.SoundPreferences = 0x141B7E1F0;
-            DataSegment.HotkeyPreferences = 0x141B7E240;
+            DataSegment.HotkeyPreferences = 0x1EF8730;
             DataSegment.GameplayPreferences = 0x141B7E6C0;
             DataSegment.SocialPreferences = 0x141B7E728;
             DataSegment.ChatPreferences = 0x141B7E758;
@@ -32,7 +32,7 @@ namespace Enigma.D3.MemoryModel
             DataSegment.AttributeDescriptors = 0x00000000021dfd50;
             DataSegment.AttributeDescriptorsCount = 0x000005bb;
             DataSegment.MemoryManager = 0x000000000227aa40;
-            DataSegment.SNOFiles = 0x141DEE150;
+            DataSegment.SNOFiles = 0x2168690;
             DataSegment.SNOGroups = 0x01F82040;
             DataSegment.SNOGroupsByCode = 0x0216BE20;
             DataSegment.ContainerManager = 0x141F05E60;

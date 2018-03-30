@@ -27,7 +27,7 @@ namespace Enigma.D3.MemoryModel.Segments
             => Memory.Reader.Read<SoundPreferences>(SymbolTable.Current.DataSegment.SoundPreferences);
 
         public HotkeyPreferences HotkeyPreferences
-            => Memory.Reader.Read<HotkeyPreferences>(SymbolTable.Current.DataSegment.HotkeyPreferences);
+            => Memory.Reader.Read<HotkeyPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.HotkeyPreferences);
 
         public GameplayPreferences GameplayPreferences
             => Memory.Reader.Read<GameplayPreferences>(SymbolTable.Current.DataSegment.GameplayPreferences);
@@ -66,7 +66,7 @@ namespace Enigma.D3.MemoryModel.Segments
             => Memory.Reader.Read<Ptr<MemoryManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.MemoryManager).Dereference();
 
         public SNOFiles SNOFiles
-            => Memory.Reader.Read<Ptr<SNOFiles>>(SymbolTable.Current.DataSegment.SNOFiles).Dereference();
+            => Memory.Reader.Read<Ptr<SNOFiles>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SNOFiles).Dereference();
 
         public Ptr[] SNOGroupStorage
             => Memory.Reader.Read<Ptr>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SNOGroupsByCode, 70);
