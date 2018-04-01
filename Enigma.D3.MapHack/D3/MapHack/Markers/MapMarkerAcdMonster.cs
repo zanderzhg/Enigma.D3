@@ -18,7 +18,13 @@ namespace Enigma.D3.MapHack.Markers
 			: base(monster, IsInterested)
 		{
 			ZIndex = (int)Acd.MonsterQuality;
-		}
+
+            // Don't show minions on top of rares (swap the z-index).
+            if (Acd.MonsterQuality == MonsterQuality.Minion)
+                ZIndex = (int)MonsterQuality.Rare;
+            if (Acd.MonsterQuality == MonsterQuality.Rare)
+                ZIndex = (int)MonsterQuality.Minion;
+        }
 
 		public override object CreateControl()
 		{
