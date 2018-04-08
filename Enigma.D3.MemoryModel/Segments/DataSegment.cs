@@ -21,43 +21,43 @@ namespace Enigma.D3.MemoryModel.Segments
             => SymbolTable.Current.DataSegment.Address;
 
         public VideoPreferences VideoPreferences
-            => Memory.Reader.Read<VideoPreferences>(SymbolTable.Current.DataSegment.VideoPreferences);
+            => Memory.Reader.Read<VideoPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.VideoPreferences);
 
         public SoundPreferences SoundPreferences
-            => Memory.Reader.Read<SoundPreferences>(SymbolTable.Current.DataSegment.SoundPreferences);
+            => Memory.Reader.Read<SoundPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SoundPreferences);
 
         public HotkeyPreferences HotkeyPreferences
             => Memory.Reader.Read<HotkeyPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.HotkeyPreferences);
 
         public GameplayPreferences GameplayPreferences
-            => Memory.Reader.Read<GameplayPreferences>(SymbolTable.Current.DataSegment.GameplayPreferences);
+            => Memory.Reader.Read<GameplayPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.GameplayPreferences);
 
         public SocialPreferences SocialPreferences
-            => Memory.Reader.Read<SocialPreferences>(SymbolTable.Current.DataSegment.SocialPreferences);
+            => Memory.Reader.Read<SocialPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SocialPreferences);
 
         public ChatPreferences ChatPreferences
-            => Memory.Reader.Read<ChatPreferences>(SymbolTable.Current.DataSegment.ChatPreferences);
+            => Memory.Reader.Read<ChatPreferences>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.ChatPreferences);
 
         public LevelArea LevelArea
-            => Memory.Reader.Read<Ptr<LevelArea>>(SymbolTable.Current.DataSegment.LevelArea).Dereference();
+            => Memory.Reader.Read<Ptr<LevelArea>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.LevelArea).Dereference();
 
         public string LevelAreaName
-            => Memory.Reader.ReadString(SymbolTable.Current.DataSegment.LevelAreaName, SymbolTable.Current.DataSegment.LevelAreaNameLength);
+            => Memory.Reader.ReadString(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.LevelAreaName, SymbolTable.Current.DataSegment.LevelAreaNameLength);
 
         public int MapActID
             => Memory.Reader.Read<int>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.MapActID);
 
         public TrickleManager TrickleManager
-            => Memory.Reader.Read<Ptr<TrickleManager>>(SymbolTable.Current.DataSegment.TrickleManager).Dereference();
+            => Memory.Reader.Read<Ptr<TrickleManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.TrickleManager).Dereference();
 
         public LocalData LocalData
             => Memory.Reader.Read<LocalData>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.LocalData);
 
         public ObjectManager ObjectManager
-            => Memory.Reader.Read<ObjectManager>(SymbolTable.Current.Dynamic.ObjectManager);
+            => Memory.Reader.Read<ObjectManager>(MemoryContext.Current.ImageBase + SymbolTable.Current.Dynamic.ObjectManager);
 
         public int ApplicationLoopCount
-            => Memory.Reader.Read<int>(SymbolTable.Current.DataSegment.ApplicationLoopCount);
+            => Memory.Reader.Read<int>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.ApplicationLoopCount);
 
         public AttributeDescriptor[] AttributeDescriptors
             => Memory.Reader.Read<AttributeDescriptor>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.AttributeDescriptors, SymbolTable.Current.DataSegment.AttributeDescriptorsCount);
