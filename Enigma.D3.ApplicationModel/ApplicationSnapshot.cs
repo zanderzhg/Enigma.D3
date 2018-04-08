@@ -13,7 +13,6 @@ namespace Enigma.D3.ApplicationModel
 {
     public class ApplicationSnapshot
     {
-        private MemoryModel.Core.LocalData _localDataCache;
         private MemoryModel.Core.ObjectManager _objMgrCache;
         private MemoryModel.Core.Player _playerCache;
         private ContainerCache<MemoryModel.Core.ACD> _acdCache;
@@ -150,9 +149,6 @@ namespace Enigma.D3.ApplicationModel
 
         private void RenewCache()
         {
-            _localDataCache = _localDataCache ?? MemoryContext.DataSegment.LocalData;
-            _localDataCache.TakeSnapshot();
-
             var objMgr = MemoryContext.DataSegment.ObjectManager;
             _objMgrCache = _objMgrCache ?? objMgr;
 

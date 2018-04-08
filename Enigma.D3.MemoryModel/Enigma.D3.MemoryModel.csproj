@@ -65,7 +65,6 @@
     <Compile Include="Core\FastAttribGroup.cs" />
     <Compile Include="Core\FloatingNumber.cs" />
     <Compile Include="Core\LevelArea.cs" />
-    <Compile Include="Core\LocalData.cs" />
     <Compile Include="Core\ObjectManager.cs" />
     <Compile Include="Core\Player.cs" />
     <Compile Include="Core\PlayerData.cs" />

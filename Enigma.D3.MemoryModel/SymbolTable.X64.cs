@@ -26,7 +26,6 @@ namespace Enigma.D3.MemoryModel
             //DataSegment.MapActID = 0x020A4C50;
             //DataSegment.ScreenManagerRoot = 0x141D73DF0;
             //DataSegment.TrickleManager = 0x141DC6CC0;
-            //DataSegment.LocalData = 0x01F82138;
             DataSegment.ObjectManager = 0; // Use SymbolPatching library to find this at runtime.
             DataSegment.ApplicationLoopCount = 0x0216C2A4;
             DataSegment.AttributeDescriptors = 0x021DFD50;
@@ -99,21 +98,7 @@ namespace Enigma.D3.MemoryModel
             ACD.ObjectFlags = 0x1D0;
             ACD.Animation = 0x290;
             ACD.CollisionFlags = 0x2DC;
-
-            LocalData.SizeOf = 0x38;
-            LocalData.IsPlayerValid = 0x0;
-            LocalData.IsStartUpGame = 0x4;
-            LocalData.SceneSNO = 0x8;
-            LocalData.WorldSNO = 0xC;
-            LocalData.ActorSNO = 0x10;
-            LocalData.ActID = 0x14;
-            LocalData.WorldSeed = 0x18;
-            LocalData.QuestSNO = 0x1C;
-            LocalData.QuestStepUID = 0x20;
-            LocalData.WorldPos = 0x24;
-            LocalData.PlayerCount = 0x30;
-            LocalData.LocalPlayerCount = 0x34;
-
+            
             FastAttrib.SizeOf = 0xA0;
             FastAttrib.FastAttribGroups = 0x90;
 

@@ -49,10 +49,7 @@ namespace Enigma.D3.MemoryModel.Segments
 
         public TrickleManager TrickleManager
             => Memory.Reader.Read<Ptr<TrickleManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.TrickleManager).Dereference();
-
-        public LocalData LocalData
-            => Memory.Reader.Read<LocalData>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.LocalData);
-
+        
         public ObjectManager ObjectManager
             => Memory.Reader.Read<ObjectManager>(MemoryContext.Current.ImageBase + SymbolTable.Current.Dynamic.ObjectManager);
 

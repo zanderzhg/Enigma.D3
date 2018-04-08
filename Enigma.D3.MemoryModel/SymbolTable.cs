@@ -45,7 +45,6 @@ namespace Enigma.D3.MemoryModel
         public ActorSymbols Actor;
         public ACDManagerSymbols ACDManager;
         public ACDSymbols ACD;
-        public LocalDataSymbols LocalData;
         public FastAttribSymbols FastAttrib;
         public FastAttribGroupSymbols FastAttribGroup;
         public PlayerDataManagerSymbols PlayerDataManager;
@@ -99,7 +98,6 @@ namespace Enigma.D3.MemoryModel
         public ulong MapActID;
         public ulong ScreenManagerRoot;
         public ulong TrickleManager;
-        public ulong LocalData;
         public ulong ObjectManager;
         public ulong ApplicationLoopCount;
         public ulong AttributeDescriptors;
@@ -190,23 +188,6 @@ namespace Enigma.D3.MemoryModel
         public int ObjectFlags;
         public int Animation;
         public int CollisionFlags;
-    }
-
-    public struct LocalDataSymbols
-    {
-        public int SizeOf;
-        public int IsPlayerValid;
-        public int IsStartUpGame;
-        public int SceneSNO;
-        public int WorldSNO;
-        public int ActorSNO;
-        public int ActID;
-        public int WorldSeed;
-        public int QuestSNO;
-        public int QuestStepUID;
-        public int WorldPos;
-        public int PlayerCount;
-        public int LocalPlayerCount;
     }
 
     public struct FastAttribSymbols
