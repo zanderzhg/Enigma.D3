@@ -98,5 +98,14 @@ namespace Enigma.D3.MapHack
         {
             Log.Clear();
         }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            Problem.Visibility = Visibility.Collapsed;
+            ControlHelper.DisableTrollMode = true;
+            Minimap.Instance.ForceReset = true;
+            AppTab.IsSelected = true;
+        }
     }
 }

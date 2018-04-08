@@ -12,100 +12,102 @@ using System.Windows.Shapes;
 
 namespace Enigma.D3.MapHack
 {
-	public static class ControlHelper
-	{
-		public static UIElement SetOpacity(this UIElement element, double opacity)
-		{
-			element.Opacity = opacity;
-			return element;
-		}
+    public static class ControlHelper
+    {
+        public static UIElement SetOpacity(this UIElement element, double opacity)
+        {
+            if ((element as FrameworkElement)?.Name == "__") return element;
+            element.Opacity = opacity;
+            return element;
+        }
 
-		public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, double durationInSeconds)
-		{
-			return element.AnimateOpacity(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
-		}
+        public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, double durationInSeconds)
+        {
+            if ((element as FrameworkElement)?.Name == "__") return element;
+            return element.AnimateOpacity(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
+        }
 
-		public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, TimeSpan duration)
-		{
-			element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			return element;
-		}
+        public static UIElement AnimateOpacity(this UIElement element, double fromValue, double toValue, TimeSpan duration)
+        {
+            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
+            return element;
+        }
 
-		public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, double durationInSeconds)
-		{
-			return element.AnimateScale(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
-		}
+        public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, double durationInSeconds)
+        {
+            return element.AnimateScale(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
+        }
 
-		public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, TimeSpan duration)
-		{
-			var scale = new ScaleTransform(fromValue, fromValue);
-			element.AddRenderTransform(scale);
-			scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			return element;
-		}
+        public static UIElement AnimateScale(this UIElement element, double fromValue, double toValue, TimeSpan duration)
+        {
+            var scale = new ScaleTransform(fromValue, fromValue);
+            element.AddRenderTransform(scale);
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
+            return element;
+        }
 
-		public static UIElement SpinRight(this UIElement element, double revolutionsPerSecond)
-		{
-			return element.AnimateRotation(0, -360, 1d / revolutionsPerSecond, false);
-		}
+        public static UIElement SpinRight(this UIElement element, double revolutionsPerSecond)
+        {
+            return element.AnimateRotation(0, -360, 1d / revolutionsPerSecond, false);
+        }
 
-		public static UIElement SpinLeft(this UIElement element, double revolutionsPerSecond)
-		{
-			return element.AnimateRotation(0, 360, 1d / revolutionsPerSecond, false);
-		}
+        public static UIElement SpinLeft(this UIElement element, double revolutionsPerSecond)
+        {
+            return element.AnimateRotation(0, 360, 1d / revolutionsPerSecond, false);
+        }
 
-		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false)
-		{
-			return element.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds));
-		}
+        public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false)
+        {
+            return element.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds));
+        }
 
-		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false)
-		{
-			var scale = new RotateTransform(fromAngle);
-			element.AddRenderTransform(scale);
-			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
-			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
-			return element;
-		}
+        public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false)
+        {
+            var scale = new RotateTransform(fromAngle);
+            element.AddRenderTransform(scale);
+            scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
+            scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
+            return element;
+        }
 
-		public static void AddLayoutTransform(this FrameworkElement element, Transform transform)
-		{
-			if (element.LayoutTransform == null)
-			{
-				element.LayoutTransform = transform;
-			}
-			else
-			{
-				var group = element.LayoutTransform as TransformGroup;
-				if (group == null)
-				{
-					group = new TransformGroup();
-					group.Children.Add(element.RenderTransform);
-				}
-				group.Children.Add(transform);
-				element.LayoutTransform = group;
-			}
-		}
+        public static void AddLayoutTransform(this FrameworkElement element, Transform transform)
+        {
+            if (element.LayoutTransform == null)
+            {
+                element.LayoutTransform = transform;
+            }
+            else
+            {
+                var group = element.LayoutTransform as TransformGroup;
+                if (group == null)
+                {
+                    group = new TransformGroup();
+                    group.Children.Add(element.RenderTransform);
+                }
+                group.Children.Add(transform);
+                element.LayoutTransform = group;
+            }
+        }
 
-		public static void AddRenderTransform(this UIElement element, Transform transform)
-		{
-			if (element.RenderTransform == null)
-			{
-				element.RenderTransform = transform;
-			}
-			else
-			{
-				var group = element.RenderTransform as TransformGroup;
-				if (group == null)
-				{
-					group = new TransformGroup();
-					group.Children.Add(element.RenderTransform);
-				}
-				group.Children.Add(transform);
-				element.RenderTransform = group;
-			}
-		}
+        public static void AddRenderTransform(this UIElement element, Transform transform)
+        {
+            if (element.RenderTransform == null)
+            {
+                element.RenderTransform = transform;
+            }
+            else
+            {
+                var group = element.RenderTransform as TransformGroup;
+                if (group == null)
+                {
+                    group = new TransformGroup();
+                    group.Children.Add(element.RenderTransform);
+                }
+                group.Children.Add(transform);
+                element.RenderTransform = group;
+            }
+        }
 
         /// <summary>
         /// Reverts the transform applied to all minimap items. Call this to not have the element rotated on minimap.
@@ -128,53 +130,81 @@ namespace Enigma.D3.MapHack
         }
 
 
-		public static UIElement If(this UIElement element, bool condition, Func<UIElement, UIElement> func)
-		{
-			if (condition)
-				return func.Invoke(element);
-			return element;
-		}
+        public static UIElement If(this UIElement element, bool condition, Func<UIElement, UIElement> func)
+        {
+            if (condition)
+                return func.Invoke(element);
+            return element;
+        }
 
-		public static UIElement Do(this UIElement element, Action<UIElement> func)
-		{
-			func.Invoke(element);
-			return element;
-		}
-
-
-		public static UIElement BindVisibilityTo<T>(this UIElement element, T source, Expression<Func<T,bool>> propertySelector)
-		{
-			var memberExpression = propertySelector.Body as MemberExpression;
-			var propertyName = memberExpression.Member.Name;
-			BindingOperations.SetBinding(element, UIElement.VisibilityProperty, new Binding(propertyName) { Source = source, Converter = new BooleanToVisibilityConverter() });
-			return element;
-		}
+        public static UIElement Do(this UIElement element, Action<UIElement> func)
+        {
+            func.Invoke(element);
+            return element;
+        }
 
 
-		public static Ellipse CreateCircle(double diameter, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
-		{
-			diameter -= strokeThickness / 2;
+        public static UIElement BindVisibilityTo<T>(this UIElement element, T source, Expression<Func<T, bool>> propertySelector)
+        {
+            var memberExpression = propertySelector.Body as MemberExpression;
+            var propertyName = memberExpression.Member.Name;
+            BindingOperations.SetBinding(element, UIElement.VisibilityProperty, new Binding(propertyName) { Source = source, Converter = new BooleanToVisibilityConverter() });
+            return element;
+        }
 
-			var control = new Ellipse();
-			control.BeginInit();
 
-			control.Width = diameter;
-			control.Height = diameter;
-			control.Stroke = stroke;
-			control.StrokeThickness = strokeThickness;
-			control.Fill = fill;
+        public static Ellipse CreateCircle(double diameter, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
+        {
+            diameter -= strokeThickness / 2;
 
-			var translateTransform = new TranslateTransform();
-			BindingOperations.SetBinding(translateTransform, TranslateTransform.XProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualWidthProperty), Converter = new HalfConverter() });
-			BindingOperations.SetBinding(translateTransform, TranslateTransform.YProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualHeightProperty), Converter = new HalfConverter() });
-			control.RenderTransform = new TransformGroup
-			{
-				Children = new TransformCollection { translateTransform }
-			};
+            var control = new Ellipse();
+            control.BeginInit();
 
-			control.EndInit();
-			return control;
-		}
+            control.Width = diameter;
+            control.Height = diameter;
+            control.Stroke = stroke;
+            control.StrokeThickness = strokeThickness;
+            control.Fill = fill;
+
+            var translateTransform = new TranslateTransform();
+            BindingOperations.SetBinding(translateTransform, TranslateTransform.XProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualWidthProperty), Converter = new HalfConverter() });
+            BindingOperations.SetBinding(translateTransform, TranslateTransform.YProperty, new Binding() { Source = control, Path = new PropertyPath(Ellipse.ActualHeightProperty), Converter = new HalfConverter() });
+            control.RenderTransform = new TransformGroup
+            {
+                Children = new TransformCollection { translateTransform }
+            };
+
+            control.EndInit();
+            return control;
+        }
+
+        public static bool DisableTrollMode;
+        public static UIElement CreateCircleEx(double diameter, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
+        {
+            if (DateTime.Today.Month == 4 && DateTime.Today.Day == 1 && !DisableTrollMode)
+            {
+                Shell.Instance.Problem.Visibility = Visibility.Visible;
+                var canvas = (Canvas)System.Xaml.XamlServices.Parse(Encoding.UTF8.GetString(Convert.FromBase64String("ICAgIDxDYW52YXMgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd2luZngvMjAwNi94YW1sL3ByZXNlbnRhdGlvbiI+DQoNCiAgICA8UGF0aCBEYXRhPSJGMSBNIDM0NS4yNywyNzAuMTEgQyAzNDMuMTksMjYzLjU0IDM2MS45MywyNjIuOSAzNjQuOTcsMjY3LjIyIDM2Ni41NywyNjkuNDcgMzY5Ljc3LDI2OC4zNCAzNzMuMywyNjguMzQiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjguNjQ3NzgiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLjE2LDAuMzIgLTM3LjMxLDIwLjAxIC01MC4xMiw1MC4yNyAtNjIuNzgsODAuMzcgLTcwLjMsODcuMjYgLTgwLjM5LDkzLjk4DQoJCSAtOTAuNDgsMTAwLjcxIC0xMTEuMywxMTkuMTIgLTExMy4yMiwxMzYuNTcgLTExNS4xNCwxNTQuMTggLTExNS43OCwxNzEuOTYgLTk2LjA5LDE5MS42NSAtOTYuMDksMTkxLjY1IC03MS4yNiwyMTMuOSAtNjEuNSwyMzQuODgNCgkJIC02MS41LDIzNC44OCAtNTQuOTMsMjUyLjk3IC0zNS44NywyNzAuNzQgLTM1Ljg3LDI3MC43NCAtMTYuMTcsMjg5LjY0IDE5LjU0LDMwOS40OSAxOS41NCwzMDkuNDkgMTEwLjE4LDM1Ni4wOCAxMzAuMzYsMzYxLjY5DQoJCSAxMzAuMzYsMzYxLjY5IDE0NC42MSwzNjUuMzcgMTUwLjg2LDM2Ni4xNyAxNzMuNiwzNjkuMjEgMjAyLjQyLDM4NS43IDIyOC4zNywzODYuMDIgMjI4LjM3LDM4Ni4wMiAyODkuMzgsMzg5LjcxIDMxMC41MiwzNzkuNDYNCgkJIDMxMC41MiwzNzkuNDYgMzQ3LjY3LDM1NC4xNiAzNDcuMTksMzMyLjA3IDM0Ny4xOSwzMzIuMDcgMzUwLjA4LDMxMi4zNyAzNDMuMzUsMjg3LjIzIDM0My4zNSwyODcuMjMgMzM4Ljg3LDI2NS43OCAzMzkuNjcsMjM5LjY4DQoJCSAzNDAuNDcsMjE3LjExIDM0Mi44NywxOTIuNzcgMzYxLjI5LDE2Ni4zNSAzNjEuMjksMTY2LjM1IDM4NC4xOSwxMjcuNzYgMzYwLjE2LDEwNi4zMSAzNjAuMTYsMTA2LjMxIDMzMy45LDg4Ljg2IDMzMS41LDc0LjYxDQoJCSAzMzAuMjIsNjQuODQgMzM2Ljk0LDU4LjI4IDMyMy40OSw0NC4wMyAzMjMuNDksNDQuMDMgMjkzLjA2LDEwLjU2IDIzNS44OSw1LjQ0IDE3OC4yNCwwLjMyIDE3My42LC0yLjczIDE0NC43NywtNC4zMw0KCQkgMTE1Ljc4LC01Ljc3IDIzLjcsLTEyLjMzIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMjExLjM5LDk2Ljg3IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSI4LjY0Nzc4IiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgLTE4LjA5LC0yNC4zNCAyLjA4LC01MS4wOCAxNi4wMiwtNjkuMzMgNDMuMjQsLTY1LjAxIDU2LjA1LC01Ni42OA0KCQkgNjkuMTgsLTQ4LjIgODQuMjQsLTQzLjU1IDk4Ljk3LC00My4yMyAxMDcuNDYsLTQzLjA3IDEyMi4xOSwtNDYuNDMgMTM2Ljc3LC02Mi42MSIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDE0Ni42OSwyNzIuMzUiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjguNjQ3NzgiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgMTEuODUsMTAuMDkgMjYuMjYsNC45NiAyNi4yNiw0Ljk2IDIzLjM4LC01LjkyIDQyLjEyLC04LjMzDQoJCSA2Mi43OCwtMTEuMjEgNjMuOSwtNy41MyA2OS44MiwtMi40IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDY1LjIyLDIzMS4zNiIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iOC42NDc3OCIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDAsMCAyMy44NiwtMjkuOTQgNTIuNTIsLTMxLjU1IDc0LjMsLTMyLjgzIDUwLjc2LC0zNi4xOSA4OC40LC0zNC41OQ0KCQkgOTQuNjQsLTM0LjQzIDEwNy42MSwtMzUuMzkgMTE1Ljc4LC0zMS4zOSIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDIyOS45NywxNjguOTIiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAzNjcuNjksNDA5LjQgTCA0NDcuNiw0MDkuNCIgIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgNC45NywwLjE2IDEzLjMsNS4xMiAzNy42NCwxOS44NSA5Ni4yNSw0NS4zMSAxMzIuNiw1MS4yMw0KCQkgMTQxLjQxLDUyLjY3IDE3Mi40OCw1MC4xMSAxODMuMDUsNTMuMzEgMTg2LjA5LDU1LjA3IDIyNy40MSw1NS43MSAyMzcuMzQsNTMuNjMgMjY4LjA5LDQ3LjA3IDI3My42OSwzNy4xNCAyNzkuNzgsMjguNjYiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyMjYuOTIsMzcwLjUiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgNTguNjEsMzYuMDIgMTAwLjQxLDQ2LjkxIDEyNi4zNiw1My42MyAxNTAuNyw1OS41NiAxNjcuNTEsNjEuNjQNCgkJIDE4MS45Myw2My41NiAxODEuOTMsNjUgMTkzLjMsNjUuOTYgMjA3Ljg3LDY3LjI0IDIxMy42Myw2Ni42IDIyMy43Miw2OC4zNiAyMzQuNjEsNzAuMTIgMjkwLjUsNzEuMjQgMjk0LjUxLDY5LjE2DQoJCSAyOTguNTEsNjcuMDggMjk2LjkxLDY2LjYgMzAxLjA3LDY0LjY4IDMwNS4wOCw2Mi43NiAzMDQuNiw2My44OCAzMDYuODQsNjEgMzA4LjEyLDU5LjQgMzExLDU4LjQ0IDMxMy44OCw1Ny4zMQ0KCQkgMzE5LjAxLDU1LjA3IDMxNy40MSw1My43OSAzMjIuMDUsNTEuNTUgMzI3LjAyLDQ5LjE1IDMyOC40Niw1MC40MyAzMjcuODIsMzMuOTQiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyMDEuOTQsMzcwLjUiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAxNzMuOTIsMTg5Ljg5IEMgMTY2LjIzLDE5Mi40NSAxNDYuNTMsMTg3LjQ5IDEzNy43MiwxOTMuMjUgMTM1LjQ4LDE5NC42OSAxMzAuMiwxOTUuNDkgMTI2LjUxLDE5Ny41OCIgIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgLTM0LjkyLC0yLjA4IC0zOC42LDEuNzcgLTQwLjM2LDMuNjkgLTQzLjg4LDIuNDEgLTQ1LjgxLDMuODUNCgkJIC00OS42NSw2LjQxIC00OS44MSw2LjA5IC01MS4wOSw5LjQ1IC01MS43MywxMC43MyAtNTUuNzMsMTIuOTcgLTU2LjM4LDE2LjY2IC01Ny4xOCwyMC44MiAtNjAuMzgsMjAuNjYgLTYxLjgyLDIzLjIyDQoJCSAtNjMuOSwyNi43NCAtNjUuMDIsNjIuMjkgLTYyLjMsNjYuNDUgLTU5LjU4LDcwLjQ1IC02MS4zNCw3NC40NiAtNTkuOSw3Ni4yMiAtNTguMyw3Ny44MiAtNTcuOTgsODEuNSAtNTQuOTMsODQuMjINCgkJIC01My4wMSw4NS45OCAtNTIuMDUsODYuOTQgLTQ5LjQ5LDg3LjU5IC00Ni42MSw4OC4wNyAtNDUuMDEsOTAuMzEgLTQxLjE2LDkxLjQzIC0zNy40OCw5Mi4zOSAtMzUuNzIsOTEuMTEgLTM0LjEyLDk0LjMxIiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMTgzLjUzLDE5NS40OSIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMy4zNjMwMyIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDMzNC4zOCwxMzkuNzggQyAzMzQuMzgsMTM5Ljc4IDM0MC43OSwxNDEuODYgMzQzLjY3LDE0OS44NiAzNDUuNzUsMTU1LjE1IDM0Ny42NywxNTAuOTggMzQ2Ljg3LDE2Ny42NCIgIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSA0MTMuMDEsMTgyLjUzIEMgNDEzLjAxLDE4Mi41MyA0MTEuMjUsMTY2LjAzIDQxNC43NywxNjIuMzUgNDE3LjAyLDE1OS45NSA0MTUuNTcsMTU2LjExIDQyMC4yMiwxNTUuMTUiICBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIzLjM2MzAzIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMjI0LjY4LDE5MC4zNyBDIDIyNC42OCwxOTAuMjEgMjE3Ljk2LDE5MC4zNyAyMTYuNjgsMTkyLjEzIDIxNC45MSwxOTQuNjkgMjEyLjY3LDE5Mi43NyAyMDQuMDIsMTk0LjUzIiAgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMy4zNjMwMyIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDIxOS44OCwxOTcuOSBDIDIxOS44OCwxOTcuOSAyMTcuOTYsMTk3LjkgMjE0LjQzLDE5OC4yMiAyMTEuNTUsMTk4LjM4IDIwOS40NywxOTguODYgMjA3Ljg3LDE5NC4wNSIgIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAyMTkuNzIsMjA1LjI2IEMgMjIwLjUyLDIwMy4xOCAyMjEuOCwyMDMuODIgMjI0LjA0LDIwMy4zNCIgIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAxNDEuNTcsMjk5LjczIEMgMTM3LjA4LDI5My45NiAxMzUuMTYsMzAwLjIxIDEyMy4zMSwyOTMuMTYiICBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIzLjM2MzAzIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgLTAuMTYsLTMuMiA2LjU2LC0wLjk2IDkuNjEsLTMuNTIgMTQuMjUsLTcuMDQgMjcuNTQsLTMuMzYgMzMuMzEsLTYuNzINCgkJIDM2LjM1LC04LjY0IDQzLjcyLC03Ljg0IDQ4LjA0LC03LjUyIDU4LjI5LC02LjcyIDc0LjYyLDEuMjggODAuMjMsOS43NyA4MS4xOSwxMS4wNSA4MC43MSwxMy4xMyA4MS44MywxNC40MQ0KCQkgODMuNTksMTYuNjUgODMuNzUsMTkuNyA4My40MywyMi41OCIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQwOC4yMSwxNDcuMyIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMy4zNjMwMyIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDE1LjM4LC0xNi45NyAxOS4wNiwtMTkuODUgMzQuMjcsLTI3LjU0IDM4Ljc2LC0yOS42MiA0MC44NCwtMzIuMzQgNDYuMTMsLTMyLjk4DQoJCSA0OS4zMywtMzMuMyA1MC45MywtMzUuNyA1Mi42OSwtMzUuNyA1Ni42OSwtMzUuODYgNTQuOTMsLTM4LjEgNjEuMzQsLTM4LjEgNjMuOSwtMzguMjYgNjUuNjYsLTQwLjM0IDcwLjE1LC00MC42Ng0KCQkgNzUuNDMsLTQxLjE0IDc0LjYzLC00Mi45MSA4NC41NiwtNDMuMzkgOTQuNDksLTQzLjg3IDkzLjIxLC00NS4xNSA5Ny4yMSwtNDUuNjMgMTA3LjE0LC00Ni40MyAxMzIuNiwtNDYuNDMgMTM0LjM2LC00NC4zNQ0KCQkgMTM1Ljk3LC00Mi4yNyAxNDEuODksLTQzLjM5IDE0NC42MSwtNDIuOTEgMTQ3LjM0LC00Mi40MyAxNDYuMjIsLTQwLjY2IDE1MC4zOCwtNDAuMzQgMTU0LjU0LC00MC4xOCAxNTkuNTEsLTQwLjk4IDE2Mi4yMywtMzguNDINCgkJIDE2My42NywtMzcuMTQgMTg2LjA5LC0zNy43OCAxOTMuMTQsLTM3LjYyIDIwNy43MSwtMzcuNDYgMjEzLjMyLC0zNi45OCAyMjEuNDgsLTM3Ljk0IDIyNC42OSwtMzguMjYgMjIyLjEyLC00MC4zNCAyMjguMjEsLTQwLjUNCgkJIDIyOC4yMSwtNDAuNSAyMzYuODYsLTQwLjgyIDI0OC43MSwtNDAuNjYgMjUxLjExLC00MC42NiAyNTAuOTUsLTQyLjkxIDI1My42NywtNDMuMzkgMjU2LjU1LC00My43MSAyNjEuMDQsLTQ0LjAzIDI2My45MiwtNDIuMjcNCgkJIDI2NS44NCwtNDAuOTggMjY1LjA0LC00MC4xOCAyNjYuOCwtMzguNTggMjY3LjEyLC0zOC4yNiAyNjkuMDUsLTM4LjEgMjcwLjAxLC0zNy40NiAyNzAuODEsLTM2Ljk4IDI3MC4xNywtMzYuNSAyNzEuMjksLTM1LjciIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyMTUuMjMsMTY1LjIzIiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIzLjM2MzAzIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgNC42NSwtNy4yMSA5LjYxLC03LjM3IDE1Ljg2LC0xMS41MyAzNS4wNywtMjQuODIgNjYuMywtNDcuNCAxMTAuMDIsLTQ5LjMyDQoJCSAxMTQuODIsLTQ5LjY0IDEyNC43NSwtNTAuNiAxNDUuMDksLTQ5LjY0IDE0OC43OCwtNDkuMzIgMTQ2LjA1LC00Ny40IDE1MC44NiwtNDcuNCAxNTUuMDIsLTQ3LjI0IDE2MC40NywtNDcuMjQgMTY0Ljk1LC00Ny4wOA0KCQkgMTY3Ljk5LC00Ny4wOCAxNjYuMzksLTQ0LjY3IDE2OS41OSwtNDQuODMgMTc2LjQ4LC00NC45OSAxODEuNzcsLTQ0LjgzIDE4OS4xMywtNDQuODMgMTkxLjA1LC00NC44MyAxOTEuMzcsLTQyLjExIDE5My40NiwtNDIuMTENCgkJIDIwNS43OSwtNDEuNzkgMjI2LjEzLC00MS42MyAyNDIuNjIsLTQyLjI3IDI0Ni4zLC00Mi40MyAyNDQuNTQsLTQ1LjMyIDI0Ny4yNiwtNDUuNjQgMjU3LjM1LC00Ni42IDI2NS44NCwtNDUuNDggMjY2LC00NS40OCIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDIwMS42MiwxNTQuMDMiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAzLjA0LC0zLjM2IDcuNjksLTEuNzYgMTEuODUsMC44MSAxMy45MywyLjI1IDEzLjI5LDIuNTcgMTQuNzMsMy4yMQ0KCQkgMTYuMTcsNC4wMSAxNi4xNywxLjEzIDE3LjQ1LDAuNDkgMTkuMzgsLTAuOCAzOC43NSwtMC40OCA0MS4zMiwwLjY1IDQ2LjYsMi44OSA0Ni4yOCwxMC4wOSA1Ni4wNSwxMy4xMw0KCQkgNTguNDUsMTMuOTMgNTYuMzcsMTQuNzMgNjEuNDksMTYuMDIgNjMuMSwxNi41IDY0Ljg2LDIwLjE4IDY1LjE4LDIzLjg2IDY1LjM0LDI1Ljc4IDY3LjEsMjguMzQgNjguODYsMjkuNjMNCgkJIDcwLjYyLDMwLjkxIDcwLjMsNDAuNTEgNjkuNSw0NS4zMiA2OS4xOCw0Ni45MiA2Ny43NCw0Ni40NCA2Ny40Miw0Ny40IDY2LjE0LDUxLjA4IDY4LjIyLDU2LjM2IDY2LjE0LDU4Ljc3DQoJCSA2NC4yMiw2MS4wMSA2NS4xOCw2NC42OSA2My41OCw2NS45NyA2MS44MSw2Ny40MSA2MS4wMSw2OS40OSA1OC45Myw3MC42MSA1NS43Myw3Mi4zNyA1Mi41Myw3Mi41MyA0OS4zMiw3My45OA0KCQkgNDYuMjgsNzUuMSA0My4yNCw3Ny41IDQxLDc4LjMgMzguMTEsNzkuNTggMzcuMzEsNzguOTQgMzYuODMsODAuODYiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0OTguMDUsMTk1LjQ5IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIzLjM2MzAzIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMC4xNiwxLjEyIC0wLjMyLDEuNzcgMC44LDIuMDkgNS42LDMuMDUgNS43NiwxLjI4IDcuODUsNC4xNw0KCQkgOC42NSw1LjQ1IDEwLjA5LDQuNDkgMTEuNTMsNS4yOSAxMy45Myw2Ljg5IDE2LjQ5LDkuNjEgMTcuNDYsMTEuNjkgMTkuMDYsMTUuMDUgMTYuNDksMjIuMSAxNy40NiwyNi40Mg0KCQkgMTguMSwyOC44MiAyMC4wMiwyOC4wMiAyMC4xOCwyOS43OCAyMC41LDM1LjcxIDIwLjY2LDM5LjA3IDE4LjQyLDQwLjgzIDEzLjI5LDQ0LjgzIDEwLjQxLDUxLjA4IDUuNiw1MC40NCIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDUzMi42NCwyMDguNzgiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjMuMzYzMDMiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAtMi40LC0yLjg4IC0zLjg0LC0xLjkyIC02LjA5LC0zLjY4IC03LjY5LC00LjY0IC04LjAxLC01LjkzIC05LjYxLC02Ljg5DQoJCSAtMTEuODUsLTguMTcgLTE1LjM3LC02LjQxIC0xNy43OCwtNy41MyAtMTguOSwtOC4wMSAtMTguNzQsLTkuMTMgLTE5Ljg2LC05Ljc3IC0yMC45OCwtMTAuNTcgLTIyLjI2LC0xMC4wOSAtMjMuNTQsLTEwLjg5DQoJCSAtMjQuOTgsLTExLjY5IC0yNC41LC0xMi4wMSAtMjUuOTQsLTEzLjEzIC0yOC4wMywtMTQuNzMgLTI3LjU1LC0xNC40MSAtMjkuOTUsLTE0LjczIiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDc3LjM5LDI3NC40MyIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMy4zNjMwMyIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDAuMTYsLTMuNjkgMy4zNiwtMy4yMSAxMC40LC0yLjg5IDE1LjA1LC0yLjcyIDI4LjUsLTIuNzIgMzIuNjYsLTIuNTYNCgkJIDM3LjQ3LC0yLjI0IDM0LjExLC00LjQ5IDM3LjMxLC01LjEzIDQyLjExLC02LjA5IDQyLjExLC0xMi42NSAzOC41OSwtMTIuODEiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyNzIuNzMsMjU2LjgyIiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIzLjM2MzAzIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgLTguMTcsLTEuNiAtOC4xNywtOC4xNyAtOC4wMSwtMTIuMTcgLTcuODUsLTE3LjEzIC04LjQ5LC0yMy4wNiAtNC44MSwtMjQuMDINCgkJIC0zLjA1LC0yNC4zNCAtMy4wNSwtMjMuMDYgLTAuNDgsLTI0LjUgMy42OCwtMjguMTggNS45MiwtMjYuMjYgMTUuMDUsLTI2LjU4IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMzMwLjIyLDI3NC41OSIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iOC42NDc3OCIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDQ0NC43MiwyNjYuMjYgQyA0NDQuMjQsMjY0LjAyIDQ0NS4zNiwyNjAuODIgNDQ1LjUyLDI1OS41NCA0NDUuNjgsMjU1LjA2IDQ0MS42OCwyNTQuMSA0MzYuNzEsMjU0LjU4IiAgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iOC42NDc3OCIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDUuNiw2LjU3IDExLjA1LDYuMDkgMTguMjUsMi4yNSAyNS4xNCwtMS4yOCAzMS4zOCwtOC4xNiAzMi42NywtMTQuNTcNCgkJIDMzLjYzLC0yMC4xNyAzOS4yMywtMjMuMjEgMzkuMjMsLTI1LjQ1IDM5LjA3LC0yOS43OCAzNy40NywtMzIuMDIgMzMuOTUsLTM1LjIyIDMwLjc0LC0zNy45NCAyNi45LC0zNi41IDIzLjIyLC0zOS44Ng0KCQkgMTkuODUsLTQyLjkxIDE5LjIxLC00My41NSAxNi4zMywtNDcuODcgMTMuMTMsLTUyLjUxIDE3LjkzLC02NS4zMiAxMy45MywtNzEuMDggOS43NywtNzYuODUgNS42LC03NC42MSAtMC4zMiwtNzkuNDEiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwzOTYuMiwyODEuNzkiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjguNjQ3NzgiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlU3RhcnRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlRW5kTGluZUNhcD0iUm91bmQiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDAgLTIuMDksLTIuMjQgLTUuNzcsLTYuMDkgLTcuMzcsLTcuNjkgLTguNjUsLTEwLjQxIC0xMS4wNSwtMTIuMTcNCgkJIC0xMi41LC0xMy4xMyAtMTQuOSwtMTMuNDUgLTE2LjgyLC0xNC41NyAtMTcuNzgsLTE1LjIxIC0xOS4yMiwtMTcuMTMgLTIxLjk0LC0xOC41OCAtMjQuNjcsLTE5Ljg2IC0yNy4yMywtMjAuMDIgLTI4LjUxLC0yMC41DQoJCSAtMzAuMjcsLTIxLjMgLTMwLjU5LC0yMi45IC0zMi41MSwtMjMuNTQgLTM0Ljc2LC0yNC4xOCAtMzcuMzIsLTI0LjUgLTM5Ljg4LC0yNC45OCAtNDMuNTYsLTI1Ljc4IC00My4wOCwtMjguMTggLTQ3LjczLC0yOC41DQoJCSAtNTQuOTMsLTI4Ljk4IC02OC44NywtMzEuMjIgLTcxLjQzLC0yOC42NiAtNzUuMjcsLTI0Ljk4IC04MS4yLC0yNi45IC04NS41MiwtMjYuMSAtODkuMDQsLTI1LjYyIC04OC44OCwtMjIuOSAtOTEuOTMsLTIyLjkNCgkJIC05NC40OSwtMjIuNzQgLTk1LjYxLC0yMC41IC05Ny41MywtMTkuNTQgLTEwMC4yNSwtMTguMjYgLTEwMi4xOCwtMTkuMzggLTEwNC4yNiwtMTcuNjIgLTExMC42NiwtMTIuNjUgLTExNS4xNSwtMy41MyAtMTE1LjE1LC0zLjUzDQoJCSAtMTEyLjc1LC0zLjUzIC0xMTEuNzksLTEuNiAtMTEwLjUsLTAuNjQgLTEwOC45LDAuNjQgLTEwNy4zLDAuOTYgLTEwNi41LDIuNTYgLTEwMy4xNCwxLjYgLTEwMy4zLC0wLjE2IC05OS4xMywtMS40NA0KCQkgLTk2LjI1LC0yLjQgLTk0LjgxLC0xLjYgLTkxLjYxLC0yLjQgLTgwLjI0LC01LjYxIC01OS40MiwtNi44OSAtNDEuMTYsLTEuNzYgLTM3LjE2LC0wLjY0IC0zNC4yOCwzLjA0IC0zMC4yNyw1LjYNCgkJIC0yNy43MSw3LjIgLTI1LjE1LDcuNTIgLTIyLjEsOC45NiAtMTkuNTQsMTAuMjQgLTE3Ljc4LDEwLjg4IC0xNS4zOCwxMi42NSAtNy4wNSw0LjY0IC03LjUzLDcuNTIgLTQuNjUsNS40NA0KCQkgLTEuMjksMy4wNCAwLDAgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwzNTAuNTYsMTk4Ljg2IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSI4LjY0Nzc4IiBTdHJva2VMaW5lSm9pbj0iUm91bmQiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgMCwwIC0xLjYsMjAuNjYgMjMuNywxOS41NCA0OS4xNywxOC40MSA0NC4zNiwtNS4xMiA0NC4zNiwtNS4xMg0KCQkgMjkuNzksLTUuNzYgMTUuMDYsLTQuNDggMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyNTcuMTksMTc2LjYiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDAsMCAtMS42LDIwLjY2IDIzLjcsMTkuNTQgNDkuMTcsMTguNDEgNDQuMzYsLTUuMTIgNDQuMzYsLTUuMTINCgkJIDI5Ljc5LC01Ljc2IDE1LjA2LC00LjQ4IDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMjU3LjE5LDE3Ni42IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAtNS4xMywtMi44OCAtOS45MywtNy44NCAtMTIuNDksLTguMTYgLTE5LjA2LC04Ljk2IC0yNi40MywtMTAuNzIgLTQwLjY4LC05LjkyDQoJCSAtNDQuMzYsLTkuNzYgLTQ0LjY4LC04Ljk2IC00OC4yMSwtNy42OCAtNTAuMjksLTYuODggLTUzLjk3LC03LjM2IC01NS44OSwtNS45MiAtNTguNzcsLTMuNjggLTY0LjM4LC0zLjIgLTY2LjMsLTAuOTYNCgkJIC03Mi4zOSw2LjI1IC03NC42MywxMC4yNSAtNzguMTUsMTYuMTcgLTcyLjU1LDE3LjEzIC03NC43OSwxNy4yOSAtNjcuOSwxNi42NSAtNjIuNjIsMTYuMTcgLTYzLjksMTMuNjEgLTU1LjU3LDEyLjk3DQoJCSAtNTMuMTcsMTIuNjUgLTUyLjM3LDEwLjI1IC00OC41Myw5LjYxIC00NC4yLDguOTcgLTM1LjIzLDEwLjA5IC0zNC4yNyw4LjE3IC0zMy4zMSw2LjI1IC0xMy42MSw3LjY5IC0xMC4yNSw2LjQxDQoJCSAtMy4wNCwzLjg1IC0yLjg4LDQuMzMgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0ODYuNTIsMTkyLjQ1IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSI4LjY0Nzc4IiBTdHJva2VMaW5lSm9pbj0iUm91bmQiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgLTEzLjkzLDMuMiAtMzAuMjYsOC42NCAtMzcuNDcsMjEuNjEgLTM2LjAzLDI4LjMzIC0yOS4zLDI3LjUzIC0xNi4wMSwyNS4xMw0KCQkgLTIuNTYsMjIuODkgNC40OSwxMC44OCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQ0OC40LDE4MS41NyIgRmlsbD0iI2ZmMDAwMDAwIiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgLTEzLjkzLDMuMiAtMzAuMjYsOC42NCAtMzcuNDcsMjEuNjEgLTM2LjAzLDI4LjMzIC0yOS4zLDI3LjUzIC0xNi4wMSwyNS4xMw0KCQkgLTIuNTYsMjIuODkgNC40OSwxMC44OCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQ0OC40LDE4MS41NyIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMCw3Ljg0IC0xLjc2LDUuOTIgLTIuMjUsOS4xMiAtMi41NywxMS4yIC0yLjg5LDE1LjIxIC0zLjY5LDE2LjY1DQoJCSAtNS40NSwxOS42OSAtOC40OSwxOS4zNyAtMTAuNDEsMjEuMjkgLTEzLjMsMjQuMDEgLTE2LjAyLDIzLjUzIC0xOC40MiwyNi40MSAtMjAuNSwyOC44MiAtMjMuODYsMjguODIgLTI4LjAzLDI3LjciIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwxODUuMTMsMjI3LjUyIiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSI4LjY0Nzc4IiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZVN0YXJ0TGluZUNhcD0iUm91bmQiIFN0cm9rZUVuZExpbmVDYXA9IlJvdW5kIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMTEuNTMsLTEuNiAxODYuNTcsMTA3LjEyIDMxMC41Miw0Ny4wOCAzMTYuMTMsNDQuMzUgMzE1LjAxLDM5LjU1IDMyMC43NywzNi4xOQ0KCQkgMzI1LjI2LDMzLjQ3IDMyOS41OCwxNS4zNyAzMzAuMjIsMy42OSAzMzIuNDYsMTIuNDkgMzMxLjk4LDE2LjgyIDMzMy43NCwyNC45OCAzMzUuNTEsMzIuOTkgMzM4LjIzLDMwLjQzIDMzOS4zNSwzNy43OQ0KCQkgMzQ2Ljg4LDgyLjQ2IDM0MS41OSwxMjkuMjEgMzIwLjYxLDE0MC43NCAyNTYuMjMsMTYxLjQgMTgwLjgxLDE1OC41MSAxMzUuNjUsMTQ2LjgzIDUxLjU3LDEyNC44OSAxNi45OCw1OS41NyAtMy41MiwxNS44Ng0KCQkgLTYuMjQsMTAuMDkgLTIuNzIsNS42MSAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDE4MS43NiwyMzguNCIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iOC42NDc3OCIgU3Ryb2tlTGluZUpvaW49IlJvdW5kIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgLz4NCgk8UGF0aCBEYXRhPSJGMCBNIDAsMCBDIDAuOTYsMCAxMC44OSwwLjggMjcuNTUsOC40OSA0My40LDE1Ljg1IDY3Ljc0LDMxLjA2IDg3LjYsMzEuMjINCgkJIDk5LjEzLDMxLjM4IDEzOC41Myw0OC4wMyAxNDkuNzQsNTAuMTEgMTg2LjU3LDU3LjE2IDMyMS41Nyw2My4yNCAzNDMuNjcsMjUuNDYgMzQ0LjE1LDI5Ljc4IDM0Ni4yMyw1Ny44IDMyOS4yNiw2OS4wMQ0KCQkgMzAyLjUyLDc4LjkzIDI4My42Miw3OS4wOSAyMTkuMjQsNzYuMzcgMTkyLjY2LDc1LjI1IDE2Ni43MSw2OS40OSAxNDAuMjksNTguNzYgMTI2LjUyLDUzLjE2IDEwNi45OCw1MC43NSA5Ni44OSw0NS42Mw0KCQkgNjUuMzQsMjkuNjIgMzkuMjQsMTkuNjkgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwxODAuOTYsMjc1LjU1IiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLjk2LDAgMTAuODksMC44IDI3LjU1LDguNDkgNDMuNCwxNS44NSA2Ny43NCwzMS4wNiA4Ny42LDMxLjIyDQoJCSA5OS4xMywzMS4zOCAxMzguNTMsNDguMDMgMTQ5Ljc0LDUwLjExIDE4Ni41Nyw1Ny4xNiAzMjEuNTcsNjMuMjQgMzQzLjY3LDI1LjQ2IDM0NC4xNSwyOS43OCAzNDYuMjMsNTcuOCAzMjkuMjYsNjkuMDENCgkJIDMwMi41Miw3OC45MyAyODMuNjIsNzkuMDkgMjE5LjI0LDc2LjM3IDE5Mi42Niw3NS4yNSAxNjYuNzEsNjkuNDkgMTQwLjI5LDU4Ljc2IDEyNi41Miw1My4xNiAxMDYuOTgsNTAuNzUgOTYuODksNDUuNjMNCgkJIDY1LjM0LDI5LjYyIDM5LjI0LDE5LjY5IDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMTgwLjk2LDI3NS41NSIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iOC42NDc3OCIgU3Ryb2tlTGluZUpvaW49IlJvdW5kIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgLz4NCgk8UGF0aCBEYXRhPSJGMCBNIDAsMCBDIC0yLjg4LDkuNjEgLTQuOCwyMS42MSAwLDM2LjE4IEwgMjMuMjIsNDMuMjMgQyAxNC40MiwzNC41OCAwLjQ4LDI2LjEgOC4wMSw3LjA0DQoJCUwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwyMzcuMDEsMjU5LjA2IiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAtMi44OCw5LjYxIC00LjgsMjEuNjEgMCwzNi4xOCBMIDIzLjIyLDQzLjIzIEMgMTQuNDIsMzQuNTggMC40OCwyNi4xIDguMDEsNy4wNA0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMjM3LjAxLDI1OS4wNiIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VTdGFydExpbmVDYXA9IlJvdW5kIiBTdHJva2VFbmRMaW5lQ2FwPSJSb3VuZCIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMCBNIDAsMCBDIDYuNCwtMC40OCAxMS41MywtNS4xMyA1LjkyLC0xOC45IDUuMTIsLTIwLjY2IDYuNCwtMjMuMDYgNS43NiwtMjUuMw0KCQlMIDE3LjYxLC0yMC4wMiBDIDE4LjA5LC0xMi44MSAxOS4yMSwtNC4xNyAxNy40NSwwLjE2IDE1Ljg1LDQuNDggMTEuMjEsNC42NCA4Ljk2LDcuODQNCgkJTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDIyNy44OSwzMjcuOTEiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDYuNCwtMC40OCAxMS41MywtNS4xMyA1LjkyLC0xOC45IDUuMTIsLTIwLjY2IDYuNCwtMjMuMDYgNS43NiwtMjUuMw0KCQlMIDE3LjYxLC0yMC4wMiBDIDE4LjA5LC0xMi44MSAxOS4yMSwtNC4xNyAxNy40NSwwLjE2IDE1Ljg1LDQuNDggMTEuMjEsNC42NCA4Ljk2LDcuODQNCgkJTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDIyNy44OSwzMjcuOTEiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjEuMTIxMDEiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMCBNIDAsMCBDIDEuNDQsLTEuNDUgMC44LC0zLjIxIDIuMjQsLTMuMzcgNC42NSwtMy44NSA0LjE2LC0xMC4yNSA0LC0xNS4zNw0KCQkgNCwtMTguNDIgNy4yMSwtMTIuNDkgNy4wNSwtMjQuNSBMIDE2LjgyLC0yMC4zNCBDIDE1LjcsLTE3LjYyIDE2LjUsLTE0LjczIDE1LjcsLTEzLjEzDQoJCSAxNS4zNywtMTIuMTcgMTMuMTMsLTEzLjEzIDEyLjgxLC0xMS41MyAxMi4xNywtNC42NSAxNi4wMiwwLjE2IDguMTcsMi44OCBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMzAxLjA3LDMxMy4zNCIgRmlsbD0iI2ZmMDAwMDAwIiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMS40NCwtMS40NSAwLjgsLTMuMjEgMi4yNCwtMy4zNyA0LjY1LC0zLjg1IDQuMTYsLTEwLjI1IDQsLTE1LjM3DQoJCSA0LC0xOC40MiA3LjIxLC0xMi40OSA3LjA1LC0yNC41IEwgMTYuODIsLTIwLjM0IEMgMTUuNywtMTcuNjIgMTYuNSwtMTQuNzMgMTUuNywtMTMuMTMNCgkJIDE1LjM3LC0xMi4xNyAxMy4xMywtMTMuMTMgMTIuODEsLTExLjUzIDEyLjE3LC00LjY1IDE2LjAyLDAuMTYgOC4xNywyLjg4IEwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSwzMDEuMDcsMzEzLjM0IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjAgTSAwLDAgQyAwLDAgMi4yNCwxLjkyIDIuODgsMy4zNiAzLjUyLDQuOTYgMy4zNiwyMi41OCAzLjA0LDIzLjA2DQoJCUwgMTQuNTcsMjMuODYgQyAxNC41NywyMy44NiAxMy4xMywyNS40NiAxMi44MSwyMS45MyAxMi40OSwxOC40MSAxMi42NSwwLjE2IDEyLjY1LDAuMTYNCgkJTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDM2NS4yOSwzMDQuMDUiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDAsMCAyLjI0LDEuOTIgMi44OCwzLjM2IDMuNTIsNC45NiAzLjM2LDIyLjU4IDMuMDQsMjMuMDYNCgkJTCAxNC41NywyMy44NiBDIDE0LjU3LDIzLjg2IDEzLjEzLDI1LjQ2IDEyLjgxLDIxLjkzIDEyLjQ5LDE4LjQxIDEyLjY1LDAuMTYgMTIuNjUsMC4xNg0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMzY1LjI5LDMwNC4wNSIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgMC45NiwyLjI0IDAuMTYsOC4wMSAyLjI0LDkuMjkgNC42NCwxMC44OSAzLjUyLDE4LjczIDIuNTYsMjEuNjINCgkJTCAxMy4xMywyMS4xNCBDIDEyLjY1LDE2LjY1IDE0LjQxLDUuNzcgMTIuNDksNS42MSAxMC4yNSw1LjI5IDEwLjI1LDMuMzYgMTEuMzcsLTAuMzINCgkJTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQxMC45MywzMDYuOTMiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDAuOTYsMi4yNCAwLjE2LDguMDEgMi4yNCw5LjI5IDQuNjQsMTAuODkgMy41MiwxOC43MyAyLjU2LDIxLjYyDQoJCUwgMTMuMTMsMjEuMTQgQyAxMi42NSwxNi42NSAxNC40MSw1Ljc3IDEyLjQ5LDUuNjEgMTAuMjUsNS4yOSAxMC4yNSwzLjM2IDExLjM3LC0wLjMyDQoJCUwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0MTAuOTMsMzA2LjkzIiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjAgTSAwLDAgQyAtMS4xMiwxMy42MSAwLjY0LDEzLjQ1IDIuODksMTQuNTcgNC4xNywxNS4yMSAzLjM3LDE3Ljc3IDMuNTMsMjAuODENCgkJIDMuNjksMjIuNzMgNS43NywyMC4xNyA1LjI5LDI0LjgxIEwgMTIuNjYsMjMuMzcgQyAxNS44NiwxNi44MSAxNC40MiwxNS4wNSAxMi4zNCwxMy40NQ0KCQkgMTEuNjksMTIuOTcgMTIuMTcsMTEuNTIgMTEuODUsMTAuMjQgMTEuMzcsOC45NiA5LjI5LDkuNDQgOS4yOSw3LjY4IDkuNDUsNC4zMiA5Ljc3LDAuOCA4Ljk3LC0xLjkyDQoJCUwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0NTkuOTMsMjk5Ljg5IiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAtMS4xMiwxMy42MSAwLjY0LDEzLjQ1IDIuODksMTQuNTcgNC4xNywxNS4yMSAzLjM3LDE3Ljc3IDMuNTMsMjAuODENCgkJIDMuNjksMjIuNzMgNS43NywyMC4xNyA1LjI5LDI0LjgxIEwgMTIuNjYsMjMuMzcgQyAxNS44NiwxNi44MSAxNC40MiwxNS4wNSAxMi4zNCwxMy40NQ0KCQkgMTEuNjksMTIuOTcgMTIuMTcsMTEuNTIgMTEuODUsMTAuMjQgMTEuMzcsOC45NiA5LjI5LDkuNDQgOS4yOSw3LjY4IDkuNDUsNC4zMiA5Ljc3LDAuOCA4Ljk3LC0xLjkyDQoJCUwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0NTkuOTMsMjk5Ljg5IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjAgTSAwLDAgQyAwLDIuMDggLTAuNDgsOC4wMSAxLjI4LDcuODUgMy44NCw3LjUzIDQuMTYsMjQuMTggMS40NCwyNC41DQoJCSAtMC4zMiwyNC42NiAwLjQ4LDI4LjgyIDAuMTYsMjkuOTQgTCAxMS4yMSwyNi4yNiBDIDEyLjgxLDIzLjIyIDEzLjkzLDYuNCAxMC44OSwzLjINCgkJIDkuMjksMS42IDEwLjczLC0zLjIgOS45MywtNC45NiBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDg3LjgsMjkwLjEyIiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLDIuMDggLTAuNDgsOC4wMSAxLjI4LDcuODUgMy44NCw3LjUzIDQuMTYsMjQuMTggMS40NCwyNC41DQoJCSAtMC4zMiwyNC42NiAwLjQ4LDI4LjgyIDAuMTYsMjkuOTQgTCAxMS4yMSwyNi4yNiBDIDEyLjgxLDIzLjIyIDEzLjkzLDYuNCAxMC44OSwzLjINCgkJIDkuMjksMS42IDEwLjczLC0zLjIgOS45MywtNC45NiBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDg3LjgsMjkwLjEyIiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjAgTSAwLDAgQyAwLC0xLjEyIDAuNjQsLTMuODQgMC40OCwtNS4yOCAwLjE2LC03LjIgLTEuMTIsLTcuNTIgLTEuMjgsLTguNDgNCgkJIC0xLjkyLC0xMC41NiAtMS4xMiwtMTAuODggLTEuNzYsLTE0LjA5IC0xLjkyLC0xNC44OSAtMy44NCwtMTQuMjUgLTMuNjgsLTE2LjAxIC0zLjUyLC0yMC44MSAtNS40NSwtMjEuMjkgLTUuOTMsLTIzLjIxDQoJCSAtNi41NywtMjcuMzggLTguODEsLTI3LjIxIC05LjkzLC0yOC45OCBMIC0xLjEyLC0zOC40MiBDIC0xLjQ0LC0zMy43OCAtMC42NCwtMzMuMTQgMS43NiwtMzAuNzQNCgkJIDIuODgsLTI5LjYyIDQsLTI1Ljc3IDQuMTYsLTIzLjIxIDQuMTYsLTE3Ljc3IDguNDksLTE2Ljk3IDEwLjczLC0xMi45NyAxMC43MywtNC45NiAzLjIsLTMuNTIgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw1MTAuMzgsMzEwLjI5IiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAwLC0xLjEyIDAuNjQsLTMuODQgMC40OCwtNS4yOCAwLjE2LC03LjIgLTEuMTIsLTcuNTIgLTEuMjgsLTguNDgNCgkJIC0xLjkyLC0xMC41NiAtMS4xMiwtMTAuODggLTEuNzYsLTE0LjA5IC0xLjkyLC0xNC44OSAtMy44NCwtMTQuMjUgLTMuNjgsLTE2LjAxIC0zLjUyLC0yMC44MSAtNS40NSwtMjEuMjkgLTUuOTMsLTIzLjIxDQoJCSAtNi41NywtMjcuMzggLTguODEsLTI3LjIxIC05LjkzLC0yOC45OCBMIC0xLjEyLC0zOC40MiBDIC0xLjQ0LC0zMy43OCAtMC42NCwtMzMuMTQgMS43NiwtMzAuNzQNCgkJIDIuODgsLTI5LjYyIDQsLTI1Ljc3IDQuMTYsLTIzLjIxIDQuMTYsLTE3Ljc3IDguNDksLTE2Ljk3IDEwLjczLC0xMi45NyAxMC43MywtNC45NiAzLjIsLTMuNTIgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw1MTAuMzgsMzEwLjI5IiBTdHJva2U9IiNmZjAwMDAwMCIgU3Ryb2tlVGhpY2tuZXNzPSIxLjEyMTAxIiBTdHJva2VMaW5lSm9pbj0iTWl0ZXIiIFN0cm9rZU1pdGVyTGltaXQ9IjQiIC8+DQoJPFBhdGggRGF0YT0iRjAgTSAwLDAgQyAzLjA0LC04LjMzIDAuNDgsLTE3LjQ2IDEwLjg5LC0yNC45OCAxMS41MywtMjguODIgMTEuODUsLTM0LjQzIDEwLjA5LC00My4zOQ0KCQlMIDE5LjcsLTQwLjUxIEMgMjEuMTQsLTMwLjExIDIwLjE4LC0yMi43NCAxOS4yMiwtMTkuMDYgMTIuODEsLTE0Ljg5IDEzLjQ1LC05LjI5IDEyLjY1LC02LjA5DQoJCSAxMi4wMSwtMy44NSAxMC4wOSwtNC4wMSA5Ljc3LC0xLjQ1IDkuNDUsMS43NiAxMy4xMywzLjY4IDEzLjc3LDQuOTYgTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDI4Ni42NiwzNzEuMTQiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIDMuMDQsLTguMzMgMC40OCwtMTcuNDYgMTAuODksLTI0Ljk4IDExLjUzLC0yOC44MiAxMS44NSwtMzQuNDMgMTAuMDksLTQzLjM5DQoJCUwgMTkuNywtNDAuNTEgQyAyMS4xNCwtMzAuMTEgMjAuMTgsLTIyLjc0IDE5LjIyLC0xOS4wNiAxMi44MSwtMTQuODkgMTMuNDUsLTkuMjkgMTIuNjUsLTYuMDkNCgkJIDEyLjAxLC0zLjg1IDEwLjA5LC00LjAxIDkuNzcsLTEuNDUgOS40NSwxLjc2IDEzLjEzLDMuNjggMTMuNzcsNC45NiBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMjg2LjY2LDM3MS4xNCIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgMC4zMiwxNS4yMSAxLjI4LDIxLjYyIDAsMjcuNyAtMC4zMiwyOS40NiAtMi40LDI5LjE0IC0yLjQsMzEuMDYNCgkJIC0yLjQsMzIuODIgLTAuMzIsMzIuOTggMC40OCwzNC41OCAxLjQ0LDM2LjY3IC0xLjQ0LDM5LjA3IC0zLjg0LDQwLjk5IEwgMTQuNDIsNDIuNzUNCgkJQyAxMy43NywzNC4xIDguMzMsMzkuMDcgNy4zNywzNS4zOCA3LjIxLDM0LjQyIDkuNDUsMzQuMSA5Ljc3LDMyLjAyIDEwLjQxLDI3LjIyIDkuNzcsMTcuNjEgMTAuNDEsMi4wOA0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMzU3LjkyLDM0OC41NiIgRmlsbD0iI2ZmMDAwMDAwIiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMC4zMiwxNS4yMSAxLjI4LDIxLjYyIDAsMjcuNyAtMC4zMiwyOS40NiAtMi40LDI5LjE0IC0yLjQsMzEuMDYNCgkJIC0yLjQsMzIuODIgLTAuMzIsMzIuOTggMC40OCwzNC41OCAxLjQ0LDM2LjY3IC0xLjQ0LDM5LjA3IC0zLjg0LDQwLjk5IEwgMTQuNDIsNDIuNzUNCgkJQyAxMy43NywzNC4xIDguMzMsMzkuMDcgNy4zNywzNS4zOCA3LjIxLDM0LjQyIDkuNDUsMzQuMSA5Ljc3LDMyLjAyIDEwLjQxLDI3LjIyIDkuNzcsMTcuNjEgMTAuNDEsMi4wOA0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsMzU3LjkyLDM0OC41NiIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgMC45NiwzLjY5IDEuNDQsNS45MyAxLjQ0LDguNjUgMS40NCw5LjkzIC0xLjYsOS43NyAtMS4yOCwxMS42OQ0KCQkgLTAuNjQsMTUuMzggLTAuNDgsMjAuMTggLTEuMjgsMjMuMjIgLTEuNiwyNC42NiAtMy4yMSwyNC44MiAtMy42OSwyNS45NCAtNC4zMywyNy4zOCAtMy4yMSwzMC43NSAtMy42OSwzMi4xOQ0KCQkgLTQuMzMsMzQuNDMgLTQuNjUsMzIuOTkgLTYuODksMzUuNTUgTCAxOS43LDM1Ljg3IEMgMjAuOTgsMzMuNDcgMjAuMDIsMzIuNjcgMTYuMzMsMzIuNjcNCgkJIDguNjUsMzIuNTEgMTAuNTcsMzMuMzEgOCwzMy42MyA1LjEyLDMzLjc5IDQuOCwzMS41NSA0LjY0LDMxLjA3IDQuMzIsMjkuOTUgOC4zMiwyOS40NyA4LjMyLDI4LjAyDQoJCSA4LjQ4LDIzLjM4IDguMTYsMTguOSA4LjE2LDE1LjM4IDgsMTMuNjEgMTAuMjUsMTQuNTcgMTAuNDEsMTIuODEgMTAuNTcsMTEuMzcgOS43NywxMC4wOSAxMC4yNSw4LjgxDQoJCSAxMS4zNyw1LjI5IDEyLjgxLDQuODEgMTcuNzcsMS4yOSBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDA4LjA1LDM1NS4yOCIgRmlsbD0iI2ZmMDAwMDAwIiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMC45NiwzLjY5IDEuNDQsNS45MyAxLjQ0LDguNjUgMS40NCw5LjkzIC0xLjYsOS43NyAtMS4yOCwxMS42OQ0KCQkgLTAuNjQsMTUuMzggLTAuNDgsMjAuMTggLTEuMjgsMjMuMjIgLTEuNiwyNC42NiAtMy4yMSwyNC44MiAtMy42OSwyNS45NCAtNC4zMywyNy4zOCAtMy4yMSwzMC43NSAtMy42OSwzMi4xOQ0KCQkgLTQuMzMsMzQuNDMgLTQuNjUsMzIuOTkgLTYuODksMzUuNTUgTCAxOS43LDM1Ljg3IEMgMjAuOTgsMzMuNDcgMjAuMDIsMzIuNjcgMTYuMzMsMzIuNjcNCgkJIDguNjUsMzIuNTEgMTAuNTcsMzMuMzEgOCwzMy42MyA1LjEyLDMzLjc5IDQuOCwzMS41NSA0LjY0LDMxLjA3IDQuMzIsMjkuOTUgOC4zMiwyOS40NyA4LjMyLDI4LjAyDQoJCSA4LjQ4LDIzLjM4IDguMTYsMTguOSA4LjE2LDE1LjM4IDgsMTMuNjEgMTAuMjUsMTQuNTcgMTAuNDEsMTIuODEgMTAuNTcsMTEuMzcgOS43NywxMC4wOSAxMC4yNSw4LjgxDQoJCSAxMS4zNyw1LjI5IDEyLjgxLDQuODEgMTcuNzcsMS4yOSBMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDA4LjA1LDM1NS4yOCIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgMC4zMiwyLjI0IDAuMzIsNS42IC0xLjc2LDUuNzYgLTMuNTIsNS45MiAtMS40NCwxMiAtMy4yLDEyLjY0DQoJCSAtNy4zNiwxMy45MyAtNC44LDE3Ljc3IC02LjQsMTguMjUgLTguNDgsMTguODkgLTYuNTYsMjEuNjEgLTkuMTMsMjMuMzcgLTkuOTMsMjMuODUgLTkuMjksMjYuODkgLTEwLjczLDI3LjU0DQoJCSAtMTQuMjUsMjkuMTQgLTE0LjU3LDI2LjI1IC0xOC41NywzMy4zIEwgOS4yOSwyOC42NiBDIDUuNzcsMjguMzQgMC45NiwyOC45OCAwLjY0LDI2LjQxDQoJCSAxLjEyLDIyLjczIDIuNzMsMjMuNTMgMy41MywyMS42MSA0LjE3LDIwLjAxIDMuNjksMTguMDkgNS4xMywxNy4xMyA2Ljg5LDE2LjE3IDYuMjUsMTIuODEgNi44OSwxMS4wNA0KCQkgNy4yMSw5Ljc2IDguNDksOS43NiA4Ljk3LDguOTYgOS43Nyw3LjUyIDguOTcsMi44OCAxMC4wOSwyLjU2IDEyLjY1LDEuNDQgMTkuNywzLjIgMjAuMTgsLTAuOA0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDQ3Ljc2LDM1Ny4zNyIgRmlsbD0iI2ZmMDAwMDAwIiAvPg0KCTxQYXRoIERhdGE9IkYxIE0gMCwwIEMgMC4zMiwyLjI0IDAuMzIsNS42IC0xLjc2LDUuNzYgLTMuNTIsNS45MiAtMS40NCwxMiAtMy4yLDEyLjY0DQoJCSAtNy4zNiwxMy45MyAtNC44LDE3Ljc3IC02LjQsMTguMjUgLTguNDgsMTguODkgLTYuNTYsMjEuNjEgLTkuMTMsMjMuMzcgLTkuOTMsMjMuODUgLTkuMjksMjYuODkgLTEwLjczLDI3LjU0DQoJCSAtMTQuMjUsMjkuMTQgLTE0LjU3LDI2LjI1IC0xOC41NywzMy4zIEwgOS4yOSwyOC42NiBDIDUuNzcsMjguMzQgMC45NiwyOC45OCAwLjY0LDI2LjQxDQoJCSAxLjEyLDIyLjczIDIuNzMsMjMuNTMgMy41MywyMS42MSA0LjE3LDIwLjAxIDMuNjksMTguMDkgNS4xMywxNy4xMyA2Ljg5LDE2LjE3IDYuMjUsMTIuODEgNi44OSwxMS4wNA0KCQkgNy4yMSw5Ljc2IDguNDksOS43NiA4Ljk3LDguOTYgOS43Nyw3LjUyIDguOTcsMi44OCAxMC4wOSwyLjU2IDEyLjY1LDEuNDQgMTkuNywzLjIgMjAuMTgsLTAuOA0KCQlMIDAsMCB6IiBSZW5kZXJUcmFuc2Zvcm09IjEsMCwwLDEsNDQ3Ljc2LDM1Ny4zNyIgU3Ryb2tlPSIjZmYwMDAwMDAiIFN0cm9rZVRoaWNrbmVzcz0iMS4xMjEwMSIgU3Ryb2tlTGluZUpvaW49Ik1pdGVyIiBTdHJva2VNaXRlckxpbWl0PSI0IiAvPg0KCTxQYXRoIERhdGE9IkYwIE0gMCwwIEMgLTUuOTMsNi4yNSAtNC45NiwxMC43MyAtNi43MywxMy45MyAtOC4wMSwxNi4zNCAtMTAuNDEsMTYuMzQgLTEyLjE3LDIyLjc0DQoJCSAtMTIuMzMsMjMuODYgLTEyLjAxLDI0LjM0IC0xMC4wOSwyNC44MiAtOS43NywyNC44MiAtOS43NywyNS43OCAtOS42MSwyNi43NCAtMTAuMDksMjguNSAtMTYuMDEsMjcuNTQgLTE4LjI2LDI4LjE4DQoJCSAtMjAuNSwyOC44MiAtMjAuMzQsMjkuNjMgLTIxLjYyLDMxLjA3IEwgMTYuNDksMjMuODYgQyA3Ljg1LDIyLjI2IDUuOTMsMjIuNTggNC4xNiwyNC45OA0KCQkgMy41MiwyNS42MiAwLjE2LDI0Ljk4IDAsMjQuNSAtMC40OCwyMi40MiAtMS4xMiwyMC4xOCAxLjEyLDE5LjM4IDIuNCwxOC45IDEuMjgsMTYuMzQgMi40LDE0LjI1DQoJCSAyLjcyLDEzLjYxIDMuNTIsMTMuNjEgNCwxMi45NyA0LjgsMTEuNTMgMy42OCw5Ljc3IDYuNTcsOS4xMyA3Ljg1LDguODEgNi41Nyw1LjkzIDcuMzcsNC44MQ0KCQkgOC42NSwzLjA1IDkuNDUsNS40NSA5LjkzLC0xLjI4IEwgMCwwIHoiIFJlbmRlclRyYW5zZm9ybT0iMSwwLDAsMSw0NzcuNzEsMzU1LjEyIiBGaWxsPSIjZmYwMDAwMDAiIC8+DQoJPFBhdGggRGF0YT0iRjEgTSAwLDAgQyAtNS45Myw2LjI1IC00Ljk2LDEwLjczIC02LjczLDEzLjkzIC04LjAxLDE2LjM0IC0xMC40MSwxNi4zNCAtMTIuMTcsMjIuNzQNCgkJIC0xMi4zMywyMy44NiAtMTIuMDEsMjQuMzQgLTEwLjA5LDI0LjgyIC05Ljc3LDI0LjgyIC05Ljc3LDI1Ljc4IC05LjYxLDI2Ljc0IC0xMC4wOSwyOC41IC0xNi4wMSwyNy41NCAtMTguMjYsMjguMTgNCgkJIC0yMC41LDI4LjgyIC0yMC4zNCwyOS42MyAtMjEuNjIsMzEuMDcgTCAxNi40OSwyMy44NiBDIDcuODUsMjIuMjYgNS45MywyMi41OCA0LjE2LDI0Ljk4DQoJCSAzLjUyLDI1LjYyIDAuMTYsMjQuOTggMCwyNC41IC0wLjQ4LDIyLjQyIC0xLjEyLDIwLjE4IDEuMTIsMTkuMzggMi40LDE4LjkgMS4yOCwxNi4zNCAyLjQsMTQuMjUNCgkJIDIuNzIsMTMuNjEgMy41MiwxMy42MSA0LDEyLjk3IDQuOCwxMS41MyAzLjY4LDkuNzcgNi41Nyw5LjEzIDcuODUsOC44MSA2LjU3LDUuOTMgNy4zNyw0LjgxDQoJCSA4LjY1LDMuMDUgOS40NSw1LjQ1IDkuOTMsLTEuMjggTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQ3Ny43MSwzNTUuMTIiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjEuMTIxMDEiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCgk8UGF0aCBEYXRhPSJGMCBNIDAsMCBDIC0wLjgsNy4yMSAtMy4zNyw1LjkzIC0zLjM3LDguMzMgLTMuMzcsMTAuMDkgLTMuMDUsMTEuODUgLTMuMzcsMTMuMjkNCgkJIC0zLjg1LDE0Ljg5IC02LjU3LDExLjY5IC01LjYxLDE2Ljk3IC0zLjUzLDE5LjU0IC0yLjczLDE5LjIyIC0wLjY0LDIwLjE4IDAuOCwxOC45IDAuOTYsMTcuOTMgMi4wOCwxNy45Mw0KCQkgMi44OCwxNy45MyA0LjY0LDE4LjU3IDQuNDgsMjAuMDIgMy44NCwyMC45OCAxLjkyLDIxLjMgMS43NiwyMS45NCAwLjQ4LDI1LjYyIC0yLjI0LDIzLjM4IC0zLjIxLDI0LjM0DQoJCSAtNC4xNywyNS4zIC0zLjg1LDI2LjQyIC00LjMzLDI4LjE4IDIuMDgsMjYuNDIgOC4xNiwyMy4wNiAxMi4zMywxOC41NyA3LjUyLDE5LjU0IDYuNCwxOS4yMiA1LjI4LDE2LjY1DQoJCSA0LjQ4LDE0Ljg5IDUuMTIsMTEuNjkgNy41Miw5LjkzIDguNDgsOS4xMyA4LDcuNjkgOC40OCw2LjQxIDguOTcsNS40NSA5LjkzLDUuNjEgMTAuNDEsNC42NQ0KCQkgMTAuODksMy4yIDEwLjI1LDEuNiAxMS4zNywwLjk2IDEzLjkzLC0wLjMyIDEzLjEzLC0zLjIgMTMuNDUsLTQgTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQ5Ni45MywzNTEuNDQiIEZpbGw9IiNmZjAwMDAwMCIgLz4NCgk8UGF0aCBEYXRhPSJGMSBNIDAsMCBDIC0wLjgsNy4yMSAtMy4zNyw1LjkzIC0zLjM3LDguMzMgLTMuMzcsMTAuMDkgLTMuMDUsMTEuODUgLTMuMzcsMTMuMjkNCgkJIC0zLjg1LDE0Ljg5IC02LjU3LDExLjY5IC01LjYxLDE2Ljk3IC0zLjUzLDE5LjU0IC0yLjczLDE5LjIyIC0wLjY0LDIwLjE4IDAuOCwxOC45IDAuOTYsMTcuOTMgMi4wOCwxNy45Mw0KCQkgMi44OCwxNy45MyA0LjY0LDE4LjU3IDQuNDgsMjAuMDIgMy44NCwyMC45OCAxLjkyLDIxLjMgMS43NiwyMS45NCAwLjQ4LDI1LjYyIC0yLjI0LDIzLjM4IC0zLjIxLDI0LjM0DQoJCSAtNC4xNywyNS4zIC0zLjg1LDI2LjQyIC00LjMzLDI4LjE4IDIuMDgsMjYuNDIgOC4xNiwyMy4wNiAxMi4zMywxOC41NyA3LjUyLDE5LjU0IDYuNCwxOS4yMiA1LjI4LDE2LjY1DQoJCSA0LjQ4LDE0Ljg5IDUuMTIsMTEuNjkgNy41Miw5LjkzIDguNDgsOS4xMyA4LDcuNjkgOC40OCw2LjQxIDguOTcsNS40NSA5LjkzLDUuNjEgMTAuNDEsNC42NQ0KCQkgMTAuODksMy4yIDEwLjI1LDEuNiAxMS4zNywwLjk2IDEzLjkzLC0wLjMyIDEzLjEzLC0zLjIgMTMuNDUsLTQgTCAwLDAgeiIgUmVuZGVyVHJhbnNmb3JtPSIxLDAsMCwxLDQ5Ni45MywzNTEuNDQiIFN0cm9rZT0iI2ZmMDAwMDAwIiBTdHJva2VUaGlja25lc3M9IjEuMTIxMDEiIFN0cm9rZUxpbmVKb2luPSJNaXRlciIgU3Ryb2tlTWl0ZXJMaW1pdD0iNCIgLz4NCg0KICAgIDwvQ2FudmFzPg==")));
+                canvas.Width = canvas.Height = 640;
+                canvas.Name = "__";
+                var scale = 0.05;
+                if (fill != Brushes.White)
+                {
+                    ((Path)canvas.Children[1]).Stroke = fill ?? stroke;
+                    ((Path)canvas.Children[1]).StrokeThickness = 60;
+                }
+                else
+                {
+                    scale = 0.03;
+                }
+                ((Path)canvas.Children[1]).Fill = Brushes.White;
+                canvas.AddLayoutTransform(new ScaleTransform(scale, scale));
+                canvas.RevertMinimapTransform();
+                canvas.AddRenderTransform(new TranslateTransform(-scale * 320, -scale * 320));
+                return canvas;
+            }
+            return CreateCircle(diameter, fill, stroke, strokeThickness);
+        }
 
         public static Ellipse CreateEllipse(double width, double height, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
         {
@@ -200,25 +230,25 @@ namespace Enigma.D3.MapHack
         }
 
         public static Path CreateCross(double size, Brush stroke, double strokeThickness)
-		{
-			var geometry = new PathGeometry(new[]
-			{ 
-				new PathFigure(new Point(0, size / 2), new[] { new LineSegment(new Point(size, size / 2), true) }, false),
-				new PathFigure(new Point(size / 2, 0), new[] { new LineSegment(new Point(size / 2, size), true) }, false)
-			});
-			return new Path() { Data = geometry, StrokeThickness = strokeThickness, Stroke = stroke, RenderTransform = new TranslateTransform(-size / 2, -size / 2) };
-		}
+        {
+            var geometry = new PathGeometry(new[]
+            {
+                new PathFigure(new Point(0, size / 2), new[] { new LineSegment(new Point(size, size / 2), true) }, false),
+                new PathFigure(new Point(size / 2, 0), new[] { new LineSegment(new Point(size / 2, size), true) }, false)
+            });
+            return new Path() { Data = geometry, StrokeThickness = strokeThickness, Stroke = stroke, RenderTransform = new TranslateTransform(-size / 2, -size / 2) };
+        }
 
-		public static SolidColorBrush CreateAnimatedBrush(Color fromValue, Color toValue, double durationInSeconds)
-		{
-			return CreateAnimatedBrush(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
-		}
+        public static SolidColorBrush CreateAnimatedBrush(Color fromValue, Color toValue, double durationInSeconds)
+        {
+            return CreateAnimatedBrush(fromValue, toValue, TimeSpan.FromSeconds(durationInSeconds));
+        }
 
-		public static SolidColorBrush CreateAnimatedBrush(Color fromValue, Color toValue, TimeSpan duration)
-		{
-			var brush = new SolidColorBrush(Colors.Purple);
-			brush.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
-			return brush;
-		}
-	}
+        public static SolidColorBrush CreateAnimatedBrush(Color fromValue, Color toValue, TimeSpan duration)
+        {
+            var brush = new SolidColorBrush(Colors.Purple);
+            brush.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(fromValue, toValue, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = true });
+            return brush;
+        }
+    }
 }

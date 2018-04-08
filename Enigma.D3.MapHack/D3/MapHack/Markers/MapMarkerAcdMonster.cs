@@ -40,21 +40,21 @@ namespace Enigma.D3.MapHack.Markers
 				case MonsterQuality.Normal:
 					if (IsTreasureGoblin())
 					{
-						return ControlHelper.CreateCircle(15, Brushes.Green, Brushes.White, 3)
+						return ControlHelper.CreateCircleEx(15, Brushes.Green, Brushes.White, 3)
 							.AnimateScale(0.8, 1.2, 0.5)
 							.BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowMonsters);
 					}
 					else
 					{
 						return ControlHelper
-							.CreateCircle(diameter, Brushes.White, Brushes.Black, strokeThickness)
+							.CreateCircleEx(diameter, Brushes.White, Brushes.Black, strokeThickness)
 							.SetOpacity(Math.Max(0.3, 1 - 0.06 * diameter))
 							.BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowMonsters);
 					}
 
 				case MonsterQuality.Champion:
 					return ControlHelper
-						.CreateCircle(diameter, Brushes.Blue, Brushes.SkyBlue, strokeThickness)
+						.CreateCircleEx(diameter, Brushes.Blue, Brushes.SkyBlue, strokeThickness)
 						.SetOpacity(Math.Max(0.4, 1 - 0.06 * diameter))
 						.If(diameter < 15.0d, a => a
 							.AnimateScale(1, 15.0d / diameter, 1.0d / 3.0))
@@ -62,7 +62,7 @@ namespace Enigma.D3.MapHack.Markers
 
 				case MonsterQuality.Minion:
 					return ControlHelper
-						.CreateCircle(diameter, Brushes.Orange, Brushes.Yellow, strokeThickness)
+						.CreateCircleEx(diameter, Brushes.Orange, Brushes.Yellow, strokeThickness)
 						.SetOpacity(0.4)
 						.If(diameter < 15.0d, a => a
 							.AnimateScale(1, 15.0d / diameter, 1.0d / 3.0))
@@ -70,7 +70,7 @@ namespace Enigma.D3.MapHack.Markers
 
 				case MonsterQuality.Rare:
 					return ControlHelper
-						.CreateCircle(diameter, Brushes.Yellow, Brushes.Black, strokeThickness)
+						.CreateCircleEx(diameter, Brushes.Yellow, Brushes.Black, strokeThickness)
 						.AnimateOpacity(0.4, 1, 0.3)
 						.If(diameter < 15.0d, a => a
 							.AnimateScale(1, 15.0d / diameter, 1.0d / 3.0))
@@ -80,7 +80,7 @@ namespace Enigma.D3.MapHack.Markers
 				case MonsterQuality.Boss:
 					var animatedFill = ControlHelper.CreateAnimatedBrush(Colors.Purple, Colors.DarkOrange, 0.5);
 					return ControlHelper
-						.CreateCircle(diameter, animatedFill, Brushes.Pink, strokeThickness)
+						.CreateCircleEx(diameter, animatedFill, Brushes.Pink, strokeThickness)
 						.If(diameter < 15.0d, a => a
 							.AnimateScale(1, 15.0d / diameter, 1.0d / 3.0))
 						.BindVisibilityTo(MapMarkerOptions.Instance, a => a.ShowMonsters);

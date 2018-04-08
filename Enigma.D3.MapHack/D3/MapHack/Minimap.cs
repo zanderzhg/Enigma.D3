@@ -86,6 +86,7 @@ namespace Enigma.D3.MapHack
         public ObservableCollection<IMapMarker> InventoryMarkers => _inventoryItems;
         public ObservableCollection<IMapMarker> StashMarkers => _stashItems;
         public MapMarkerOptions Options { get; } = MapMarkerOptions.Instance;
+        public bool ForceReset { get; set; }
 
         public bool ShowLargeMap
         {
@@ -117,6 +118,12 @@ namespace Enigma.D3.MapHack
         private int _srm;
         public void Update(MemoryContext ctx)
         {
+            if (ForceReset)
+            {
+                ForceReset = false;
+                Reset();
+            }
+
             if (_sse != MapMarkerOptions.Instance.ShowSceneEdges ||
                 _srm != MapMarkerOptions.Instance.SceneRenderMode)
                 Reset();
