@@ -51,7 +51,7 @@ namespace Enigma.D3.MemoryModel.Segments
             => Memory.Reader.Read<Ptr<TrickleManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.TrickleManager).Dereference();
         
         public ObjectManager ObjectManager
-            => Memory.Reader.Read<ObjectManager>(MemoryContext.Current.ImageBase + SymbolTable.Current.Dynamic.ObjectManager);
+            => Memory.Reader.Read<ObjectManager>(SymbolTable.Current.Dynamic.ObjectManager);
 
         public int ApplicationLoopCount
             => Memory.Reader.Read<int>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.ApplicationLoopCount);
