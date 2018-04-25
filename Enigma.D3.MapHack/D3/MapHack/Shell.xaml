@@ -43,6 +43,7 @@
                 <CheckBox Content="Show Portals" IsChecked="{Binding Options.ShowPortals}" Margin="10,5" />
                 <CheckBox Content="Show Death's Breath" IsChecked="{Binding Options.ShowDeathBreaths}" Margin="10,5" />
                 <CheckBox Content="Show Shrines/Pylons" IsChecked="{Binding Options.ShowShrines}" Margin="10,5" />
+                <CheckBox Content="Show Pylon Spawn Points" IsChecked="{Binding Options.ShowPylonSpawnPoints}" Margin="10,5" />
                 <CheckBox Content="Show Pools of Reflection" IsChecked="{Binding Options.ShowPoolsOfReflection}" Margin="10,5" />
                 <Separator />
                 <CheckBox Content="Show Scenes" IsChecked="{Binding Options.ShowScenes}" Margin="10,5" />

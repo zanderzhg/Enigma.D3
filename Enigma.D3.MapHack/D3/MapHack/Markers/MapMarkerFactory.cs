@@ -110,7 +110,7 @@ namespace Enigma.D3.MapHack.Markers
                 case ActorType.ClientEffect:
                     break;
                 case ActorType.ServerProp:
-                    break;
+                    return new MapMarkerAcdServerProp(acd);
                 case ActorType.Environment:
                     break;
                 case ActorType.Critter:

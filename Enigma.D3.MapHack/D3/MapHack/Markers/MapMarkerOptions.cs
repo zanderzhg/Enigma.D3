@@ -30,6 +30,7 @@ namespace Enigma.D3.MapHack.Markers
         private int _sceneRenderMode = 0;
         private bool _restrictMinimap = true;
         private bool _showShrines = true;
+        private bool _showPylonSpawnPoints = true;
         private bool _showPortals = true;
         private bool _showDeathBreaths = true;
         private bool _showPoolsOfReflection = true;
@@ -61,6 +62,8 @@ namespace Enigma.D3.MapHack.Markers
         public bool RestrictMinimap { get { return _restrictMinimap; } set { if (_restrictMinimap != value) { _restrictMinimap = value; Refresh(nameof(RestrictMinimap)); } } }
         [DataMember]
         public bool ShowShrines { get { return _showShrines; } set { if (_showShrines != value) { _showShrines = value; Refresh(nameof(ShowShrines)); } } }
+        [DataMember]
+        public bool ShowPylonSpawnPoints { get { return _showPylonSpawnPoints; } set { if (_showPylonSpawnPoints != value) { _showPylonSpawnPoints = value; Refresh(nameof(ShowPylonSpawnPoints)); } } }
         [DataMember]
         public bool ShowPortals { get { return _showPortals; } set { if (_showPortals != value) { _showPortals = value; Refresh(nameof(ShowPortals)); } } }
         [DataMember]
