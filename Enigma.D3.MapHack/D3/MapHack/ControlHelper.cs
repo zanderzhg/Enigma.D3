@@ -55,21 +55,21 @@ namespace Enigma.D3.MapHack
 			return element.AnimateRotation(0, 360, 1d / revolutionsPerSecond, false);
 		}
 
-		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false)
+		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, double durationInSeconds, bool autoReverse = false, double centerX = 0, double centerY = 0)
 		{
-			return element.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds));
+			return element.AnimateRotation(fromAngle, toAngle, TimeSpan.FromSeconds(durationInSeconds), autoReverse, centerX, centerY);
 		}
 
-		public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false)
-		{
-			var scale = new RotateTransform(fromAngle);
-			element.AddRenderTransform(scale);
-			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
-			scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
-			return element;
-		}
-
-		public static void AddLayoutTransform(this FrameworkElement element, Transform transform)
+        public static UIElement AnimateRotation(this UIElement element, double fromAngle, double toAngle, TimeSpan duration, bool autoReverse = false, double centerX = 0, double centerY = 0)
+        {
+            var scale = new RotateTransform(fromAngle, centerX, centerY);
+            element.AddRenderTransform(scale);
+            scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
+            scale.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(fromAngle, toAngle, new Duration(duration)) { RepeatBehavior = RepeatBehavior.Forever, AutoReverse = autoReverse });
+            return element;
+        }
+        
+        public static FrameworkElement AddLayoutTransform(this FrameworkElement element, Transform transform)
 		{
 			if (element.LayoutTransform == null)
 			{
@@ -81,14 +81,15 @@ namespace Enigma.D3.MapHack
 				if (group == null)
 				{
 					group = new TransformGroup();
-					group.Children.Add(element.RenderTransform);
+					group.Children.Add(element.LayoutTransform);
 				}
 				group.Children.Add(transform);
 				element.LayoutTransform = group;
 			}
+            return element;
 		}
 
-		public static void AddRenderTransform(this UIElement element, Transform transform)
+		public static UIElement AddRenderTransform(this UIElement element, Transform transform)
 		{
 			if (element.RenderTransform == null)
 			{
@@ -105,6 +106,7 @@ namespace Enigma.D3.MapHack
 				group.Children.Add(transform);
 				element.RenderTransform = group;
 			}
+            return element;
 		}
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace Enigma.D3.MapHack
 			return element;
 		}
 
-		public static UIElement Do(this UIElement element, Action<UIElement> func)
+		public static T Do<T>(this T element, Action<T> func) where T : UIElement
 		{
 			func.Invoke(element);
 			return element;
@@ -153,7 +155,8 @@ namespace Enigma.D3.MapHack
 
 		public static Ellipse CreateCircle(double diameter, Brush fill, Brush stroke = null, double strokeThickness = double.NaN)
 		{
-			diameter -= strokeThickness / 2;
+            if (!double.IsNaN(strokeThickness))
+			    diameter -= strokeThickness / 2;
 
 			var control = new Ellipse();
 			control.BeginInit();
