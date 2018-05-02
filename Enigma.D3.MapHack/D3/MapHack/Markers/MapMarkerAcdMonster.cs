@@ -32,7 +32,7 @@ namespace Enigma.D3.MapHack.Markers
 				return null;
 
 			var strokeThickness = 1;
-            var diameter = Math.Max(2, Acd.CollisionRadius * 2);
+            var diameter = Math.Min(20, Math.Max(2, Acd.CollisionRadius * 2));
 
 			switch (Acd.MonsterQuality)
 			{
