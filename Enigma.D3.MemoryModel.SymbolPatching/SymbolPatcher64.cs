@@ -12,7 +12,7 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 {
     public static class SymbolPatcher64
     {
-        public static int VerifiedBuild = 49508;
+        public static int VerifiedBuild = 50325;
 
         public static void UpdateSymbolTable(MemoryContext ctx, SymbolTable symbols = null)
         {

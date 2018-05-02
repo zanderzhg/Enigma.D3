@@ -14,12 +14,12 @@ namespace Enigma.D3.MemoryModel
             Platform = Platform.X64;
 
             DataSegment.Address = 0x141AF1000;
-            DataSegment.VideoPreferences = 0x01EF8640;
-            DataSegment.SoundPreferences = 0x01EF86E0;
-            DataSegment.HotkeyPreferences = 0x01EF8730;
-            DataSegment.GameplayPreferences = 0x01EF8BB0;
-            DataSegment.SocialPreferences = 0x01EF8C18;
-            DataSegment.ChatPreferences = 0x01EF8C48;
+            DataSegment.VideoPreferences = 0x01F08640;
+            DataSegment.SoundPreferences = 0x01F086E0;
+            DataSegment.HotkeyPreferences = 0x01F08730;
+            DataSegment.GameplayPreferences = 0x01F08BB0;
+            DataSegment.SocialPreferences = 0x01F08C18;
+            DataSegment.ChatPreferences = 0x01F08C48;
             //DataSegment.LevelArea = 0x141D738B8;
             //DataSegment.LevelAreaName = 0x141D738C0;
             //DataSegment.LevelAreaNameLength = 0x80;
@@ -27,14 +27,14 @@ namespace Enigma.D3.MemoryModel
             //DataSegment.ScreenManagerRoot = 0x141D73DF0;
             //DataSegment.TrickleManager = 0x141DC6CC0;
             DataSegment.ObjectManager = 0; // Use SymbolPatching library to find this at runtime.
-            DataSegment.ApplicationLoopCount = 0x0216C2A4;
-            DataSegment.AttributeDescriptors = 0x021DFD50;
+            DataSegment.ApplicationLoopCount = 0x0217C280;
+            DataSegment.AttributeDescriptors = 0x021EFD30;
             DataSegment.AttributeDescriptorsCount = 0x000005BB;
-            DataSegment.MemoryManager = 0x0227AA40;
+            DataSegment.MemoryManager = 0x0228AA20;
             DataSegment.SNOFiles = 0x02168690;
-            //DataSegment.SNOGroups = 0x01F82040;
-            DataSegment.SNOGroupsByCode = 0x0216BE20;
-            DataSegment.ContainerManager = 0x0227E370;
+            //DataSegment.SNOGroups = 0x0217C030;
+            DataSegment.SNOGroupsByCode = 0x0217BE00;
+            DataSegment.ContainerManager = 0x0228E350;
             //DataSegment.MessageDescriptor = 0x141369B58;
 
             ObjectManager.SizeOf = 0xBC0 - 0x30;
