@@ -146,6 +146,7 @@ namespace Enigma.D3.MapHack.Markers
         public override void Update(int worldId, Point3D origo)
         {
             IsVisible = worldId == _scene.SWorldID && MapMarkerOptions.Instance.ShowScenes;
+            IsVisible = true; // Haxx.. worldId is encrypted so it will not match SWorldID. This may cause scenes from other worlds to overlap.
             if (IsVisible)
             {
                 X = _scene.MeshMin.X - origo.X;

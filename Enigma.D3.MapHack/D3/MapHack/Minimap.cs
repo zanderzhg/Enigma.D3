@@ -330,6 +330,8 @@ namespace Enigma.D3.MapHack
 
         private ACD GetLocalPlayerACD(MemoryContext ctx)
         {
+            // Haxx... PlayerData.ACDID is encrypted so can't use it for indexing. This will probably fail miserably in multiplayer.
+            return _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Player).FirstOrDefault();
             return _acdsObserver.Items[(short)ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ACDID];
         }
 
