@@ -1,4 +1,6 @@
-﻿using Enigma.D3.MemoryModel.Core;
+﻿using Enigma.D3.ApplicationModel;
+using Enigma.D3.Enums;
+using Enigma.D3.MemoryModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +31,19 @@ namespace Enigma.D3.MapHack.Markers
 			_acd = acd;
 			_acdId = _acd.ID;
 			_isVisible = isVisible;
-		}
+
+            if (AssetCache.IsInitialized)
+            {
+                Slug = AssetCache.GetSlug(SNOType.Actor, Acd.ActorSNO);
+                Name = AssetCache.GetMonsterName(Slug);
+            }
+        }
 
 		protected ACD Acd { get { return _acd; } }
+
+        protected string Slug { get; private set; }
+
+        protected string Name { get; private set; }
 
 		public override void Update(int worldId, Point3D origo)
 		{

@@ -31,7 +31,7 @@ namespace Enigma.D3.MemoryModel
             DataSegment.AttributeDescriptors = 0x021EFD30;
             DataSegment.AttributeDescriptorsCount = 0x000005BB;
             DataSegment.MemoryManager = 0x0228AA20;
-            DataSegment.SNOFiles = 0x02168690;
+            DataSegment.SNOFiles = 0x02178670;
             //DataSegment.SNOGroups = 0x0217C030;
             DataSegment.SNOGroupsByCode = 0x0217BE00;
             DataSegment.ContainerManager = 0x0228E350;

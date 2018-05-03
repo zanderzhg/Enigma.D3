@@ -130,6 +130,9 @@ namespace Enigma.D3.MapHack
             ctx.Memory.Reader.ResetCounters();
             try
             {
+                if (!ApplicationModel.AssetCache.IsInitialized)
+                    ApplicationModel.AssetCache.Initialize(ctx);
+
                 if (!IsLocalActorValid(ctx))
                     return;
 

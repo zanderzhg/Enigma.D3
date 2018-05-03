@@ -99,7 +99,7 @@ namespace Enigma.D3.MapHack.Markers
                     return true;
 
 				default:
-                    return Acd.Name.IndexOf("treasureGoblin", StringComparison.Ordinal) != -1;
+                    return Slug.IndexOf("treasureGoblin", StringComparison.Ordinal) != -1;
 			}
 		}
 

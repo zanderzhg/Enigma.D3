@@ -77,6 +77,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Enigma.D3.ApplicationModel\AssetCache.cs">
+      <Link>D3\MapHack\AssetCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Enigma.D3.ApplicationModel\DictionaryExtensions.cs">
+      <Link>DictionaryExtensions.cs</Link>
+    </Compile>
     <Compile Include="D3\Bootloader\App.cs" />
     <Compile Include="D3\Bootloader\MultiProcessSelector.xaml.cs">
       <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
