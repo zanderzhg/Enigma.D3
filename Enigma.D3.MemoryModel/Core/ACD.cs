@@ -25,7 +25,7 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<int>(SymbolTable.Current.ACD.ActorID);
 
         public SNO ActorSNO
-            => Read<SNO>(SymbolTable.Current.ACD.ActorSNO);
+            => SymbolTable.Current.CryptoKeys.ActorSNO ^ Read<SNO>(SymbolTable.Current.ACD.ActorSNO);
 
         public GBType GBType
             => Read<GBType>(SymbolTable.Current.ACD.GBType);
@@ -64,10 +64,10 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<float>(188 * 4);
 
         public int SWorldID
-            => Read<int>(SymbolTable.Current.ACD.SWorldID);
+            => (int)(SymbolTable.Current.CryptoKeys.SWorldID ^ Read<int>(SymbolTable.Current.ACD.SWorldID));
 
         public int SSceneID
-            => Read<int>(SymbolTable.Current.ACD.SSceneID);
+            => (int)(SymbolTable.Current.CryptoKeys.SSceneID ^ Read<int>(SymbolTable.Current.ACD.SSceneID));
 
         public int FastAttribGroupID
             => Read<int>(SymbolTable.Current.ACD.FastAttribGroupID);

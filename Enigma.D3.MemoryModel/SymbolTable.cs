@@ -36,6 +36,7 @@ namespace Enigma.D3.MemoryModel
 
         public Version Version;
         public Platform Platform;
+        public CryptoKeys CryptoKeys;
 
         public DynamicSymbols Dynamic;
         public DataSegmentSymbols DataSegment;
@@ -81,6 +82,13 @@ namespace Enigma.D3.MemoryModel
         public ulong ACDManager;
         public ulong PlayerDataManager;
         public ulong Player;
+    }
+    
+    public struct CryptoKeys
+    {
+        public uint ActorSNO;
+        public uint SSceneID;
+        public uint SWorldID;
     }
 
     public struct DataSegmentSymbols

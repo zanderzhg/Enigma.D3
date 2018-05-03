@@ -70,7 +70,19 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
             symbols.Dynamic.PlayerDataManager = pdm_block.Data.ValueAddress;
 
             symbols.Dynamic.Player = player_block.Data.ValueAddress;
+
+
+            symbols.CryptoKeys.ActorSNO = (uint)(0x87805BC0 - (uint)__ROR8__(ReadRVA<ulong>(ctx, 0x1EF40A1), 4));
+            symbols.CryptoKeys.SSceneID = (uint)(ReadRVA<ulong>(ctx, 0x1EF41CE) ^ ~(uint)__ROL8__(0x444BCA8CCA9B559A, 1));
+            symbols.CryptoKeys.SWorldID = (uint)(0x7CF95B28 - (int)__ROL8__(ReadRVA<ulong>(ctx, 0x1EF350F), 10));
         }
+
+        private static T ReadRVA<T>(MemoryContext ctx, MemoryAddress rva) => ctx.Memory.Reader.Read<T>(ctx.ImageBase + rva);
+
+        private static ulong __ROR8__(ulong original, int bits) => (original >> bits) | (original << (64 - bits));
+        private static uint __ROR4__(uint original, int bits) => (original >> bits) | (original << (32 - bits));
+        private static ulong __ROL8__(ulong original, int bits) => (original << bits) | (original >> (64 - bits));
+        private static uint __ROL4__(uint original, int bits) => (original << bits) | (original >> (32 - bits));
 
         private static HeapNode FindContainerBlock(MemoryManager mm, SmallObjectMapCache cache, string name)
         {
