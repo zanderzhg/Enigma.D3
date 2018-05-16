@@ -86,9 +86,11 @@ namespace Enigma.D3.MemoryModel
     
     public struct CryptoKeys
     {
+        public uint ACDID;
         public uint ActorSNO;
         public uint SSceneID;
         public uint SWorldID;
+        public uint LevelAreaSNO;
     }
 
     public struct DataSegmentSymbols

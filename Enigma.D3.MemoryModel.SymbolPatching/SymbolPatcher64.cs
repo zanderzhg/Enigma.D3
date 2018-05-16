@@ -71,10 +71,11 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 
             symbols.Dynamic.Player = player_block.Data.ValueAddress;
 
-
+            symbols.CryptoKeys.ACDID = (uint)(ReadRVA<ulong>(ctx, 0x1EF3C06) ^ __ROR8__(0xEEE8929A3C7B95F8, 11));
             symbols.CryptoKeys.ActorSNO = (uint)(0x87805BC0 - (uint)__ROR8__(ReadRVA<ulong>(ctx, 0x1EF40A1), 4));
             symbols.CryptoKeys.SSceneID = (uint)(ReadRVA<ulong>(ctx, 0x1EF41CE) ^ ~(uint)__ROL8__(0x444BCA8CCA9B559A, 1));
             symbols.CryptoKeys.SWorldID = (uint)(0x7CF95B28 - (int)__ROL8__(ReadRVA<ulong>(ctx, 0x1EF350F), 10));
+            symbols.CryptoKeys.LevelAreaSNO = (uint)(0xFF3F69DC ^ __ROL8__(ReadRVA<ulong>(ctx, 0x1EF353A), 10));
         }
 
         private static T ReadRVA<T>(MemoryContext ctx, MemoryAddress rva) => ctx.Memory.Reader.Read<T>(ctx.ImageBase + rva);

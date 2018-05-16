@@ -13,6 +13,12 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
 
         public static int HeaderSize => SymbolTable.Current.HeapNode.HeaderSize;
 
+        public Ptr<HeapNode> PreviousFree => Read<Ptr<HeapNode>>(0x00);
+
+        public Ptr<HeapNode> NextFree => Read<Ptr<HeapNode>>(0x08);
+
+        public Ptr<HeapNode> PreviousNode => Read<Ptr<HeapNode>>(0x10); 
+
         public uint Size
             => Read<uint>(SymbolTable.Current.HeapNode.SizeAndFlag) >> 1;
 

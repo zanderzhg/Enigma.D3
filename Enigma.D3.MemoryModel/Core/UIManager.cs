@@ -16,6 +16,8 @@ namespace Enigma.D3.MemoryModel.Core
         public Ptr<MapA<UIKey, Ptr<Control>>> PtrControlsMap
             => Read<Ptr<MapA<UIKey, Ptr<Control>>>>(0x0);
 
+        public UIID MouseOver => Read<UIID>(0x0A38);
+
         public int TargetACDID => this.PlatformRead<int>(0x0E50, 0x0E60);
     }
 }

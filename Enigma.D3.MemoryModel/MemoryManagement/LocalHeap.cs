@@ -20,8 +20,22 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
         public uint NodeCount
             => Read<uint>(SymbolTable.Current.LocalHeap.NodeCount);
 
+        public Ptr VTable => Read<Ptr>(0x00);
+        public uint MinSize => Read<uint>(0x28);
+        public uint x2C => Read<uint>(0x2C);
+        public ulong x30 => Read<ulong>(0x30);
+        public uint x38 => Read<uint>(0x38);
+        public uint x3C => Read<uint>(0x3C);
+        public ulong x40 => Read<ulong>(0x40);
+        public ulong LargestSize => Read<ulong>(0x48);
+        public ulong x58 => Read<ulong>(0x58);
+        public ulong x60 => Read<ulong>(0x60);
+        public Ptr<HeapNode>[] Bins => Read<Ptr<HeapNode>>(0x70, 32);
+
         public uint TotalSize
             => Read<uint>(SymbolTable.Current.LocalHeap.TotalSize);
+
+        public ulong UsedSize => Read<ulong>(0x18);
 
         public IEnumerator<HeapNode> GetEnumerator()
         {
@@ -61,6 +75,16 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
             if (f.Contains(address))
                 return SmallBlocks.FirstOrDefault(blk => blk.Contains(address));
             return MainBlocks.FirstOrDefault(blk => blk.Contains(address));
+        }
+
+        public IEnumerable<HeapNode> GetBin(int index)
+        {
+            var node = Bins[index].Dereference();
+            while (node != null)
+            {
+                yield return node;
+                node = node.PreviousFree.Dereference();
+            }
         }
     }
 }
