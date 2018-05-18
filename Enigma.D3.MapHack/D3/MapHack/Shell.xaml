@@ -74,5 +74,23 @@
                 <TextBox Name="Log" IsReadOnly="True" Height="300" Width="600" AcceptsReturn="True" AcceptsTab="True" MaxLines="3" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" TextWrapping="WrapWithOverflow" />
             </DockPanel>
         </TabItem>
+        <TabItem Header="About" Selector.Selected="TabItem_Selected" Selector.Unselected="TabItem_Unselected">
+            <StackPanel Margin="20">
+                <TextBlock>Made by Enigma </TextBlock>
+                <Viewbox Width="150" Height="150" Margin="20">
+                    <Grid Name="LogoPathGrid" MouseDown="LogoPathGrid_MouseDown" ToolTip="Don't click.">
+                        <Path Data="M4,4 L145,4 145,145 4,145 z" Stroke="#00A2E8" Fill="Black" StrokeThickness="9" />
+                        <Path Data="M37,37 L88,37 83,42 83,46 51,46 51,52 65,66 65,70 69,70 69,79 65,79 65,83 51,97 51,108 84,108 92,116 37,116 37,106 61,82 61,67 37,43 z" Stroke="#00A2E8" StrokeThickness="1" Fill="#00A2E8" />
+                        <Path Data="M33,37 L36,37 36,43 60,67 60,69 56,69 33,46 z M33,116 33,103 56,80 60,80 60,82 36,106 36,116 z" Stroke="#3F48CC" StrokeThickness="1" Fill="#3F48CC" />
+                        <Path Data="M33,33 L97,33 97,37 88,46 84,46 84,42 90,36 33,36 z M52,47 L56,47 69,60 69,69 66,69 66,66 52,52 z M70,70 L74,70 74,79 70,79 z M66,80 L69,80 69,89 55,103 88,103 97,112 97,116 93,116 84,107 52,107 52,97 66,83 z" Stroke="#99D9EA" StrokeThickness="1" Fill="#99D9EA" />
+                        <Path Data="M80,69 L80,61 108,33 116,33 116,41 88,69 z M80,80 L88,80 116,108 116,116 108,116 80,88 z" Stroke="White" StrokeThickness="1" Fill="White" />
+                    </Grid>
+                </Viewbox>
+                <TextBlock><Hyperlink NavigateUri="https://github.com/Enigma32/Enigma.D3/tree/post-obfuscation-patchwork" Click="Hyperlink_Click">Source Code</Hyperlink></TextBlock>
+                <TextBlock><Hyperlink NavigateUri="https://www.ownedcore.com/forums/diablo-3/diablo-3-bots-programs/621741-enigma-d3-maphack.html" Click="Hyperlink_Click">Release Info &amp; Support</Hyperlink></TextBlock>
+                <Separator />
+                <TextBlock><Hyperlink NavigateUri="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=UZXUSKXRWSWSC" Click="Hyperlink_Click">Donate</Hyperlink> (grants no extra feature except for my thanks!)</TextBlock>
+            </StackPanel>
+        </TabItem>
     </TabControl>
 </Window>

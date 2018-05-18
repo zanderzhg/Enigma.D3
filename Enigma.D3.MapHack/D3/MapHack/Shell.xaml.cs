@@ -29,7 +29,7 @@ namespace Enigma.D3.MapHack
 
         public MapMarkerOptions Options { get; private set; }
         public bool IsAttached { get { return _isAttached; } set { if (_isAttached != value) { _isAttached = value; Refresh("IsAttached"); } } }
-
+        
         public Shell()
         {
             Options = MapMarkerOptions.Instance;
@@ -74,7 +74,7 @@ namespace Enigma.D3.MapHack
                     _log.ScrollToEnd();
             }
         }
-        
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -97,6 +97,50 @@ namespace Enigma.D3.MapHack
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Log.Clear();
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start((sender as Hyperlink).NavigateUri.AbsoluteUri);
+        }
+
+        private Random _rand = new Random();
+        private DispatcherTimer _timer;
+
+        private void Animate(object sender, EventArgs e)
+        {
+            var paths = LogoPathGrid.Children.Cast<Path>().ToArray();
+            foreach (var path in paths)
+            {
+                var transform = (RotateTransform)((path.RenderTransform as RotateTransform) ?? (path.RenderTransform = new RotateTransform(0, 75, 75)));
+                transform.Angle += (_rand.NextDouble() - 0.5);
+            }
+        }
+
+        private void TabItem_Selected(object sender, RoutedEventArgs e)
+        {
+            _timer?.Start();
+        }
+
+        private void TabItem_Unselected(object sender, RoutedEventArgs e)
+        {
+            _timer?.Stop();
+        }
+
+        private int _i;
+        private void LogoPathGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (_i == 0)
+                    LogoPathGrid.ToolTip += " Stop!!!";
+                if (_i++ == 5)
+                {
+                    _timer = _timer ?? new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Render, Animate, Dispatcher.CurrentDispatcher);
+                    _timer.Start();
+                    LogoPathGrid.ToolTip = "You broke it :(";
+                }
+            }
         }
     }
 }
