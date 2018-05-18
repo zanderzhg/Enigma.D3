@@ -510,6 +510,17 @@ namespace Enigma.Memory.PE
         }
 
         /// <summary>
+        /// Gets the DOS header
+        /// </summary>
+        public IMAGE_DOS_HEADER DosHeader
+        {
+            get
+            {
+                return dosHeader;
+            }
+        }
+
+        /// <summary>
         /// Gets the file header
         /// </summary>
         public IMAGE_FILE_HEADER FileHeader
