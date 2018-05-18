@@ -77,12 +77,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Enigma.D3.ApplicationModel\AssetCache.cs">
-      <Link>D3\MapHack\AssetCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Enigma.D3.ApplicationModel\DictionaryExtensions.cs">
-      <Link>DictionaryExtensions.cs</Link>
-    </Compile>
     <Compile Include="D3\Bootloader\App.cs" />
     <Compile Include="D3\Bootloader\MultiProcessSelector.xaml.cs">
       <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
@@ -169,6 +163,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Enigma.D3.ApplicationModel\Enigma.D3.ApplicationModel.csproj">
+      <Project>{176ae261-7d74-4959-966e-d1963cfefd66}</Project>
+      <Name>Enigma.D3.ApplicationModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Enigma.D3.Assets\Enigma.D3.Assets.csproj">
       <Project>{4b2bf057-3425-4520-8535-3372d330c653}</Project>
       <Name>Enigma.D3.Assets</Name>
