@@ -320,6 +320,20 @@ namespace Enigma.D3.MapHack
                     }
                 }
 
+                if (false)
+                {
+                    foreach (var trickle in ctx.DataSegment.TrickleManager.Items.ToArray())
+                    {
+                        trickle.TakeSnapshot();
+                        if (_minimapItemsDic.ContainsKey(trickle.x00_Id))
+                            continue;
+
+                        var item = new MapMarkerTrickle(trickle);
+                        itemsToAdd.Add(item);
+                        _minimapItemsDic.Add(trickle.x00_Id, item);
+                    }
+                }
+
                 UpdateUI(itemsToAdd, itemsToRemove);
             }
             catch (Exception exception)
@@ -333,9 +347,7 @@ namespace Enigma.D3.MapHack
 
         private ACD GetLocalPlayerACD(MemoryContext ctx)
         {
-            // PlayerData.ACDID is encrypted so can't use it for indexing.
-            var localActorID = ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ActorID;
-            return _acdsObserver.Items.Where(x => x != null).Where(x => x.ID != -1).Where(x => x.ActorType == ActorType.Player).Where(x => x.ActorID == localActorID).FirstOrDefault();
+            return _acdsObserver.Items[(short)ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ACDID];
         }
 
         private bool IsLocalActorValid(MemoryContext ctx)

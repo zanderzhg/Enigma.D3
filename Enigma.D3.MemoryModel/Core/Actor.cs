@@ -17,12 +17,13 @@ namespace Enigma.D3.MemoryModel.Core
         public string Name
             => ReadString(SymbolTable.Current.Actor.Name, SymbolTable.Current.Actor.NameLength);
 
-        public int ACDID => Read<int>(0x88);
+        public int ACDID
+            => (int)SymbolTable.Current.CryptoKeys.RActorACDID ^ Read<int>(SymbolTable.Current.Actor.ACDID);
 
         public int SSceneID
-            => Read<int>(SymbolTable.Current.Actor.SSceneID);
+            => (int)SymbolTable.Current.CryptoKeys.SSceneID ^ Read<int>(SymbolTable.Current.Actor.SSceneID);
 
         public int SWorldID
-            => (int)(SymbolTable.Current.CryptoKeys.SWorldID ^ Read<int>(0xF0));
+            => (int)SymbolTable.Current.CryptoKeys.SWorldID ^ Read<int>(SymbolTable.Current.Actor.SWorldID);
     }
 }

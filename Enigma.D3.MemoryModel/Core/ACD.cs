@@ -22,7 +22,7 @@ namespace Enigma.D3.MemoryModel.Core
         public int ANNID => Read<int>(SymbolTable.Current.ACD.ANNID);
 
         public int ActorID
-            => Read<int>(SymbolTable.Current.ACD.ActorID);
+            => Read<int>(SymbolTable.Current.ACD.ActorID) ^ (int)SymbolTable.Current.CryptoKeys.ActorID;
 
         public SNO ActorSNO
             => SymbolTable.Current.CryptoKeys.ActorSNO ^ Read<SNO>(SymbolTable.Current.ACD.ActorSNO);
@@ -82,7 +82,7 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<int>(SymbolTable.Current.ACD.ItemSlotY);
 
         public ActorType ActorType
-            => Read<ActorType>(SymbolTable.Current.ACD.ActorType);
+            => (ActorType)((SymbolTable.Current.CryptoKeys.ActorType) ^ Read<int>(SymbolTable.Current.ACD.ActorType));
 
         public GizmoType GizmoType
             => Read<GizmoType>(SymbolTable.Current.ACD.GizmoType);

@@ -19,7 +19,9 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
         public SinglyLinkedList Blocks => Read<SinglyLinkedList>(0x08);
         public int Flags => Read<int>(X86 ? 0x10 : 0x18);
         public Ptr MemVT => Read<Ptr>(X86 ? 0x14 : 0x20);
-        public int GoodFood => Read<int>(X86 ? 0x18 : 0x28); // 0xFEEDFACE when disposed.
+        public uint GoodFood => Read<uint>(X86 ? 0x18 : 0x28); // 0xFEEDFACE when disposed.
+
+        public bool IsValid => GoodFood == 0xD006F00D;
 
         public class SinglyLinkedList : MemoryObject, IEnumerable<Block>
         {

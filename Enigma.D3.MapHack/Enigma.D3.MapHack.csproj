@@ -82,6 +82,7 @@
       <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdServerProp.cs" />
+    <Compile Include="D3\MapHack\Markers\MapMarkerTrickle.cs" />
     <Compile Include="D3\MapHack\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>

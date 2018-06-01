@@ -82,15 +82,20 @@ namespace Enigma.D3.MemoryModel
         public ulong ACDManager;
         public ulong PlayerDataManager;
         public ulong Player;
+        public ulong TrickleManager;
     }
     
     public struct CryptoKeys
     {
-        public uint ACDID;
+        public uint RActorACDID;
+        public uint PlayerDataACDID;
+        public uint ActorID;
         public uint ActorSNO;
+        public uint ActorType;
         public uint SSceneID;
         public uint SWorldID;
         public uint LevelAreaSNO;
+        public uint GizmoType;
     }
 
     public struct DataSegmentSymbols
@@ -162,6 +167,8 @@ namespace Enigma.D3.MemoryModel
         public int ID;
         public int Name;
         public int NameLength;
+        public int ACDID;
+        public int SWorldID;
         public int SSceneID;
     }
 
@@ -235,6 +242,7 @@ namespace Enigma.D3.MemoryModel
         public int HeroClass;
         public int Level;
         public int AltLevel;
+        public int LevelAreaSNO;
     }
 
     public struct PlayerSavedDataSymbols

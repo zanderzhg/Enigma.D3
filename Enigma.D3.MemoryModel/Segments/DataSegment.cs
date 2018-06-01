@@ -48,7 +48,7 @@ namespace Enigma.D3.MemoryModel.Segments
             => Memory.Reader.Read<int>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.MapActID);
 
         public TrickleManager TrickleManager
-            => Memory.Reader.Read<Ptr<TrickleManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.TrickleManager).Dereference();
+            => Memory.Reader.Read<TrickleManager>(SymbolTable.Current.Dynamic.TrickleManager);
         
         public ObjectManager ObjectManager
             => Memory.Reader.Read<ObjectManager>(SymbolTable.Current.Dynamic.ObjectManager);
