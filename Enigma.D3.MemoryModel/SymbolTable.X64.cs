@@ -27,8 +27,8 @@ namespace Enigma.D3.MemoryModel
             //DataSegment.ScreenManagerRoot = 0x141D73DF0;
             DataSegment.TrickleManager = 0; // Use SymbolPatching library to find this at runtime.
             DataSegment.ObjectManager = 0; // Use SymbolPatching library to find this at runtime.
-            DataSegment.ApplicationLoopCount = 0x0217C280;
-            DataSegment.AttributeDescriptors = 0x021EFD30;
+            DataSegment.ApplicationLoopCount = 0x0228D34C;//0x0217C280;
+            DataSegment.AttributeDescriptors = 0x02300DF0;// 0x021EFD30;
             DataSegment.AttributeDescriptorsCount = 0x000005BB;
             DataSegment.MemoryManager = 0x0239BAE0;
             DataSegment.SNOFiles = 0x02289700;// 0x02178670;
@@ -83,7 +83,7 @@ namespace Enigma.D3.MemoryModel
             ACD.ActorID = 0x100;//0x8C;
             ACD.ActorSNO = 0x108;// 0x90;
             ACD.GBType = 0x12C;// 0xB0;
-            ACD.GBID = 0xB4;
+            ACD.GBID = 0x130;// 0xB4;
             ACD.MonsterQuality = 0x134;// 0xB8;
             ACD.Position = 0x150;// 0xD8;
             ACD.Radius = 0xE4;
@@ -117,7 +117,7 @@ namespace Enigma.D3.MemoryModel
             PlayerData.Index = 0x0;
             PlayerData.ACDID = 0x68;// 0x4;
             PlayerData.ActorID = 0x8;
-            PlayerData.PlayerSavedData = 0x130;
+            PlayerData.PlayerSavedData = 0x100;// 0x130;
             PlayerData.HeroID = 0xB238;// 0xB1D0;
             PlayerData.HeroName = 0xB240;// 0xB1D8;
             PlayerData.ActorSNO = 0xC270;// 0xC210;
@@ -128,7 +128,7 @@ namespace Enigma.D3.MemoryModel
             PlayerData.LevelAreaSNO = 0xC280;
 
             PlayerSavedData.SizeOf = 0x12AC;
-            PlayerSavedData.ActiveSkillSavedData = 0x1218;
+            PlayerSavedData.ActiveSkillSavedData = 0x12B0;// 0x1218;
             PlayerSavedData.PassiveSkills = 0x1278;
 
             ActiveSkillSavedData.SizeOf = 0x10;
