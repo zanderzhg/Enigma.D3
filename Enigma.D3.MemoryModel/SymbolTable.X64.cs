@@ -14,12 +14,12 @@ namespace Enigma.D3.MemoryModel
             Platform = Platform.X64;
 
             DataSegment.Address = 0x141AF1000;
-            DataSegment.VideoPreferences = 0x01F08640;
-            DataSegment.SoundPreferences = 0x01F086E0;
+            DataSegment.VideoPreferences = 0x020196A0;// 0x01F08640;
+            DataSegment.SoundPreferences = 0x02019740;// 0x01F086E0;
             DataSegment.HotkeyPreferences = 0x2019790;// 0x01F08730;
-            DataSegment.GameplayPreferences = 0x01F08BB0;
-            DataSegment.SocialPreferences = 0x01F08C18;
-            DataSegment.ChatPreferences = 0x01F08C48;
+            DataSegment.GameplayPreferences = 0x02019C10;// 0x01F08BB0;
+            DataSegment.SocialPreferences = 0x02019C78;// 0x01F08C18;
+            DataSegment.ChatPreferences = 0x02019CA8;// 0x01F08C48;
             //DataSegment.LevelArea = 0x141D738B8;
             //DataSegment.LevelAreaName = 0x141D738C0;
             //DataSegment.LevelAreaNameLength = 0x80;
@@ -58,11 +58,11 @@ namespace Enigma.D3.MemoryModel
 
             Storage.GameDifficulty = 0x4;
             Storage.GameTick = 0x120;
-            Storage.PlayerDataManager = 0x140;
+            Storage.PlayerDataManager = 0x150;// 0x140;
             Storage.FastAttrib = 0x190;// 0x180;
             Storage.ACDManager = 0x1A8;// 0x198;
-            Storage.QuestManager = 0x1B8;
-            Storage.WaypointManager = 0x210;
+            Storage.QuestManager = 0x1C8;// 0x1B8;
+            Storage.WaypointManager = 0x220;// 0x210;
 
             Actor.SizeOf = 0x508;// 0x4F8;
             Actor.ID = 0x0;
@@ -86,7 +86,7 @@ namespace Enigma.D3.MemoryModel
             ACD.GBID = 0x130;// 0xB4;
             ACD.MonsterQuality = 0x134;// 0xB8;
             ACD.Position = 0x150;// 0xD8;
-            ACD.Radius = 0xE4;
+            ACD.Radius = 0x15C;// 0xE4;
             ACD.SWorldID = 0x190;// 0x118;
             ACD.SSceneID = 0x198;// 0x11C;
             ACD.ItemLocation = 0x1A4;// 0x124;
@@ -125,11 +125,11 @@ namespace Enigma.D3.MemoryModel
             PlayerData.HeroClass = 0xC288;// 0xC220;
             PlayerData.Level = 0xC28C;// 0xC224;
             PlayerData.AltLevel = 0xC290;// 0xC228;
-            PlayerData.LevelAreaSNO = 0xC280;
+            PlayerData.LevelAreaSNO = 0xC2E8;// 0xC280;
 
-            PlayerSavedData.SizeOf = 0x12AC;
+            PlayerSavedData.SizeOf = 0x12AC + 0x98; // enough?
             PlayerSavedData.ActiveSkillSavedData = 0x12B0;// 0x1218;
-            PlayerSavedData.PassiveSkills = 0x1278;
+            PlayerSavedData.PassiveSkills = 0x1310;// 0x1278;
 
             ActiveSkillSavedData.SizeOf = 0x10;
             ActiveSkillSavedData.PowerSNO = 0x0;
