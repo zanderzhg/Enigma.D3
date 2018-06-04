@@ -125,7 +125,7 @@ namespace Enigma.D3.MemoryModel
             PlayerData.HeroClass = 0xC288;// 0xC220;
             PlayerData.Level = 0xC28C;// 0xC224;
             PlayerData.AltLevel = 0xC290;// 0xC228;
-            PlayerData.LevelAreaSNO = 0xC2E8;// 0xC280;
+            PlayerData.LevelAreaSNO = 0xC280;
 
             PlayerSavedData.SizeOf = 0x12AC + 0x98; // enough?
             PlayerSavedData.ActiveSkillSavedData = 0x12B0;// 0x1218;
