@@ -53,26 +53,27 @@ namespace Enigma.D3.MemoryModel.Collections
         public override MemorySegment[] GetAllocatedBytes(ref byte[] buffer)
         {
             var blockSize = 1 << Bits;
-            var blockCount = MaxIndex == 0xFFF ? 0 : ((MaxIndex / blockSize) + 1);
+            var blockCount = MaxIndex == 0xFFFF ? 0 : ((MaxIndex / blockSize) + 1);
             var size = blockSize * blockCount * ItemSize;
             if (buffer.Length != size)
                 Array.Resize(ref buffer, size);
 
             var segments = new MemorySegment[blockCount];
-
-            var blocks = (Allocator as _Allocator).Items.ToArray(blockCount);
-            var offset = 0;
-            for (int i = 0; i < blockCount; i++)
+            if (blockCount > 0)
             {
-                var remainingItems = (MaxIndex + 1) - blockSize * i;
+                var blocks = (Allocator as _Allocator).Items.ToArray(blockCount);
+                var offset = 0;
+                for (int i = 0; i < blockCount; i++)
+                {
+                    var remainingItems = (MaxIndex + 1) - blockSize * i;
 
-                segments[i].Address = blocks[i].ValueAddress;
-                segments[i].Size = (ulong)(Math.Min(blockSize, remainingItems) * ItemSize);
+                    segments[i].Address = blocks[i].ValueAddress;
+                    segments[i].Size = (ulong)(Math.Min(blockSize, remainingItems) * ItemSize);
 
-                Memory.Reader.ReadBytes(segments[i].Address, buffer, offset, (int)segments[i].Size);
-                offset += blockSize * ItemSize;
+                    Memory.Reader.ReadBytes(segments[i].Address, buffer, offset, (int)segments[i].Size);
+                    offset += blockSize * ItemSize;
+                }
             }
-
             return segments;
         }
 

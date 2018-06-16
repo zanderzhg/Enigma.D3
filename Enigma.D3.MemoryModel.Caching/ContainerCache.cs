@@ -92,10 +92,18 @@ namespace Enigma.D3.MemoryModel.Caching
             var mr = new BufferMemoryReader(_currentData);
             if (_currentMapping.Length != count)
                 Array.Resize(ref _currentMapping, count);
-            for (int i = 0; i <= _container.MaxIndex; i++)
-                _currentMapping[i] = mr.Read<int>(i * _container.ItemSize);
-            for (int i = _container.MaxIndex + 1; i < count; i++)
-                _currentMapping[i] = -1;
+            if (count == 0)
+            {
+                for (int i = 0; i < _currentMapping.Length; i++)
+                    _currentMapping[i] = -1;
+            }
+            else
+            {
+                for (int i = 0; i < count && i <= _container.MaxIndex; i++)
+                    _currentMapping[i] = mr.Read<int>(i * _container.ItemSize);
+                for (int i = _container.MaxIndex + 1; i < count; i++)
+                    _currentMapping[i] = -1;
+            }
 
             NewItems.Clear();
             OldItems.Clear();
