@@ -25,7 +25,7 @@ namespace Enigma.D3.MemoryModel.Core
             => Read<int>(SymbolTable.Current.ACD.ActorID) ^ (int)SymbolTable.Current.CryptoKeys.ActorID;
 
         public SNO ActorSNO
-            => SymbolTable.Current.CryptoKeys.ActorSNO ^ Read<SNO>(SymbolTable.Current.ACD.ActorSNO);
+            => SymbolTable.Current.CryptoKeys.ACDActorSNO ^ Read<SNO>(SymbolTable.Current.ACD.ActorSNO);
 
         public GBType GBType
             => Read<GBType>(SymbolTable.Current.ACD.GBType);

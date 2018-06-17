@@ -84,18 +84,24 @@ namespace Enigma.D3.MemoryModel
         public ulong Player;
         public ulong TrickleManager;
     }
-    
+
     public struct CryptoKeys
     {
         public uint RActorACDID;
         public uint PlayerDataACDID;
         public uint ActorID;
-        public uint ActorSNO;
+        public uint ACDActorSNO;
         public uint ActorType;
         public uint SSceneID;
         public uint SWorldID;
         public uint LevelAreaSNO;
         public uint GizmoType;
+        public uint TimedEventSNO;
+
+        public uint ActorX8C;
+        public uint RActorActorSNO;
+        public uint ActorX9C;
+        public uint ActorX178;
     }
 
     public struct DataSegmentSymbols

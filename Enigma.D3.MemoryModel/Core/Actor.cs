@@ -20,10 +20,16 @@ namespace Enigma.D3.MemoryModel.Core
         public int ACDID
             => (int)SymbolTable.Current.CryptoKeys.RActorACDID ^ Read<int>(SymbolTable.Current.Actor.ACDID);
 
+        public uint ActorSNO => Read<uint>(0x98) ^ SymbolTable.Current.CryptoKeys.RActorActorSNO;
+
         public int SSceneID
             => (int)SymbolTable.Current.CryptoKeys.SSceneID ^ Read<int>(SymbolTable.Current.Actor.SSceneID);
 
         public int SWorldID
             => (int)SymbolTable.Current.CryptoKeys.SWorldID ^ Read<int>(SymbolTable.Current.Actor.SWorldID);
+
+        public uint X8C => Read<uint>(0x8C) ^ SymbolTable.Current.CryptoKeys.ActorX8C;
+        public uint X9C => Read<uint>(0x9C) ^ SymbolTable.Current.CryptoKeys.ActorX9C;
+        public uint X178 => Read<uint>(0x178) ^ SymbolTable.Current.CryptoKeys.ActorX178;
     }
 }

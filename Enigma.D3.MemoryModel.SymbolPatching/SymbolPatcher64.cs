@@ -92,12 +92,18 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
                 symbols.CryptoKeys.RActorACDID = (uint)(0x70AFAC82 - ReadRVA<long>(ctx, 0x2004E7B));
                 symbols.CryptoKeys.PlayerDataACDID = (uint)(0x308E2629DE27204C - ReadRVA<long>(ctx, 0x2005762));
                 symbols.CryptoKeys.ActorID = (uint)(ReadRVA<long>(ctx, 0x200535F) - (long)__ROL8__(0xBA1BD6815430868B, 1));
-                symbols.CryptoKeys.ActorSNO = (uint)(ReadRVA<long>(ctx, 0x2004E0F) + 0x5E01D2C);
+                symbols.CryptoKeys.ACDActorSNO = (uint)(ReadRVA<long>(ctx, 0x2004E0F) + 0x5E01D2C);
                 symbols.CryptoKeys.ActorType = (uint)(__ROR8__(ReadRVA<ulong>(ctx, 0x2005AF0), 12) ^ 0x65487519);
                 symbols.CryptoKeys.SSceneID = (uint)(ReadRVA<ulong>(ctx, 0x20057E1) ^ 0x140AA19B);
                 symbols.CryptoKeys.SWorldID = (uint)ReadRVA<long>(ctx, 0x20056CA) ^ (uint)__ROL8__(0x3765D1B582F8E426, 9);
                 symbols.CryptoKeys.LevelAreaSNO = (uint)(ReadRVA<long>(ctx, 0x200544E) - 0x4E7B71C8);
                 symbols.CryptoKeys.GizmoType = (uint)(ReadRVA<ulong>(ctx, 0x200590B) ^ 0x155840F6);
+                symbols.CryptoKeys.TimedEventSNO = (uint)(ReadRVA<ulong>(ctx, 0x2004DE0) - 0x500EFA47);
+
+                symbols.CryptoKeys.ActorX8C = 0xE876711E - (uint)(ReadRVA<ulong>(ctx, 0x2005003));
+                symbols.CryptoKeys.RActorActorSNO = (uint)(ReadRVA<ulong>(ctx, 0x2005849) - __ROL8__(0x5681299C0D9F08E3, 9));
+                symbols.CryptoKeys.ActorX9C = 0;
+                symbols.CryptoKeys.ActorX178 = 0;
             }
             catch (Exception exception)
             {
@@ -120,10 +126,10 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 
         private static T ReadRVA<T>(MemoryContext ctx, MemoryAddress rva) => ctx.Memory.Reader.Read<T>(ctx.ImageBase + rva);
 
-        private static ulong __ROR8__(ulong original, int bits) => (original >> bits) | (original << (64 - bits));
-        private static uint __ROR4__(uint original, int bits) => (original >> bits) | (original << (32 - bits));
-        private static ulong __ROL8__(ulong original, int bits) => (original << bits) | (original >> (64 - bits));
-        private static uint __ROL4__(uint original, int bits) => (original << bits) | (original >> (32 - bits));
+        public static ulong __ROR8__(ulong original, int bits) => (original >> bits) | (original << (64 - bits));
+        public static uint __ROR4__(uint original, int bits) => (original >> bits) | (original << (32 - bits));
+        public static ulong __ROL8__(ulong original, int bits) => (original << bits) | (original >> (64 - bits));
+        public static uint __ROL4__(uint original, int bits) => (original << bits) | (original >> (32 - bits));
 
         private static Container<T> FindContainerByItemSize<T>(MemoryContext ctx)
         {
