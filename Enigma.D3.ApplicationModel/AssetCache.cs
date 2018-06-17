@@ -18,6 +18,7 @@ namespace Enigma.D3.ApplicationModel
         private static Dictionary<string, string> _monstersStringLookup;
         private static Dictionary<string, string> _itemsStringLookup;
         private static Dictionary<string, string> _levelAreaNamesLookup;
+        private static Dictionary<GBID, string> _gbItemsNameLookup;
 
         public static void Initialize(MemoryContext ctx)
         {
@@ -53,8 +54,29 @@ namespace Enigma.D3.ApplicationModel
             _monstersStringLookup = GetLookup(stringListGroupStorage, "Monsters");
             _itemsStringLookup = GetLookup(stringListGroupStorage, "Items");
             _levelAreaNamesLookup = GetLookup(stringListGroupStorage, "LevelAreaNames");
-            
+
+            _gbItemsNameLookup = new Dictionary<GBID, string>();
+            var gbs = MemoryContext.Current.DataSegment.SNOGroupStorage[(int)SNOType.GameBalance].Cast<SNOGroupStorage<GameBalance>>().Dereference();
+
+            foreach (var container in gbs.Container
+                .Where(x => x.SNOType == SNOType.GameBalance)
+                .Where(x => x.ID != -1)
+                .Select(x => x.PtrValue.Dereference())
+                .Where(x => x != null))
+            {
+                foreach (var item in container.x028_Items.x08_Items)
+                {
+                    var itemName = GetItemName(item.x000_Text);
+                    _gbItemsNameLookup[(uint)item.x100] = itemName;
+                }
+            }
+
             IsInitialized = true;
+        }
+
+        public static string GetGameBalanceItemsName(GBID gbid)
+        {
+            return _gbItemsNameLookup[gbid];
         }
 
         public static SNOType GetSNOType(SNO sno)

@@ -9,49 +9,54 @@ using System.Windows.Media.Media3D;
 
 namespace Enigma.D3.MapHack.Markers
 {
-	public abstract class MapMarkerAcd : MapMarkerBase
-	{
-		private static int Validate(ACD acd)
-		{
-			if (acd == null)
-				throw new ArgumentNullException(nameof(acd));
-			return acd.Address;
-		}
+    public abstract class MapMarkerAcd : MapMarkerBase
+    {
+        private static int Validate(ACD acd)
+        {
+            if (acd == null)
+                throw new ArgumentNullException(nameof(acd));
+            return acd.Address;
+        }
 
-		private readonly ACD _acd;
-		private readonly int _acdId;
-		private readonly Func<ACD, bool> _isVisible;
+        private readonly ACD _acd;
+        private readonly int _acdId;
+        private readonly Func<ACD, bool> _isVisible;
 
-		public MapMarkerAcd(ACD acd, Func<ACD, bool> isVisible)
-			: base(Validate(acd))
-		{
-			if (isVisible == null)
-				throw new ArgumentNullException(nameof(isVisible));
+        public MapMarkerAcd(ACD acd, Func<ACD, bool> isVisible)
+            : base(Validate(acd))
+        {
+            if (isVisible == null)
+                throw new ArgumentNullException(nameof(isVisible));
 
-			_acd = acd;
-			_acdId = _acd.ID;
-			_isVisible = isVisible;
+            _acd = acd;
+            _acdId = _acd.ID;
+            _isVisible = isVisible;
 
             if (AssetCache.IsInitialized)
             {
                 Slug = AssetCache.GetSlug(SNOType.Actor, Acd.ActorSNO);
-                Name = AssetCache.GetMonsterName(Slug);
+                Name = Acd.ActorType == ActorType.Item ? AssetCache.GetItemName(Slug) : AssetCache.GetMonsterName(Slug);
+                if (Name == null && Acd.GBType == GBType.Items)
+                {
+                    var gbItemsName = AssetCache.GetGameBalanceItemsName(Acd.GBID);
+                    Name = gbItemsName;
+                }
             }
         }
 
-		protected ACD Acd { get { return _acd; } }
+        protected ACD Acd { get { return _acd; } }
 
         protected string Slug { get; private set; }
 
         protected string Name { get; private set; }
 
-		public override void Update(int worldId, Point3D origo)
-		{
+        public override void Update(int worldId, Point3D origo)
+        {
             if (IsVisible = _isVisible(Acd) && _acd.SWorldID == worldId)
             {
                 X = _acd.Position.X - origo.X;
                 Y = _acd.Position.Y - origo.Y;
             }
         }
-	}
+    }
 }
