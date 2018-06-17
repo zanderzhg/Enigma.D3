@@ -63,6 +63,7 @@
                         <ComboBoxItem>Text (Colorblind)</ComboBoxItem>
                     </ComboBox>
                 </UniformGrid>
+                <CheckBox Content="Announce Ancient Items (text to speech)" IsChecked="{Binding Options.AnnounceAncientItems}" Margin="10,5" />
             </StackPanel>
         </TabItem>
         <TabItem Header="Log">

@@ -29,6 +29,9 @@ namespace Enigma.D3.MapHack.Markers
             : base(acd, x => true)
         {
             _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
+            if (_rank > 0)
+                EventBus.Default.PublishAsync(new AppEvents.AncientItemDiscovered(acd, Slug, Name));
+
             _quality = (ItemQuality)Attributes.ItemQualityLevel.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
             var attribs = AttributeReader.Instance.GetAttributes(acd.FastAttribGroupID);
             if (attribs.Any(x => x.Key.Id == AttributeId.SetItemCount && x.Value > 0))
@@ -145,7 +148,11 @@ namespace Enigma.D3.MapHack.Markers
             if (_rank == 0 && Acd.ItemLocation == ItemLocation.PlayerBackpack)
             {
                 _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, Acd.FastAttribGroupID);
-                if (_rank != 0) Execute.OnUIThread(() => Control = CreateControl());
+                if (_rank != 0)
+                {
+                    EventBus.Default.PublishAsync(new AppEvents.AncientItemDiscovered(Acd, Slug, Name));
+                    Execute.OnUIThread(() => Control = CreateControl());
+                }
             }
 
             IsVisibleInInventory = ItemLocation.PlayerBackpack <= Acd.ItemLocation && Acd.ItemLocation < ItemLocation.Stash;

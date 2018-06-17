@@ -17,6 +17,7 @@ using Enigma.D3.MemoryModel.Core;
 using Enigma.D3.MemoryModel.Caching;
 using Enigma.D3.MemoryModel.Assets;
 using Enigma.D3.Enums;
+using System.Speech.Synthesis;
 
 namespace Enigma.D3.MapHack
 {
@@ -79,6 +80,34 @@ namespace Enigma.D3.MapHack
 
             UpdateSizeAndPosition();
             Instance = this;
+
+            EventBus.Default.On<AppEvents.AncientItemDiscovered>(e =>
+            {
+                if ((int)e.ACD.ItemLocation != -1)
+                    return;
+
+                if (MapMarkerOptions.Instance.AnnounceAncientItems)
+                {
+                    System.Threading.ThreadPool.QueueUserWorkItem((state) =>
+                    {
+                        using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
+                        {
+                            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
+                            synthesizer.Volume = 100;
+                            synthesizer.Rate = 0;
+
+                            synthesizer.SetOutputToDefaultAudioDevice();
+
+                            var primal = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID) > 1;
+                            var rank = primal ? "Primal" : "Ancient";
+                            var name = e.Name;
+                            if (name.StartsWith("the ", StringComparison.OrdinalIgnoreCase))
+                                name = name.Substring(4);
+                            synthesizer.Speak($"{rank} {name}!");
+                        }
+                    }, e.ACD);
+                }
+            });
         }
         public static Minimap Instance;
 
