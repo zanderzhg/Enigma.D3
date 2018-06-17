@@ -19,6 +19,6 @@ namespace Enigma.D3.DataTypes
         public uint Value;
 
         public override string ToString()
-            => Value == NONE ? "NONE" : Value.ToString();
+            => Value == NONE ? "NONE" : Value.ToString("X8");
     }
 }

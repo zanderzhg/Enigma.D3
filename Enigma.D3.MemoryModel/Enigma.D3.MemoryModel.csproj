@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameBalanceStorage.cs" />
     <Compile Include="Assets\SNODefinition.cs" />
     <Compile Include="Assets\SNODiskEntry.cs" />
     <Compile Include="Assets\SNOFiles.cs" />

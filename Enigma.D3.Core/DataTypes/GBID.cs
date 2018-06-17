@@ -14,7 +14,9 @@ namespace Enigma.D3.DataTypes
 
 		public uint Value;
 
-		public override string ToString()
-			=> Value.ToString();
+        public override int GetHashCode() => (int)HashUtils.Fnv32((int)Value);
+
+        public override string ToString()
+			=> Value == unchecked((uint)-1) ? "NONE" : Value.ToString("X8");
 	}
 }

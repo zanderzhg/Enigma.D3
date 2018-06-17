@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using Enigma.D3.DataTypes;
 
 namespace Enigma.D3.MemoryModel.Collections
 {
@@ -86,7 +87,8 @@ namespace Enigma.D3.MemoryModel.Collections
                 0x08 + AlignedSize(TypeHelper<TKey>.SizeOf, Alignment) + AlignedSize(TypeHelper<TValue>.SizeOf, Alignment);
 
             // If either TKey or TValue is larger than 4 bytes, alignment 8 is used.
-            private static int Alignment => TypeHelper<TKey>.SizeOf > 4 || TypeHelper<TValue>.SizeOf > 4 ? 8 : 4;
+            // The above statement is false for Map<GBID,GBLookup>, special check added.
+            private static int Alignment => typeof(TKey) == typeof(GBID) ? 4 : (TypeHelper<TKey>.SizeOf > 4 || TypeHelper<TValue>.SizeOf > 4 ? 8 : 4);
 
             public Ptr<Entry> Next => Read<Ptr<Entry>>(0x00);
 

@@ -67,5 +67,8 @@ namespace Enigma.D3.MemoryModel.Segments
 
         public Ptr[] SNOGroupStorage
             => Memory.Reader.Read<Ptr>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.SNOGroupsByCode, 70);
+
+        public GameBalanceStorage GameBalanceStorage
+            => Memory.Reader.Read<Ptr<GameBalanceStorage>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.GameBalanceStorage).Dereference();
     }
 }

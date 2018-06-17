@@ -36,6 +36,7 @@ namespace Enigma.D3.MemoryModel
             DataSegment.SNOGroupsByCode = 0x0228CE80;// 0x0217BE00;
             DataSegment.ContainerManager = 0x0239F410;
             //DataSegment.MessageDescriptor = 0x141369B58;
+            DataSegment.GameBalanceStorage = 0x228E538;
 
             ObjectManager.SizeOf = 0xC08;// 0xBC0 - 0x30;
             ObjectManager.RenderTick = 0x4;
