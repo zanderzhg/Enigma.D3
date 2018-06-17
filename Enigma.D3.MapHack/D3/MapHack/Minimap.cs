@@ -153,6 +153,8 @@ namespace Enigma.D3.MapHack
                 // Must have a local ACD to base coords on.
                 if (_playerAcd == null || _playerAcd.ActorType != ActorType.Player)
                     _playerAcd = GetLocalPlayerACD(ctx);
+                if (_playerAcd == null)
+                    return; // No player (lobby?)
 
                 var ui = _objectManager.UIManager;
                 var uimap = ui.PtrControlsMap.Dereference();
@@ -347,7 +349,10 @@ namespace Enigma.D3.MapHack
 
         private ACD GetLocalPlayerACD(MemoryContext ctx)
         {
-            return _acdsObserver.Items[(short)ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ACDID];
+            var playerACDID = ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].ACDID;
+            if (playerACDID == -1)
+                return null;
+            return _acdsObserver.Items[(short)playerACDID];
         }
 
         private bool IsLocalActorValid(MemoryContext ctx)
