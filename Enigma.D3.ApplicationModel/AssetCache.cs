@@ -33,21 +33,6 @@ namespace Enigma.D3.ApplicationModel
                 _snoSlugs[item.SNOType][item.SNO] = item.Slug;
             }
 
-            //var ac = new AllocationCache<MemoryModel.Collections.LinkedListNode<SNODiskEntry>>(ctx, ctx.DataSegment.SNOFiles.SNODiskEntries.Allocator);
-            //ac.Update();
-            //var nodes = ac.GetItems();
-            //var snoSlugs2 = new Dictionary<SNOType, Dictionary<SNO, string>>();
-            //foreach (SNOType snoType in Enum.GetValues(typeof(SNOType)))
-            //    snoSlugs2.Add(snoType, new Dictionary<SNO, string>());
-            //foreach (var node in nodes)
-            //{
-            //    var v = node.Value;
-            //    if (v.SNO == -1 ||
-            //        v.SNO == 0)
-            //        continue;
-            //    snoSlugs2[v.SNOType][v.SNO] = v.Slug;
-            //}
-
             var stringListGroupStorage = ctx.DataSegment.SNOGroupStorage[(int)SNOType.StringList].Cast<SNOGroupStorage<StringList>>().Dereference();
 
             _powersStringLookup = GetLookup(stringListGroupStorage, "Powers");
@@ -56,15 +41,11 @@ namespace Enigma.D3.ApplicationModel
             _levelAreaNamesLookup = GetLookup(stringListGroupStorage, "LevelAreaNames");
 
             _gbItemsNameLookup = new Dictionary<GBID, string>();
-            var gbs = MemoryContext.Current.DataSegment.SNOGroupStorage[(int)SNOType.GameBalance].Cast<SNOGroupStorage<GameBalance>>().Dereference();
+            var gbs = ctx.DataSegment.SNOGroupStorage[(int)SNOType.GameBalance].Cast<SNOGroupStorage<GameBalance>>().Dereference();
 
-            foreach (var container in gbs.Container
-                .Where(x => x.SNOType == SNOType.GameBalance)
-                .Where(x => x.ID != -1)
-                .Select(x => x.PtrValue.Dereference())
-                .Where(x => x != null))
+            foreach (var gb in ctx.GetAssets<GameBalance>(SNOType.GameBalance))
             {
-                foreach (var item in container.x028_Items.x08_Items)
+                foreach (var item in gb.x028_Items.x08_Items)
                 {
                     var itemName = GetItemName(item.x000_Text);
                     _gbItemsNameLookup[(uint)item.x100] = itemName;
@@ -87,7 +68,8 @@ namespace Enigma.D3.ApplicationModel
         private static Dictionary<string, string> GetLookup(SNOGroupStorage<StringList> storage, string name)
         {
             var stringListSNO = _snoSlugs[SNOType.StringList].First(x => x.Value == name).Key;
-            var stringList = storage.Container.Where(x => x.ID != -1 && x.SNOType == SNOType.StringList).Select(x => x.PtrValue.Dereference()).First(x => x.x00_Header.x00_SnoId == stringListSNO);
+            var stringList = MemoryContext.Current.GetAsset<StringList>(SNOType.StringList, stringListSNO);
+
             var lookup = new Dictionary<string, string>();
             foreach (var item in stringList.x10_StringTableEntries)
                 lookup[item.x00_Text.ToLowerInvariant()] = item.x10_Text;
@@ -115,5 +97,35 @@ namespace Enigma.D3.ApplicationModel
 
         public static string GetLevelAreaName(string levelAreaSlug)
             => _levelAreaNamesLookup[levelAreaSlug.ToLowerInvariant()];
+    }
+
+    public static class AssetUtilities
+    {
+        public static T GetAsset<T>(this MemoryContext ctx, SNOType type, SNO sno) where T : SerializeMemoryObject
+        {
+            var items = ctx.DataSegment.SNOGroupStorage[(int)type].Cast<SNOGroupStorage<SNOHeader>>().Dereference();
+            var item = items.Container
+                .Where(x => x.SNOType == type)
+                .Where(x => x.ID != -1)
+                .Select(x => x.PtrValue.Dereference())
+                .Where(x => x != null)
+                .Where(x => x.x00_SnoId == sno)
+                .FirstOrDefault();
+
+            if (item == null)
+                return default(T);
+            return ctx.Memory.Reader.Read<T>(item.Address);
+        }
+
+        public static IEnumerable<T> GetAssets<T>(this MemoryContext ctx, SNOType type) where T : SerializeMemoryObject
+        {
+            var items = ctx.DataSegment.SNOGroupStorage[(int)type].Cast<SNOGroupStorage<SNOHeader>>().Dereference();
+            return items.Container
+                .Where(x => x.SNOType == type)
+                .Where(x => x.ID != -1)
+                .Select(x => x.PtrValue.Dereference())
+                .Where(x => x != null)
+                .Select(x => ctx.Memory.Reader.Read<T>(x.Address));
+        }
     }
 }
