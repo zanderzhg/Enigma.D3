@@ -41,8 +41,6 @@ namespace Enigma.D3.ApplicationModel
             _levelAreaNamesLookup = GetLookup(stringListGroupStorage, "LevelAreaNames");
 
             _gbItemsNameLookup = new Dictionary<GBID, string>();
-            var gbs = ctx.DataSegment.SNOGroupStorage[(int)SNOType.GameBalance].Cast<SNOGroupStorage<GameBalance>>().Dereference();
-
             foreach (var gb in ctx.GetAssets<GameBalance>(SNOType.GameBalance))
             {
                 foreach (var item in gb.x028_Items.x08_Items)
