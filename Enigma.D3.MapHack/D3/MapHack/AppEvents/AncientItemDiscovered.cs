@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Enigma.D3.MapHack.AppEvents
 {
-    public class AncientItemDiscovered
+    internal class AncientItemDiscovered
     {
         public AncientItemDiscovered(ACD acd, string slug, string name)
         {
@@ -17,8 +17,8 @@ namespace Enigma.D3.MapHack.AppEvents
             Name = name;
         }
 
-        public ACD ACD { get; set; }
-        public string Slug { get; set; }
-        public string Name { get; set; }
+        public ACD ACD { get; }
+        public string Slug { get; }
+        public string Name { get; }
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="D3\Bootloader\MultiProcessSelector.xaml.cs">
       <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="D3\MapHack\AppEvents\ACDLeave.cs" />
     <Compile Include="D3\MapHack\EventBus.cs" />
     <Compile Include="D3\MapHack\AppEvents\AncientItemDiscovered.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdServerProp.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="D3\MapHack\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="D3\MapHack\AppEvents\UpdatedWorldOrigo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

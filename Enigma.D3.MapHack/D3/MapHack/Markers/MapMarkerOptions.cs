@@ -37,6 +37,7 @@ namespace Enigma.D3.MapHack.Markers
         private bool _showAncientRank = true;
         private int _ancientMarkerStyle = 0;
         private bool _announceAncientItems = false;
+        private bool _showRayToAncientItems = true;
         private bool _isInitialized = true;
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -77,6 +78,8 @@ namespace Enigma.D3.MapHack.Markers
         public int AncientMarkerStyle { get { return _ancientMarkerStyle; } set { if (_ancientMarkerStyle != value) { _ancientMarkerStyle = value; Refresh(nameof(AncientMarkerStyle)); } } }
         [DataMember]
         public bool AnnounceAncientItems { get { return _announceAncientItems; } set { if (_announceAncientItems != value) { _announceAncientItems = value; Refresh(nameof(AnnounceAncientItems)); } } }
+        [DataMember]
+        public bool ShowRayToAncientItems { get { return _showRayToAncientItems; } set { if (_showRayToAncientItems != value) { _showRayToAncientItems = value; Refresh(nameof(ShowRayToAncientItems)); } } }
 
         private void Refresh(string propertyName)
         {

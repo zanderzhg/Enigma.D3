@@ -18,11 +18,15 @@ using Enigma.D3.MemoryModel.Caching;
 using Enigma.D3.MemoryModel.Assets;
 using Enigma.D3.Enums;
 using System.Speech.Synthesis;
+using System.Reflection;
 
 namespace Enigma.D3.MapHack
 {
     internal class Minimap : NotifyingObject
     {
+        [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+        private sealed class EventHandlerAttribute : Attribute { }
+
         private readonly Canvas _window;
         private readonly Canvas _root;
         private readonly MinimapControl _minimapControl;
@@ -81,33 +85,19 @@ namespace Enigma.D3.MapHack
             UpdateSizeAndPosition();
             Instance = this;
 
-            EventBus.Default.On<AppEvents.AncientItemDiscovered>(e =>
+            foreach (var methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(x => x.GetCustomAttribute<EventHandlerAttribute>() != null))
             {
-                if ((int)e.ACD.ItemLocation != -1)
-                    return;
+                var parameterInfo = methodInfo.GetParameters();
+                if (parameterInfo.Length != 1)
+                    throw new InvalidOperationException("EventHandler methods must accept exactly 1 argument.");
 
-                if (MapMarkerOptions.Instance.AnnounceAncientItems)
-                {
-                    System.Threading.ThreadPool.QueueUserWorkItem((state) =>
-                    {
-                        using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
-                        {
-                            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
-                            synthesizer.Volume = 100;
-                            synthesizer.Rate = 0;
-
-                            synthesizer.SetOutputToDefaultAudioDevice();
-
-                            var primal = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID) > 1;
-                            var rank = primal ? "Primal" : "Ancient";
-                            var name = e.Name;
-                            if (name.StartsWith("the ", StringComparison.OrdinalIgnoreCase))
-                                name = name.Substring(4);
-                            synthesizer.Speak($"{rank} {name}!");
-                        }
-                    }, e.ACD);
-                }
-            });
+                var eventType = parameterInfo[0].ParameterType;
+                var onMethod = typeof(EventBus).GetMethod(nameof(EventBus.On)).MakeGenericMethod(eventType);
+                var delegateType = typeof(Action<>).MakeGenericType(eventType);
+                var methodDelegate = methodInfo.CreateDelegate(delegateType, this);
+                onMethod.Invoke(EventBus.Default, new[] { methodDelegate });
+            }
         }
         public static Minimap Instance;
 
@@ -140,6 +130,78 @@ namespace Enigma.D3.MapHack
             var uiScale = _window.ActualHeight / 1200d;
             _root.Width = _window.ActualWidth / uiScale;
             _root.RenderTransform = new ScaleTransform(uiScale, uiScale, 0, 0);
+        }
+
+        [EventHandler]
+        private void AnnounceAncientItem(AppEvents.AncientItemDiscovered e)
+        {
+            if ((int)e.ACD.ItemLocation != -1)
+                return;
+
+            if (!MapMarkerOptions.Instance.AnnounceAncientItems)
+                return;
+
+            System.Threading.ThreadPool.QueueUserWorkItem((state) =>
+            {
+                using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
+                {
+                    synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
+                    synthesizer.Volume = 100;
+                    synthesizer.Rate = 0;
+
+                    synthesizer.SetOutputToDefaultAudioDevice();
+
+                    var primal = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID) > 1;
+                    var rank = primal ? "Primal" : "Ancient";
+                    var name = e.Name;
+                    if (name.StartsWith("the ", StringComparison.OrdinalIgnoreCase))
+                        name = name.Substring(4);
+                    synthesizer.Speak($"{rank} {name}!");
+                }
+            }, e.ACD);
+        }
+
+        [EventHandler]
+        private void ShowRayToAncientItem(AppEvents.AncientItemDiscovered e)
+        {
+            if ((int)e.ACD.ItemLocation != -1)
+                return;
+
+            var rank = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID);
+            var ray = new System.Windows.Shapes.Line { StrokeThickness = 1, Stroke = rank == 1 ? Brushes.Orange : Brushes.Red };
+            ray.BindVisibilityTo(MapMarkerOptions.Instance, (options) => options.ShowRayToAncientItems);
+            _root.Children.Add(ray);
+
+            var subs = new List<IDisposable>();
+
+            subs.Add(EventBus.Default.On<AppEvents.UpdatedWorldOrigo>(evt2 =>
+            {
+                if (ray.IsVisible == false)
+                    return;
+
+                if ((int)e.ACD.ItemLocation != -1)
+                {
+                    _root.Children.Remove(ray);
+                    subs.ForEach(s => s.Dispose());
+                    return;
+                }
+
+                var pos = ProjectToUI(evt2.Origo, e.ACD.Position);
+                var origo = ProjectToUI(evt2.Origo, new Point3D(evt2.Origo.X, evt2.Origo.Y, evt2.Origo.Z));
+                ray.X1 = origo.X;
+                ray.Y1 = origo.Y;
+                ray.X2 = pos.X;
+                ray.Y2 = pos.Y;
+            }));
+
+            subs.Add(EventBus.Default.On<AppEvents.ACDLeave>(evt3 =>
+            {
+                if (evt3.ACD.Address == e.ACD.Address)
+                {
+                    _root.Children.Remove(ray);
+                    subs.ForEach(s => s.Dispose());
+                }
+            }));
         }
 
         private bool _sse;
@@ -245,6 +307,8 @@ namespace Enigma.D3.MapHack
 
                 foreach (var acd in _acdsObserver.OldItems)
                 {
+                    EventBus.Default.Publish(new AppEvents.ACDLeave(acd));
+
                     var marker = default(IMapMarker);
                     if (_minimapItemsDic.TryGetValue(acd.Address, out marker))
                     {
@@ -487,20 +551,24 @@ namespace Enigma.D3.MapHack
 
             if (_playerAcd != null)
             {
-                var origo = new Point3D(_playerAcd.Position.X, _playerAcd.Position.Y, _playerAcd.Position.Z);
+                var worldOrigo = (Point3D)_playerAcd.Position;
+                var world = _playerAcd.SWorldID;
+
+                var mapOrigo = worldOrigo;
                 if (showLargeMap)
                 {
                     var offset = _localmap.Offset;
-                    origo.Offset(offset.X, offset.Y, 0);
+                    mapOrigo.Offset(offset.X, offset.Y, 0);
                 }
-                var world = _playerAcd.SWorldID;
                 foreach (var mapItem in _minimapItems)
-                    mapItem.Update(world, origo);
+                    mapItem.Update(world, mapOrigo);
 
                 foreach (var invItem in _inventoryItems)
-                    invItem.Update(world, origo);
+                    invItem.Update(world, worldOrigo);
                 foreach (var invItem in _stashItems)
-                    invItem.Update(world, origo);
+                    invItem.Update(world, worldOrigo);
+
+                EventBus.Default.Publish(new AppEvents.UpdatedWorldOrigo(world, worldOrigo));
             }
         }
 
@@ -549,6 +617,31 @@ namespace Enigma.D3.MapHack
             _stashTab3 = null;
             _stashTab4 = null;
             _stashTab5 = null;
+        }
+
+        public Point ProjectToUI(Point3D origo, Point3D pos)
+        {
+            double xd = pos.X - origo.X;
+            double yd = pos.Y - origo.Y;
+            double zd = pos.Z - origo.Z;
+
+            double w = -0.515 * xd + -0.514 * yd + -0.686 * zd + 97.985;
+            double X = (-1.682 * xd + 1.683 * yd + 0 * zd + 7.045e-3) / w;
+            double Y = (-1.54 * xd + -1.539 * yd + 2.307 * zd + 6.161) / w;
+            //   float num7 = ((((-0.515f * num) + (-0.514f * num2)) + (-0.686f * num3)) + 97.002f) / num4;
+
+            double aspectChange = (_window.ActualWidth / _window.ActualHeight) / (4.0f / 3.0f); // 4:3 = default aspect ratio
+
+            X /= aspectChange;
+
+            double rX = (X + 1) / 2 * _window.ActualWidth;
+            double rY = (1 - Y) / 2 * _window.ActualHeight;
+
+            var uiScale = _window.ActualHeight / 1200d;
+            rX /= uiScale;
+            rY /= uiScale;
+
+            return new Point(rX, rY);
         }
     }
 }
