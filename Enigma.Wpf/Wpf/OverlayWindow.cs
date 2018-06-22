@@ -83,7 +83,8 @@ namespace Enigma.Wpf
         private void OnRefreshLayout()
         {
             Int32Rect clientRect;
-            if (Win32.GetForegroundWindow() != _parentHandle)
+            if (Win32.GetForegroundWindow() != _parentHandle &&
+                Debugger.IsAttached == false)
             {
                 clientRect = default(Int32Rect);
             }
