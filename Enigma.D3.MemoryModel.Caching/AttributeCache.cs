@@ -86,6 +86,8 @@ namespace Enigma.D3.MemoryModel.Caching
             var group = _groupCache.Items[(short)groupId];
 
             var values = new Dictionary<AttributeKey, AttributeValue>();
+            if (group == null)
+                return values;
 
             foreach (var map in new[] { group.PtrMap.Dereference(), group.Map })
             {
