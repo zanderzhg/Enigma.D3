@@ -33,8 +33,8 @@ namespace Enigma.D3.MapHack.Markers
 
         public static bool IsInterested(ACD acd)
         {
-            return Attributes.GizmoCharges.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 0 &&
-                Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
+            return Attributes.GizmoCharges.GetValue(AttributeReader.Current, acd.FastAttribGroupID) != 0 &&
+                Attributes.GizmoHasBeenOperated.GetValue(AttributeReader.Current, acd.FastAttribGroupID) != 1;
         }
     }
 }

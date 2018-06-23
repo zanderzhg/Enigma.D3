@@ -24,7 +24,7 @@ namespace Enigma.D3.MapHack.Markers
 
         public static bool IsInterested(ACD acd)
         {
-            return Attributes.ChestOpen.GetValue(AttributeReader.Instance, acd.FastAttribGroupID, 0xA0000) != 1;
+            return Attributes.ChestOpen.GetValue(AttributeReader.Current, acd.FastAttribGroupID, 0xA0000) != 1;
         }
     }
 }

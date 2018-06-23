@@ -28,7 +28,7 @@ namespace Enigma.D3.MapHack.Markers
         public MapMarkerAcdItem(ACD acd)
             : base(acd, IsInterested)
         {
-            _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, Acd.FastAttribGroupID);
+            _rank = Attributes.AncientRank.GetValue(AttributeReader.Current, Acd.FastAttribGroupID);
         }
 
         public override object CreateControl()
@@ -91,7 +91,7 @@ namespace Enigma.D3.MapHack.Markers
             base.Update(worldId, origo);
             if (_rank == 0)
             {
-                _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, Acd.FastAttribGroupID);
+                _rank = Attributes.AncientRank.GetValue(AttributeReader.Current, Acd.FastAttribGroupID);
                 if (_rank != 0) Execute.OnUIThread(() => CreateControl());
             }
         }

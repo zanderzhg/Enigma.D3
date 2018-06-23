@@ -10,5 +10,6 @@ namespace Enigma.D3.AttributeModel
     public interface IAttributeReader
     {
         bool TryGetAttributeValue(int groupId, AttributeId attribId, int modifier, out AttributeValue value);
+        Dictionary<AttributeKey, double> GetAttributes(int groupId);
     }
 }

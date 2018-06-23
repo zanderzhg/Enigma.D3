@@ -56,7 +56,7 @@ namespace Enigma.D3.MapHack.Markers
         public static bool IsInterested(ACD acd)
         {
             return (acd.CollisionFlags & 0x400) == 0 &&
-                Attributes.ChestOpen.GetValue(AttributeReader.Instance, acd.FastAttribGroupID) != 1;
+                Attributes.ChestOpen.GetValue(AttributeReader.Current, acd.FastAttribGroupID) != 1;
         }
     }
 }

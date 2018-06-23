@@ -12,6 +12,13 @@ namespace Enigma.D3.MemoryModel.Core
 {
     public class AttributeReader : IAttributeReader
     {
+        private static IAttributeReader _current;
+        public static IAttributeReader Current
+        {
+            get => _current ?? Instance;
+            set => _current = value;
+        }
+
         public static readonly AttributeReader Instance = new AttributeReader();
 
         public bool TryGetAttributeValue(int groupId, AttributeId attribId, int modifier, out AttributeValue value)

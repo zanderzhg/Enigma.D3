@@ -28,12 +28,12 @@ namespace Enigma.D3.MapHack.Markers
         public InventoryMarker(ACD acd)
             : base(acd, x => true)
         {
-            _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
+            _rank = Attributes.AncientRank.GetValue(AttributeReader.Current, acd.FastAttribGroupID);
             if (_rank > 0)
                 EventBus.Default.PublishAsync(new AppEvents.AncientItemDiscovered(acd, Slug, Name));
 
-            _quality = (ItemQuality)Attributes.ItemQualityLevel.GetValue(AttributeReader.Instance, acd.FastAttribGroupID);
-            var attribs = AttributeReader.Instance.GetAttributes(acd.FastAttribGroupID);
+            _quality = (ItemQuality)Attributes.ItemQualityLevel.GetValue(AttributeReader.Current, acd.FastAttribGroupID);
+            var attribs = AttributeReader.Current.GetAttributes(acd.FastAttribGroupID);
             if (attribs.Any(x => x.Key.Id == AttributeId.SetItemCount && x.Value > 0))
                 _quality = ItemQuality.Set;
             _requiredLevel = (int)(attribs.FirstOrDefault(x => x.Key.Id == AttributeId.Requirement && x.Key.Modifier == 57).Value);
@@ -147,7 +147,7 @@ namespace Enigma.D3.MapHack.Markers
             // If there is no ancient rank on a backpack item, try to update it. If value changed, re-create control.
             if (_rank == 0 && Acd.ItemLocation == ItemLocation.PlayerBackpack)
             {
-                _rank = Attributes.AncientRank.GetValue(AttributeReader.Instance, Acd.FastAttribGroupID);
+                _rank = Attributes.AncientRank.GetValue(AttributeReader.Current, Acd.FastAttribGroupID);
                 if (_rank != 0)
                 {
                     EventBus.Default.PublishAsync(new AppEvents.AncientItemDiscovered(Acd, Slug, Name));

@@ -56,7 +56,7 @@ namespace Enigma.D3.MemoryModel.Caching
             if (map == null)
                 map = group.Map;
 
-            map.TakeSnapshot();
+            map.TakeSnapshot(SnapshotBehavior.PreserveExistingSnapshot);
             if (map.Count == 0)
                 return false;
 
@@ -115,6 +115,12 @@ namespace Enigma.D3.MemoryModel.Caching
         public AttributeDescriptor GetDescriptor(AttributeId id)
         {
             return _descriptors[(int)id];
+        }
+
+        public Dictionary<AttributeKey, double> GetAttributes(int groupId)
+        {
+            var values = GetValues(groupId);
+            return values.ToDictionary(x => x.Key, x => GetDescriptor(x.Key.Id).DataType == typeof(int) ? (double)x.Value.Int32 : (double)x.Value.Single);
         }
     }
 }
