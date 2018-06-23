@@ -340,20 +340,33 @@ namespace Enigma.D3.MapHack
 
                         Execute.OnUIThread(() =>
                         {
-                            var offset = _inventory.UIRect.Left;
-                            var clip = new GeometryGroup();
-                            if (_tooltip2.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
-                            if (_tooltip1.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
-                            if (_tooltip0.IsVisible) clip.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
+                            if (_inventoryControl.Clip == null)
+                            {
+                                GeometryGroup g = default(GeometryGroup);
+                                _inventoryControl.Clip = new CombinedGeometry(GeometryCombineMode.Exclude, new RectangleGeometry(new Rect(_inventoryControl.RenderSize)), g = new GeometryGroup());
+                                g.Children.Add(new RectangleGeometry());
+                                g.Children.Add(new RectangleGeometry());
+                                g.Children.Add(new RectangleGeometry());
+                            }
+                            var ig = ((_inventoryControl.Clip as CombinedGeometry).Geometry2 as GeometryGroup);
+                            var ioffset = _inventory.UIRect.Left;
+                            (ig.Children[2] as RectangleGeometry).Rect = _tooltip2.IsVisible ? new Rect(_tooltip2.UIRect.Left - ioffset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height) : Rect.Empty;
+                            (ig.Children[1] as RectangleGeometry).Rect = _tooltip1.IsVisible ? new Rect(_tooltip1.UIRect.Left - ioffset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height) : Rect.Empty;
+                            (ig.Children[0] as RectangleGeometry).Rect = _tooltip0.IsVisible ? new Rect(_tooltip0.UIRect.Left - ioffset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height) : Rect.Empty;
 
-                            _inventoryControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _inventoryControl.RenderSize)), clip, GeometryCombineMode.Exclude, null);
-
-                            offset = _stash.UIRect.Left;
-                            var clip2 = new GeometryGroup();
-                            if (_tooltip2.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip2.UIRect.Left - offset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height)));
-                            if (_tooltip1.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip1.UIRect.Left - offset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height)));
-                            if (_tooltip0.IsVisible) clip2.Children.Add(new RectangleGeometry(new Rect(_tooltip0.UIRect.Left - offset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height)));
-                            _stashControl.Clip = Geometry.Combine(new RectangleGeometry(new Rect(new Point(0, 0), _stashControl.RenderSize)), clip2, GeometryCombineMode.Exclude, null);
+                            if (_stashControl.Clip == null)
+                            {
+                                GeometryGroup g = default(GeometryGroup);
+                                _stashControl.Clip = new CombinedGeometry(GeometryCombineMode.Exclude, new RectangleGeometry(new Rect(_stashControl.RenderSize)), g = new GeometryGroup());
+                                g.Children.Add(new RectangleGeometry());
+                                g.Children.Add(new RectangleGeometry());
+                                g.Children.Add(new RectangleGeometry());
+                            }
+                            var sg = ((_stashControl.Clip as CombinedGeometry).Geometry2 as GeometryGroup);
+                            var soffset = _stash.UIRect.Left;
+                            (sg.Children[2] as RectangleGeometry).Rect = _tooltip2.IsVisible ? new Rect(_tooltip2.UIRect.Left - soffset, _tooltip2.UIRect.Top, _tooltip2.UIRect.Width, _tooltip2.UIRect.Height) : Rect.Empty;
+                            (sg.Children[1] as RectangleGeometry).Rect = _tooltip1.IsVisible ? new Rect(_tooltip1.UIRect.Left - soffset, _tooltip1.UIRect.Top, _tooltip1.UIRect.Width, _tooltip1.UIRect.Height) : Rect.Empty;
+                            (sg.Children[0] as RectangleGeometry).Rect = _tooltip0.IsVisible ? new Rect(_tooltip0.UIRect.Left - soffset, _tooltip0.UIRect.Top, _tooltip0.UIRect.Width, _tooltip0.UIRect.Height) : Rect.Empty;
                         });
                     }
                 }
