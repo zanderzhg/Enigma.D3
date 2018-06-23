@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Enigma.D3.MapHack.SkillBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Enigma.D3.MapHack"
+             mc:Ignorable="d" 
+             Height="64" Canvas.Top="1110">
+    <ItemsControl ItemsSource="{Binding SkillControls}" Width="510" HorizontalAlignment="Center">
+        <ItemsControl.RenderTransform>
+            <TranslateTransform X="-112" />
+        </ItemsControl.RenderTransform>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Rows="1" Columns="7" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <ContentPresenter Content="{Binding}" Width="64" Height="64" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

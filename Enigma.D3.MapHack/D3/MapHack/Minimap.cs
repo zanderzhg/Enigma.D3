@@ -19,6 +19,7 @@ using Enigma.D3.MemoryModel.Assets;
 using Enigma.D3.Enums;
 using System.Speech.Synthesis;
 using System.Reflection;
+using Enigma.Wpf.Controls;
 
 namespace Enigma.D3.MapHack
 {
@@ -30,6 +31,7 @@ namespace Enigma.D3.MapHack
         private readonly Canvas _window;
         private readonly Canvas _root;
         private readonly MinimapControl _minimapControl;
+        private readonly SkillBar _skillBar;
         private readonly ObservableCollection<IMapMarker> _minimapItems;
         private readonly Dictionary<int, IMapMarker> _minimapItemsDic = new Dictionary<int, IMapMarker>();
         private readonly InventoryControl _inventoryControl;
@@ -45,6 +47,7 @@ namespace Enigma.D3.MapHack
         private ObjectManager _objectManager;
         private ContainerCache<ACD> _acdsObserver;
         private ContainerCache<Scene> _scenesCache;
+        private AttributeCache _attributeCache;
         private bool _isLocalActorReady;
         private MemoryModel.Controls.MinimapControl _localmap;
         private MemoryModel.Controls.Control _inventory;
@@ -81,6 +84,9 @@ namespace Enigma.D3.MapHack
             _root.Children.Add(_minimapControl = new MinimapControl { DataContext = this });
             _root.Children.Add(_inventoryControl = new InventoryControl { DataContext = this });
             _root.Children.Add(_stashControl = new StashControl { DataContext = this });
+            _root.Children.Add(_skillBar = new SkillBar { DataContext = this });
+
+            AttributeReader.Current = AttributeReader.Instance;
 
             UpdateSizeAndPosition();
             Instance = this;
@@ -104,6 +110,7 @@ namespace Enigma.D3.MapHack
         public ObservableCollection<IMapMarker> MinimapMarkers => _minimapItems;
         public ObservableCollection<IMapMarker> InventoryMarkers => _inventoryItems;
         public ObservableCollection<IMapMarker> StashMarkers => _stashItems;
+        public ObservableCollection<OutlinedTextBlock> SkillControls { get; } = new ObservableCollection<OutlinedTextBlock>();
         public MapMarkerOptions Options { get; } = MapMarkerOptions.Instance;
 
         public bool ShowLargeMap
@@ -151,7 +158,7 @@ namespace Enigma.D3.MapHack
 
                     synthesizer.SetOutputToDefaultAudioDevice();
 
-                    var primal = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID) > 1;
+                    var primal = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Current, e.ACD.FastAttribGroupID) > 1;
                     var rank = primal ? "Primal" : "Ancient";
                     var name = e.Name;
                     if (name.StartsWith("the ", StringComparison.OrdinalIgnoreCase))
@@ -167,7 +174,7 @@ namespace Enigma.D3.MapHack
             if ((int)e.ACD.ItemLocation != -1)
                 return;
 
-            var rank = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Instance, e.ACD.FastAttribGroupID);
+            var rank = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Current, e.ACD.FastAttribGroupID);
             var ray = new System.Windows.Shapes.Line { StrokeThickness = 1, Stroke = rank == 1 ? Brushes.Orange : Brushes.Red };
             ray.BindVisibilityTo(MapMarkerOptions.Instance, (options) => options.ShowRayToAncientItems);
             _root.Children.Add(ray);
@@ -246,6 +253,52 @@ namespace Enigma.D3.MapHack
                     _playerAcd = GetLocalPlayerACD(ctx);
                 if (_playerAcd == null)
                     return; // No player (lobby?)
+
+                if (_attributeCache == null)
+                    AttributeReader.Current = _attributeCache = new AttributeCache(ctx, _objectManager.FastAttrib);
+                _attributeCache.Update();
+
+                if (false)//MapMarkerOptions.Instance.ShowSkillCooldowns)
+                {
+                    var skills = ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].PlayerSavedData.ActiveSkillSavedData;
+                    var cdExpirations = skills.Select(x => AttributeModel.Attributes.PowerCooldown.GetValue(AttributeReader.Current, _playerAcd.FastAttribGroupID, x.PowerSNO)).ToArray();
+                    var cdRefills = skills.Select(x => AttributeModel.Attributes.NextChargeGainedtime.GetValue(AttributeReader.Current, _playerAcd.FastAttribGroupID, x.PowerSNO))
+                        .Select(x => x == 0 ? 0 : (x - tick) / 60d).ToArray();
+                    var cdRemaining = cdExpirations.Select(x => x == -1 ? 0d : (x - tick) / 60d).ToArray();
+                    var charges = skills.Select(x => AttributeModel.Attributes.SkillCharges.GetValue(AttributeReader.Current, _playerAcd.FastAttribGroupID, x.PowerSNO)).ToArray();
+
+                    Execute.OnUIThreadAsync(() =>
+                    {
+                        if (SkillControls.Count == 0)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                var label = new OutlinedTextBlock
+                                {
+                                    Fill = Brushes.White,
+                                    Stroke = Brushes.Black,
+                                    StrokeThickness = 2,
+                                    FontWeight = FontWeights.Bold,
+                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    TextAlignment = TextAlignment.Center,
+                                    FontSize = 24
+                                };
+                                SkillControls.Add(label);
+                            }
+                        }
+                        for (int i = 0; i < 6; i++)
+                        {
+                            var remap = i <= 1 ? i + 4 : i - 2;
+                            var wait = Math.Max(cdRemaining[i], charges[i] == 0 ? cdRefills[i] : 0);
+                            SkillControls[remap].Visibility = wait == 0 ? Visibility.Hidden : Visibility.Visible;
+                            var text = wait.ToString("0");
+                            if (wait < 1)
+                                text = wait.ToString("0.0");
+                            SkillControls[remap].Text = text;
+                        }
+                    });
+                }
 
                 var ui = _objectManager.UIManager;
                 var uimap = ui.PtrControlsMap.Dereference();

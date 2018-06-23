@@ -87,6 +87,9 @@
     <Compile Include="D3\MapHack\AppEvents\AncientItemDiscovered.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerAcdServerProp.cs" />
     <Compile Include="D3\MapHack\Markers\MapMarkerTrickle.cs" />
+    <Compile Include="D3\MapHack\SkillBar.xaml.cs">
+      <DependentUpon>SkillBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="D3\MapHack\Stash.xaml.cs">
       <DependentUpon>Stash.xaml</DependentUpon>
     </Compile>
@@ -148,6 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="D3\Bootloader\MultiProcessSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="D3\MapHack\SkillBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
