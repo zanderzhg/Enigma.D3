@@ -142,7 +142,7 @@ namespace Enigma.D3.MapHack
         [EventHandler]
         private void AnnounceAncientItem(AppEvents.AncientItemDiscovered e)
         {
-            if ((int)e.ACD.ItemLocation != -1)
+            if ((int)e.ACD.ItemLocation != -1 || e.ACD.SSceneID == 0 || e.ACD.SWorldID == 0)
                 return;
 
             if (!MapMarkerOptions.Instance.AnnounceAncientItems)
@@ -171,7 +171,7 @@ namespace Enigma.D3.MapHack
         [EventHandler]
         private void ShowRayToAncientItem(AppEvents.AncientItemDiscovered e)
         {
-            if ((int)e.ACD.ItemLocation != -1)
+            if ((int)e.ACD.ItemLocation != -1 || e.ACD.SSceneID == 0 || e.ACD.SWorldID == 0)
                 return;
 
             var rank = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Current, e.ACD.FastAttribGroupID);
@@ -494,7 +494,7 @@ namespace Enigma.D3.MapHack
                         _minimapItemsDic.Add(trickle.x00_Id, item);
                     }
                 }
-
+                
                 UpdateUI(itemsToAdd, itemsToRemove);
             }
             catch (Exception exception)
