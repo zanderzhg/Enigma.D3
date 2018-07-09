@@ -39,5 +39,10 @@ namespace Enigma.Wpf
             });
             return taskSource.Task;
         }
+
+        public static void OnThreadPool(Action action)
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem((state) => action());
+        }
     }
 }

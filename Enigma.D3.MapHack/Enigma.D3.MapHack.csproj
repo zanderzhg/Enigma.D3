@@ -82,6 +82,7 @@
     <Compile Include="D3\Bootloader\MultiProcessSelector.xaml.cs">
       <DependentUpon>MultiProcessSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="D3\MapHack\ACDExtensions.cs" />
     <Compile Include="D3\MapHack\AppEvents\ACDLeave.cs" />
     <Compile Include="D3\MapHack\EventBus.cs" />
     <Compile Include="D3\MapHack\AppEvents\AncientItemDiscovered.cs" />

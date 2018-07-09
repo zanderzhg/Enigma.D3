@@ -142,13 +142,13 @@ namespace Enigma.D3.MapHack
         [EventHandler]
         private void AnnounceAncientItem(AppEvents.AncientItemDiscovered e)
         {
-            if ((int)e.ACD.ItemLocation != -1 || e.ACD.SSceneID == 0 || e.ACD.SWorldID == 0)
+            if (e.ACD.IsGroundItem() == false)
                 return;
 
-            if (!MapMarkerOptions.Instance.AnnounceAncientItems)
+            if (MapMarkerOptions.Instance.AnnounceAncientItems == false)
                 return;
 
-            System.Threading.ThreadPool.QueueUserWorkItem((state) =>
+            Execute.OnThreadPool(() =>
             {
                 using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
                 {
@@ -165,13 +165,13 @@ namespace Enigma.D3.MapHack
                         name = name.Substring(4);
                     synthesizer.Speak($"{rank} {name}!");
                 }
-            }, e.ACD);
+            });
         }
 
         [EventHandler]
         private void ShowRayToAncientItem(AppEvents.AncientItemDiscovered e)
         {
-            if ((int)e.ACD.ItemLocation != -1 || e.ACD.SSceneID == 0 || e.ACD.SWorldID == 0)
+            if (e.ACD.IsGroundItem() == false)
                 return;
 
             var rank = AttributeModel.Attributes.AncientRank.GetValue(AttributeReader.Current, e.ACD.FastAttribGroupID);
@@ -494,7 +494,7 @@ namespace Enigma.D3.MapHack
                         _minimapItemsDic.Add(trickle.x00_Id, item);
                     }
                 }
-                
+
                 UpdateUI(itemsToAdd, itemsToRemove);
             }
             catch (Exception exception)
