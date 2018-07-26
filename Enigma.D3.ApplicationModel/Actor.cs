@@ -41,7 +41,7 @@ namespace Enigma.D3.ApplicationModel
         {
             if (_attributeReader == null || ACD == null)
                 return attribute.DefaultValue;
-            return attribute.GetValue(_attributeReader, ACD.FastAttribGroupID);
+            return attribute.GetValue(_attributeReader, ACD.FastAttribGroupID, modifier);
         }
 
         public double GetAttributeValue(AttributeId attributeId, int modifier = -1)
