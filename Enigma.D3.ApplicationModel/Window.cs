@@ -14,6 +14,8 @@ namespace Enigma.D3.ApplicationModel
 
         public Int32Rect ClientRect { get; internal set; }
 
+        public bool HasInputFocus => Win32.GetForegroundWindow() == Handle;
+
         internal static Int32Rect GetClientRect(IntPtr windowHandle)
         {
             Int32Rect clientRect;
@@ -31,6 +33,9 @@ namespace Enigma.D3.ApplicationModel
 
             [DllImport(User32)]
             internal static extern bool ClientToScreen(IntPtr windowHandle, ref Int32Rect point);
+
+            [DllImport(User32)]
+            internal static extern IntPtr GetForegroundWindow();
         }
     }
 }
