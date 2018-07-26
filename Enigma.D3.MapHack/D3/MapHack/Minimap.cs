@@ -91,6 +91,12 @@ namespace Enigma.D3.MapHack
             UpdateSizeAndPosition();
             Instance = this;
 
+            Options.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Options.ShowSkillCooldowns) && Options.ShowSkillCooldowns == false)
+                    SkillControls.Clear();
+            };
+
             foreach (var methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(x => x.GetCustomAttribute<EventHandlerAttribute>() != null))
             {
@@ -258,7 +264,7 @@ namespace Enigma.D3.MapHack
                     AttributeReader.Current = _attributeCache = new AttributeCache(ctx, _objectManager.FastAttrib);
                 _attributeCache.Update();
 
-                if (false)//MapMarkerOptions.Instance.ShowSkillCooldowns)
+                if (MapMarkerOptions.Instance.ShowSkillCooldowns)
                 {
                     var skills = ctx.DataSegment.ObjectManager.PlayerDataManager[ctx.DataSegment.ObjectManager.Player.LocalPlayerIndex].PlayerSavedData.ActiveSkillSavedData;
                     var cdExpirations = skills.Select(x => AttributeModel.Attributes.PowerCooldown.GetValue(AttributeReader.Current, _playerAcd.FastAttribGroupID, x.PowerSNO)).ToArray();
