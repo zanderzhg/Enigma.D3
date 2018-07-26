@@ -56,14 +56,14 @@ namespace Enigma.D3.ApplicationModel
             Game = Game ?? new Game();
 
             foreach (var oldItem in _worldCache.OldItems)
-                Game.WorldProxies.Remove(oldItem.SWorldID);
+                Game.WorldProxies.Remove(oldItem.ID);
             foreach (var newItem in _worldCache.NewItems)
-                Game.WorldProxies.Add(newItem.SWorldID, new World { Memory = newItem, WorldSNO = newItem.WorldSNO });
+                Game.WorldProxies.Add(newItem.ID, new World { Memory = newItem, WorldSNO = newItem.WorldSNO });
 
             foreach (var oldItem in _sceneCache.OldItems)
-                Game.SceneProxies.Remove(oldItem.SSceneID);
+                Game.SceneProxies.Remove(oldItem.ID);
             foreach (var newItem in _sceneCache.NewItems)
-                Game.SceneProxies.Add(newItem.SSceneID, new Scene { Memory = newItem, World = Game.WorldProxies[newItem.SWorldID], LevelAreaSNO = newItem.LevelAreaSNO, SceneSNO = newItem.SceneSNO });
+                Game.SceneProxies.Add(newItem.ID, new Scene { Memory = newItem, World = Game.GetWorld(newItem.SWorldID), LevelAreaSNO = newItem.LevelAreaSNO, SceneSNO = newItem.SceneSNO });
 
             foreach (var oldMonster in _acdCache.OldItems.Where(x => x.ActorType == ActorType.Monster))
                 Game.MonsterProxies.Remove(oldMonster.ID);
@@ -87,10 +87,13 @@ namespace Enigma.D3.ApplicationModel
             Game.Player.HeroProfile.Class = playerData.HeroClass;
             Game.Player.HeroProfile.Level = playerData.Level;
             Game.Player.HeroProfile.Paragon = playerData.AltLevel;
-            Game.Player.ACD = _acdCache.Items[(short)playerData.ACDID];
-            Game.Player.Location.World = Game.WorldProxies[Game.Player.ACD.SWorldID];
-            Game.Player.Location.Scene = Game.SceneProxies[Game.Player.ACD.SSceneID];
-            Game.Player.Location.Position = Game.Player.ACD.Position;
+            Game.Player.ACD = playerData.ACDID == -1 ? null : _acdCache.Items[(short)playerData.ACDID];
+            if (Game.Player.ACD != null)
+            {
+                Game.Player.Location.World = Game.GetWorld(Game.Player.ACD.SWorldID);
+                Game.Player.Location.Scene = Game.GetScene(Game.Player.ACD.SSceneID);
+                Game.Player.Location.Position = Game.Player.ACD.Position;
+            }
             var activeSkills = playerData.PlayerSavedData.ActiveSkillSavedData;
             for (int i = 0; i < 6; i++)
             {
@@ -129,8 +132,8 @@ namespace Enigma.D3.ApplicationModel
         private Monster CreateMonsterProxy(ACD acd)
         {
             var monster = new Monster { ACD = acd };
-            monster.Location.World = Game.WorldProxies[acd.SWorldID];
-            monster.Location.Scene = Game.SceneProxies[acd.SSceneID];
+            monster.Location.World = Game.GetWorld(acd.SWorldID);
+            monster.Location.Scene = Game.GetScene(acd.SSceneID);
             monster.Location.Position = acd.Position;
             return monster;
         }
@@ -140,8 +143,8 @@ namespace Enigma.D3.ApplicationModel
             var item = new Item { ACD = acd };
             if ((int)acd.ItemLocation == -1)
             {
-                item.Location.World = Game.WorldProxies[acd.SWorldID];
-                item.Location.Scene = Game.SceneProxies[acd.SSceneID];
+                item.Location.World = Game.GetWorld(acd.SWorldID);
+                item.Location.Scene = Game.GetScene(acd.SSceneID);
                 item.Location.Position = acd.Position;
             }
             return item;

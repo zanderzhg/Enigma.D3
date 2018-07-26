@@ -14,6 +14,16 @@ namespace Enigma.D3.ApplicationModel
         internal Dictionary<int, World> WorldProxies { get; } = new Dictionary<int, World>();
         internal Dictionary<int, Scene> SceneProxies { get; } = new Dictionary<int, Scene>();
 
+        internal World GetWorld(int sworldID)
+        {
+            return Worlds.FirstOrDefault(x => x.Memory.SWorldID == sworldID);
+        }
+
+        internal Scene GetScene(int ssceneID)
+        {
+            return Scenes.FirstOrDefault(x => x.Memory.SSceneID == ssceneID);
+        }
+
         public int Tick { get; internal set; }
 
         public TimeSpan Clock => TimeSpan.FromSeconds((double)Tick / 60);
@@ -29,5 +39,7 @@ namespace Enigma.D3.ApplicationModel
         public IEnumerable<Item> Loot => Items.Where(x => (int)x.ItemLocation == -1);
 
         public IEnumerable<World> Worlds => WorldProxies.Values;
+
+        public IEnumerable<Scene> Scenes => SceneProxies.Values;
     }
 }
