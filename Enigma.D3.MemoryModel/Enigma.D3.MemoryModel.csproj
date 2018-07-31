@@ -87,6 +87,7 @@
     <Compile Include="Core\World.cs" />
     <Compile Include="ISegment.cs" />
     <Compile Include="MemoryContext.cs" />
+    <Compile Include="MemoryContextInitializer.cs" />
     <Compile Include="MemoryManagement\Allocator.cs" />
     <Compile Include="MemoryManagement\HeapNode.cs" />
     <Compile Include="MemoryManagement\LocalHeap.cs" />
@@ -104,6 +105,8 @@
     <Compile Include="Preferences\VideoPreferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Segments\DataSegment.cs" />
+    <Compile Include="SymbolPatching\SmallObjectMapCache.cs" />
+    <Compile Include="SymbolPatching\SymbolPatcher64.cs" />
     <Compile Include="SymbolTable.cs" />
     <Compile Include="SymbolTable.X64.cs" />
     <Compile Include="SymbolTable.X86.cs" />

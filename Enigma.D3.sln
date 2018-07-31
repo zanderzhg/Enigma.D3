@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.ApplicationModel"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.MemoryModel.Caching", "Enigma.D3.MemoryModel.Caching\Enigma.D3.MemoryModel.Caching.csproj", "{DD846721-049F-4155-86DB-07EEE2D9E562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.D3.MemoryModel.SymbolPatching", "Enigma.D3.MemoryModel.SymbolPatching\Enigma.D3.MemoryModel.SymbolPatching.csproj", "{04388369-1C00-4B91-8C01-16F1809A5047}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Enigma.D3.Assets.Generated\Enigma.D3.Assets.Generated.projitems*{4b2bf057-3425-4520-8535-3372d330c653}*SharedItemsImports = 4
@@ -151,18 +149,6 @@ Global
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x64.Build.0 = Release|Any CPU
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD846721-049F-4155-86DB-07EEE2D9E562}.Release|x86.Build.0 = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x64.Build.0 = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Debug|x86.Build.0 = Debug|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x64.ActiveCfg = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x64.Build.0 = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x86.ActiveCfg = Release|Any CPU
-		{04388369-1C00-4B91-8C01-16F1809A5047}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

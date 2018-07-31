@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Threading.Tasks;
 using System.Threading;
@@ -11,7 +10,6 @@ using Enigma.D3.MapHack;
 using Enigma.D3.MemoryModel;
 using System.Diagnostics;
 using Enigma.Memory;
-using Enigma.D3.MemoryModel.SymbolPatching;
 using Enigma.D3.MapHack.Markers;
 
 namespace Enigma.D3.Bootloader
@@ -70,56 +68,22 @@ namespace Enigma.D3.Bootloader
 
         private MemoryContext CreateMemoryContext()
         {
-            var ctx = default(MemoryContext);
-            while (ctx == null)
+            return new MemoryContextInitializer
             {
-                var processes = Process.GetProcessesByName("Diablo III64");
-                if (processes.Any())
+                Log = (message) => Trace.WriteLine(message),
+                MultiProcessHandler = (processes) =>
                 {
                     var process = default(Process);
-                    if (processes.Length == 1)
+                    Execute.OnUIThread(() =>
                     {
-                        process = processes[0];
-                    }
-                    else
-                    {
-                        Execute.OnUIThread(() =>
-                        {
-                            var selector = new MultiProcessSelector(processes);
-                            selector.Owner = Shell.Instance;
-                            selector.ShowDialog();
-                            process = selector.SelectedProcess;
-                        });
-                    }
-
-                    if (process != null)
-                    {
-                        ctx = MemoryContext.FromProcess(process);
-                        break;
-                    }
+                        var selector = new MultiProcessSelector(processes);
+                        selector.Owner = Shell.Instance;
+                        selector.ShowDialog();
+                        process = selector.SelectedProcess;
+                    });
+                    return process;
                 }
-                else
-                {
-                    Trace.WriteLine("Could not find any process.");
-                }
-                Thread.Sleep(1000);
-            }
-            Trace.WriteLine("Found a process.");
-
-            while (true)
-            {
-                try
-                {
-                    SymbolPatcher64.UpdateSymbolTable(ctx);
-                    Trace.WriteLine("Symbol table updated.");
-                    return ctx;
-                }
-                catch (Exception exception)
-                {
-                    Trace.WriteLine($"Could not update symbol table, optimized for patch {SymbolPatcher64.VerifiedBuild}, running {ctx.MainModuleVersion.Revision}: " + exception.Message);
-                    Thread.Sleep(5000);
-                }
-            }
+            }.Invoke();
         }
     }
 }
