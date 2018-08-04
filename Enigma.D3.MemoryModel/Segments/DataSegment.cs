@@ -70,5 +70,8 @@ namespace Enigma.D3.MemoryModel.Segments
 
         public GameBalanceStorage GameBalanceStorage
             => Memory.Reader.Read<Ptr<GameBalanceStorage>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.GameBalanceStorage).Dereference();
+
+        public BuffManager BuffManager
+            => Memory.Reader.Read<Ptr<BuffManager>>(MemoryContext.Current.ImageBase + SymbolTable.Current.DataSegment.BuffManager).Dereference();
     }
 }

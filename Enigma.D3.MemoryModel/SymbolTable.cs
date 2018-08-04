@@ -130,6 +130,7 @@ namespace Enigma.D3.MemoryModel
         public ulong ContainerManager;
         public ulong MessageDescriptor;
         public ulong GameBalanceStorage;
+        public ulong BuffManager;
     }
 
     public struct ObjectManagerSymbols

@@ -63,6 +63,8 @@
     <Compile Include="Core\Actor.cs" />
     <Compile Include="Core\Animation.cs" />
     <Compile Include="Core\AttributeReader.cs" />
+    <Compile Include="Core\Buff.cs" />
+    <Compile Include="Core\BuffManager.cs" />
     <Compile Include="Core\FastAttrib.cs" />
     <Compile Include="Core\FastAttribGroup.cs" />
     <Compile Include="Core\FloatingNumber.cs" />
