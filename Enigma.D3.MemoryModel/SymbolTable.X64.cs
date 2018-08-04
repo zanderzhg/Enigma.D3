@@ -143,7 +143,7 @@ namespace Enigma.D3.MemoryModel
             QuestManager.SizeOf = 0x4A0;
             QuestManager.Quests = 0x30;
 
-            Quest.SizeOf = 0x178;
+            Quest.SizeOf = 0x168;
 
             WaypointManager.SizeOf = 0x18;
             WaypointManager.Array = 0x0;
