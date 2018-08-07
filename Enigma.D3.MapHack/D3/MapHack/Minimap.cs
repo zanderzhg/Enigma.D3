@@ -116,7 +116,7 @@ namespace Enigma.D3.MapHack
         public ObservableCollection<IMapMarker> MinimapMarkers => _minimapItems;
         public ObservableCollection<IMapMarker> InventoryMarkers => _inventoryItems;
         public ObservableCollection<IMapMarker> StashMarkers => _stashItems;
-        public ObservableCollection<OutlinedTextBlock> SkillControls { get; } = new ObservableCollection<OutlinedTextBlock>();
+        public ObservableCollection<SkillBarSlot> SkillControls { get; } = new ObservableCollection<SkillBarSlot>();
         public MapMarkerOptions Options { get; } = MapMarkerOptions.Instance;
 
         public bool ShowLargeMap
@@ -279,28 +279,18 @@ namespace Enigma.D3.MapHack
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                var label = new OutlinedTextBlock
-                                {
-                                    Fill = Brushes.White,
-                                    Stroke = Brushes.Black,
-                                    StrokeThickness = 2,
-                                    FontWeight = FontWeights.Bold,
-                                    HorizontalAlignment = HorizontalAlignment.Center,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    TextAlignment = TextAlignment.Center,
-                                    FontSize = 24
-                                };
-                                SkillControls.Add(label);
+                                SkillControls.Add(new SkillBarSlot { Index = i });
                             }
                         }
                         for (int i = 0; i < 6; i++)
                         {
                             var remap = i <= 1 ? i + 4 : i - 2;
                             var wait = Math.Max(cdRemaining[i], charges[i] == 0 ? cdRefills[i] : 0);
-                            SkillControls[remap].Visibility = wait == 0 ? Visibility.Hidden : Visibility.Visible;
                             var text = wait.ToString("0");
                             if (wait < 1)
                                 text = wait.ToString("0.0");
+                            if (wait == 0)
+                                text = null;
                             SkillControls[remap].Text = text;
                         }
                     });
@@ -657,6 +647,8 @@ namespace Enigma.D3.MapHack
 
         private void Reset()
         {
+            _attributeCache = null;
+
             _minimapItemsDic.Clear();
             _inventoryItemsDic.Clear();
             _stashItemsDic.Clear();
@@ -689,6 +681,10 @@ namespace Enigma.D3.MapHack
             _stashTab3 = null;
             _stashTab4 = null;
             _stashTab5 = null;
+            Execute.OnUIThread(() =>
+            {
+                SkillControls.Clear();
+            });
         }
 
         public Point ProjectToUI(Point3D origo, Point3D pos)

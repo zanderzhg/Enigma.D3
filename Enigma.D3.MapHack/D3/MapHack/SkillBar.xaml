@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Enigma.D3.MapHack"
+             xmlns:controls="clr-namespace:Enigma.Wpf.Controls;assembly=Enigma.Wpf"
              mc:Ignorable="d" 
-             Height="64" Canvas.Top="1110">
-    <ItemsControl ItemsSource="{Binding SkillControls}" Width="510" HorizontalAlignment="Center">
+             Height="64" Canvas.Top="1111">
+    <ItemsControl ItemsSource="{Binding SkillControls}" Width="520" HorizontalAlignment="Center">
         <ItemsControl.RenderTransform>
             <TranslateTransform X="-112" />
         </ItemsControl.RenderTransform>
@@ -17,7 +18,42 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <ContentPresenter Content="{Binding}" Width="64" Height="64" />
+                <Border Background="Blue" Opacity="0.8">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Width" Value="64" />
+                            <Setter Property="Height" Value="64" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Index}" Value="4">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="0.935" ScaleY="0.935" CenterX="32" CenterY="32" />
+                                                <TranslateTransform X="2" />
+                                            </TransformGroup>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Index}" Value="5">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="0.935" ScaleY="0.935" CenterX="32" CenterY="32" />
+                                                <TranslateTransform X="2" />
+                                            </TransformGroup>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <controls:OutlinedTextBlock
+                        Text="{Binding Text}"
+                        Fill="White" Stroke="Black" StrokeThickness="2"
+                        FontSize="24" FontWeight="Bold"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
+                    </controls:OutlinedTextBlock>
+                </Border>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>
