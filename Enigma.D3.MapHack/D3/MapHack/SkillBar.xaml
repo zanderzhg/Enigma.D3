@@ -18,7 +18,7 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Border Background="Blue" Opacity="0.8">
+                <Border>
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Width" Value="64" />
