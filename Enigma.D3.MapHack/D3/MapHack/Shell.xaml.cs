@@ -29,7 +29,8 @@ namespace Enigma.D3.MapHack
 
         public MapMarkerOptions Options { get; private set; }
         public bool IsAttached { get { return _isAttached; } set { if (_isAttached != value) { _isAttached = value; Refresh("IsAttached"); } } }
-        
+        public string Version => new MemoryModel.SymbolTable(MemoryModel.Platform.X64).Version.ToString();
+
         public Shell()
         {
             Options = MapMarkerOptions.Instance;
