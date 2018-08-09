@@ -11,7 +11,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace Enigma.Memory
 {
-    public class ProcessMemoryReader : MemoryReader, IHasMainModuleVersion, IHasImageBase
+    public class ProcessMemoryReader : MemoryReader, IProcessImageReader
     {
         private readonly Process _process;
         private readonly MemoryAddress _minValidAddress;
@@ -59,6 +59,19 @@ namespace Enigma.Memory
 
         public Process Process { get { return _process; } }
 
+        public MemoryAddress PebAddress => GetPebAddress();
+
+        private MemoryAddress GetPebAddress()
+        {
+            var pbi = default(Win32.PROCESS_BASIC_INFORMATION);
+            var pbsize = default(int);
+            
+            if (Win32.NtQueryInformationProcess(Process.Handle, 0, ref pbi, Marshal.SizeOf(typeof(Win32.PROCESS_BASIC_INFORMATION)), out pbsize))
+                throw new Win32Exception();
+
+            return pbi.PebBaseAddress;
+        }
+
         protected unsafe override void UnsafeReadBytesCore(MemoryAddress address, byte[] buffer, int offset, int count)
         {
             fixed (byte* pBuffer = &buffer[offset])
@@ -98,6 +111,7 @@ namespace Enigma.Memory
         {
             private const string Kernel32 = "kernel32.dll";
             private const string DbgHelp = "DbgHelp.dll";
+            private const string NtDll = "ntdll.dll";
 
             [DllImport(Kernel32, SetLastError = true)]
             public unsafe static extern bool ReadProcessMemory(
@@ -116,6 +130,20 @@ namespace Enigma.Memory
                 IntPtr exceptionParam,
                 IntPtr userStreamParam,
                 IntPtr callbackParam);
+
+            [DllImport(NtDll, SetLastError = true)]
+            public static extern bool NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref PROCESS_BASIC_INFORMATION pbi, int cb, out int pSize);
+
+            [StructLayout(LayoutKind.Sequential, Pack = 1)]
+            public struct PROCESS_BASIC_INFORMATION
+            {
+                public IntPtr ExitStatus;
+                public IntPtr PebBaseAddress;
+                public IntPtr AffinityMask;
+                public IntPtr BasePriority;
+                public UIntPtr UniqueProcessId;
+                public IntPtr InheritedFromUniqueProcessId;
+            }
         }
     }
 }

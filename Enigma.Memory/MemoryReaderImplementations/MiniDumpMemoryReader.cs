@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Enigma.Memory
 {
-    public class MiniDumpMemoryReader : MemoryReader, IHasMainModuleVersion, IHasImageBase
+    public class MiniDumpMemoryReader : MemoryReader, IProcessImageReader
     {
         private readonly FileStream _fileStream;
         private readonly MemoryAddress _minValidAddress;
@@ -91,6 +91,8 @@ namespace Enigma.Memory
         public string Path { get { return _fileStream.Name; } }
 
         public MiniDump.Thread[] Threads => _threads;
+
+        public MemoryAddress PebAddress => Read<MemoryAddress>(Threads[0].Teb + 0x60);
 
         protected override void UnsafeReadBytesCore(MemoryAddress address, byte[] buffer, int offset, int count)
         {

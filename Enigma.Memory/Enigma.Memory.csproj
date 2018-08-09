@@ -49,6 +49,7 @@
     <Compile Include="IHasImageBase.cs" />
     <Compile Include="IMemory.cs" />
     <Compile Include="Factories\MemoryPointerFactory.cs" />
+    <Compile Include="IProcessImageReader.cs" />
     <Compile Include="MemoryReaderImplementations\BufferMemoryReader.cs" />
     <Compile Include="MemoryReaderImplementations\FileMemoryReader.cs" />
     <Compile Include="IHasMainModuleVersion.cs" />
