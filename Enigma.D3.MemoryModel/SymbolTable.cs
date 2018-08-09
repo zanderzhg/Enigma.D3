@@ -89,15 +89,16 @@ namespace Enigma.D3.MemoryModel
     {
         public uint RActorACDID;
         public uint PlayerDataACDID;
+        public uint PlayerDataActorID;
         public uint ActorID;
         public uint ACDActorSNO;
         public uint ActorType;
         public uint SSceneID;
         public uint SWorldID;
         public uint LevelAreaSNO;
-        public uint GizmoType;
         public uint TimedEventSNO;
 
+        public uint GizmoType;
         public uint ActorX8C;
         public uint RActorActorSNO;
         public uint ActorX9C;
@@ -176,6 +177,7 @@ namespace Enigma.D3.MemoryModel
         public int Name;
         public int NameLength;
         public int ACDID;
+        public int ActorSNO;
         public int SWorldID;
         public int SSceneID;
     }

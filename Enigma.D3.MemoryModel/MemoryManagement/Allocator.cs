@@ -21,7 +21,7 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
         public Ptr MemVT => Read<Ptr>(X86 ? 0x14 : 0x20);
         public uint GoodFood => Read<uint>(X86 ? 0x18 : 0x28); // 0xFEEDFACE when disposed.
 
-        public bool IsValid => GoodFood == 0xD006F00D;
+        public bool IsValid => GoodFood == 0x600DF00D;
 
         public class SinglyLinkedList : MemoryObject, IEnumerable<Block>
         {

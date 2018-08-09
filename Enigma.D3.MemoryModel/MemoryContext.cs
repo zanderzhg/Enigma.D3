@@ -104,7 +104,7 @@ namespace Enigma.D3.MemoryModel
 
             TypeHelper.PointerSize = Memory.Reader.PointerSize;
             SymbolTable.Current = new SymbolTable(this);
-            DataSegment = Memory.Reader.Read<DataSegment>(SymbolTable.Current.DataSegment.Address);
+            DataSegment = Memory.Reader.Read<DataSegment>(ImageBase + SymbolTable.Current.DataSegment.Address);
             TypeHelper.InvalidateCache(); // Required in case we make a switch between 32-bit and 64-bit context.
 
             Current = this;

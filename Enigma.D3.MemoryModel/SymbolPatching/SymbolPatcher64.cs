@@ -12,7 +12,7 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 {
     public static class SymbolPatcher64
     {
-        public static int VerifiedBuild = 50649;
+        public static int VerifiedBuild = 51663;
 
         public static void UpdateSymbolTable(MemoryContext ctx, SymbolTable symbols = null)
         {
@@ -25,19 +25,22 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 
             var cache = SmallObjectMapCache.Create(mm);
 
-            var ractors = IgnoreException(() => FindContainerByItemSize<Actor>(ctx), "5198B576-3D06-46E5-AE33-4169EA222A6E");
-            if (ractors == null)
-                throw new Exception("F064FB82-0DE9-4AA2-B50D-034600D64265");
+            var objgmraddr = ReadRVA<ulong>(ctx, 0x022AB2D0) ^ ReadRVA<ulong>(ctx, 0x020239DD) - 0x5DADAB79B8CED10FUL;
+            var objmgr = ctx.Memory.Reader.Read<ObjectManager>(objgmraddr);
 
-            var objmgr_ractors = default(int);
-            var objmgr_block = IgnoreException(() => mm.LocalHeap.MainBlocks
-                .Where(x => x.IsUsed)
-                .FindBlocksOfSize(ObjectManager.SizeOf)
-                .FindBlockThatPointsTo(ractors.Address, out objmgr_ractors), "74E7AE26-8344-4348-A3F9-C7FB3E3F5EA6");
-            if (objmgr_block == null)
-                throw new Exception("90DEA855-FF3E-4AEB-9D25-59C5C58BC6A4");
+            //var ractors = IgnoreException(() => FindContainerByItemSize<Actor>(ctx), "5198B576-3D06-46E5-AE33-4169EA222A6E");
+            //if (ractors == null)
+            //    throw new Exception("F064FB82-0DE9-4AA2-B50D-034600D64265");
+            //
+            //var objmgr_ractors = default(int);
+            //var objmgr_block = IgnoreException(() => mm.LocalHeap.MainBlocks
+            //    .Where(x => x.IsUsed)
+            //    .FindBlocksOfSize(ObjectManager.SizeOf)
+            //    .FindBlockThatPointsTo(ractors.Address, out objmgr_ractors), "74E7AE26-8344-4348-A3F9-C7FB3E3F5EA6");
+            //if (objmgr_block == null)
+            //    throw new Exception("90DEA855-FF3E-4AEB-9D25-59C5C58BC6A4");
 
-            var acds = IgnoreException(() => FindContainerByItemSize<ACD>(ctx), "79F51792-02EF-462F-8476-24AA15C7101E");
+            var acds = IgnoreException(() => FindExpandableContainerByItemSize<ACD>(ctx), "79F51792-02EF-462F-8476-24AA15C7101E");
             if (acds == null)
                 throw new Exception("AF1A0A69-8A18-4CB0-9A78-705CEB17DE21");
 
@@ -74,8 +77,8 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
                     .FirstOrDefault(), "4007A2EE-2424-49CF-A6E0-8DD424B09F1C");
             }
 
-            symbols.Dynamic.ObjectManager = objmgr_block.Data.ValueAddress;
-            symbols.ObjectManager.Actors = objmgr_ractors;
+            symbols.Dynamic.ObjectManager = objmgr.Address;
+            //symbols.ObjectManager.Actors = objmgr_ractors;
 
             symbols.Dynamic.ACDManager = acdmgr_block.Data.ValueAddress;
             symbols.ACDManager.ActorCommonData = acdmgr_acds;
@@ -88,22 +91,21 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
 
             try
             {
-                // Updated
-                symbols.CryptoKeys.RActorACDID = (uint)(0x70AFAC82 - ReadRVA<long>(ctx, 0x2004E7B));
-                symbols.CryptoKeys.PlayerDataACDID = (uint)(0x308E2629DE27204C - ReadRVA<long>(ctx, 0x2005762));
-                symbols.CryptoKeys.ActorID = (uint)(ReadRVA<long>(ctx, 0x200535F) - (long)__ROL8__(0xBA1BD6815430868B, 1));
-                symbols.CryptoKeys.ACDActorSNO = (uint)(ReadRVA<long>(ctx, 0x2004E0F) + 0x5E01D2C);
-                symbols.CryptoKeys.ActorType = (uint)(__ROR8__(ReadRVA<ulong>(ctx, 0x2005AF0), 12) ^ 0x65487519);
-                symbols.CryptoKeys.SSceneID = (uint)(ReadRVA<ulong>(ctx, 0x20057E1) ^ 0x140AA19B);
-                symbols.CryptoKeys.SWorldID = (uint)ReadRVA<long>(ctx, 0x20056CA) ^ (uint)__ROL8__(0x3765D1B582F8E426, 9);
-                symbols.CryptoKeys.LevelAreaSNO = (uint)(ReadRVA<long>(ctx, 0x200544E) - 0x4E7B71C8);
-                symbols.CryptoKeys.GizmoType = (uint)(ReadRVA<ulong>(ctx, 0x200590B) ^ 0x155840F6);
-                symbols.CryptoKeys.TimedEventSNO = (uint)(ReadRVA<ulong>(ctx, 0x2004DE0) - 0x500EFA47);
+                var pd = ctx.DataSegment.ObjectManager.PlayerDataManager.First(x => x.HeroClass == Enums.HeroClass.None);
+                var pk = 0xbc407c66 ^ pd.ActorID;
+                var f1 = (Func<ulong, ulong>)((c) => c ^ (ulong)pk);
 
-                symbols.CryptoKeys.ActorX8C = 0xE876711E - (uint)(ReadRVA<ulong>(ctx, 0x2005003));
-                symbols.CryptoKeys.RActorActorSNO = (uint)(ReadRVA<ulong>(ctx, 0x2005849) - __ROL8__(0x5681299C0D9F08E3, 9));
-                symbols.CryptoKeys.ActorX9C = 0;
-                symbols.CryptoKeys.ActorX178 = 0;
+                symbols.CryptoKeys.RActorACDID = (uint)f1(0x821BCA81D9BCBA5F);
+                symbols.CryptoKeys.PlayerDataActorID = (uint)f1(0x5E4343B43BF8399);
+                symbols.CryptoKeys.PlayerDataACDID = (uint)f1(0xF133B7A088777214);
+                symbols.CryptoKeys.ActorID = (uint)f1(0x4112B21407989591);
+                symbols.CryptoKeys.ACDActorSNO = (uint)f1(0xF672DFB4D10C6338);
+                symbols.CryptoKeys.ActorType = (uint)f1(0xB91A93002F9F6082);
+                symbols.CryptoKeys.SSceneID = (uint)f1(0x30D32677671B0CE2);
+                symbols.CryptoKeys.SWorldID = (uint)f1(0x5D8D52368B6DE286);
+                symbols.CryptoKeys.LevelAreaSNO = (uint)f1(0x5F56F079CA9D7AB7);
+                symbols.CryptoKeys.TimedEventSNO = (uint)ReadRVA<long>(ctx, 0x02023517) + 0x4CE032CC;
+                symbols.CryptoKeys.RActorActorSNO = (uint)(__ROL8__(ReadRVA<ulong>(ctx, 0x020238DF), 2) ^ 0x38A64B54);
             }
             catch (Exception exception)
             {
@@ -135,7 +137,16 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
         {
             var cm = ctx.Memory.Reader.Read<Ptr<Collections.LinkedList<Ptr<Container<MemoryObject>>>>>(ctx.ImageBase + SymbolTable.Current.DataSegment.ContainerManager).Dereference();
             var itemSize = TypeHelper.SizeOf(typeof(T));
-            return cm.FirstOrDefault(x => x.Dereference()?.ItemSize == itemSize)?.Cast<Container<T>>().Dereference();
+            return cm.FirstOrDefault(x => x.Dereference()?.CalculateItemSize() == itemSize)?.Cast<Container<T>>().Dereference();
+        }
+
+        private static ExpandableContainer<T> FindExpandableContainerByItemSize<T>(MemoryContext ctx)
+        {
+            var cm = ctx.Memory.Reader.Read<Ptr<Collections.LinkedList<Ptr<ExpandableContainer<MemoryObject>>>>>(ctx.ImageBase + SymbolTable.Current.DataSegment.ContainerManager).Dereference();
+            var itemSize = TypeHelper.SizeOf(typeof(T));
+            return cm.Where(x => x.Dereference()?.NeedsToExpand == 1)
+                .FirstOrDefault(x => x.Dereference()?.CalculateItemSize() == itemSize)
+                ?.Cast<ExpandableContainer<T>>().Dereference();
         }
 
         private static HeapNode FindContainerBlock(MemoryManager mm, SmallObjectMapCache cache, string name)

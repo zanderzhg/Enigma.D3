@@ -73,6 +73,14 @@ namespace Enigma.D3.MemoryModel.MemoryManagement
         {
             var f = this.First();
             if (f.Contains(address))
+                return SmallBlocks.FirstOrDefault(blk => blk.Data.ValueAddress == address);
+            return MainBlocks.FirstOrDefault(blk => blk.Data.ValueAddress == address);
+        }
+
+        public HeapNode GetContainingBlock(MemoryAddress address)
+        {
+            var f = this.First();
+            if (f.Contains(address))
                 return SmallBlocks.FirstOrDefault(blk => blk.Contains(address));
             return MainBlocks.FirstOrDefault(blk => blk.Contains(address));
         }

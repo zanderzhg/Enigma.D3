@@ -38,6 +38,18 @@ namespace Enigma.D3.MemoryModel.Collections
 
         private int _32or64(int x86, int x64) => SymbolTable.Current.Platform == Platform.X86 ? x86 : x64;
 
+        public override int CalculateItemSize()
+        {
+            var allocatedBlockSize = MemoryContext.Current.DataSegment.MemoryManager.LocalHeap.GetBlock((Allocator as _Allocator).Items[0].ValueAddress)?.Size;
+            if (allocatedBlockSize == null)
+                return -1;
+
+            var allocatedBlockCount = (Allocator as _Allocator).BlockAllocations;
+            var allocatedSize = allocatedBlockSize * allocatedBlockCount;
+            var capacity = Capacity;
+            return (int)(allocatedSize / capacity);
+        }
+
         public override T this[int index]
         {
             get

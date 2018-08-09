@@ -15,7 +15,7 @@ namespace Enigma.D3.MemoryModel.Collections
 
         public string Name => ReadString(0x000, 256, Encoding.ASCII);
         public int Capacity => Read<int>(0x100);
-        public int ItemSize => Read<int>(0x104);
+        public int ItemSize => TypeHelper.SizeOf(typeof(T));// Read<int>(0x104);
         public int MaxIndex => Read<int>(0x108);
         public int Count => Read<int>(0x10C);
         public short NextHash => Read<short>(0x110); // Incremented by 1 for each new item, starts as a Djb hash (using base 0) of Name.
@@ -45,6 +45,16 @@ namespace Enigma.D3.MemoryModel.Collections
             var address = (Allocator as _Allocator).Items.ValueAddress;
             Memory.Reader.ReadBytes(address, buffer, 0, (MaxIndex + 1) * ItemSize);
             return new[] { new MemorySegment { Address = address, Size = (ulong)size } };
+        }
+
+        public virtual int CalculateItemSize()
+        {
+            var allocatedSize = MemoryContext.Current.DataSegment.MemoryManager.LocalHeap.GetBlock((Allocator as _Allocator).Items.ValueAddress)?.Size;
+            if (allocatedSize == null)
+                return -1;
+
+            var capacity = Capacity;
+            return (int)(allocatedSize / capacity);
         }
 
         public virtual IEnumerator<T> GetEnumerator()
