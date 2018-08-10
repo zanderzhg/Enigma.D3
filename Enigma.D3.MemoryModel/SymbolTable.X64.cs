@@ -63,8 +63,8 @@ namespace Enigma.D3.MemoryModel
             Storage.PlayerDataManager = 0x150;
             Storage.FastAttrib = 0x190;
             Storage.ACDManager = 0x1A8;
-            Storage.QuestManager = 0x1C8;
-            Storage.WaypointManager = 0x220;
+            Storage.QuestManager = 0x1D0;
+            Storage.WaypointManager = 0x228;
 
             Actor.SizeOf = 0x530;
             Actor.ID = 0x0;
