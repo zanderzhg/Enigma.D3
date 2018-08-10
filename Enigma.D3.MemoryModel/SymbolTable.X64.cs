@@ -42,7 +42,7 @@ namespace Enigma.D3.MemoryModel
             ObjectManager.SizeOf = 0xC00;
             ObjectManager.RenderTick = 0x4;
             ObjectManager.GameGlobals = 0x68;
-            ObjectManager.GameState = 0x84;//
+            ObjectManager.GameState = 0x98;
             ObjectManager.Storage = 0x7F0;
             ObjectManager.Actors = 0xA70;
             ObjectManager.Scenes = 0xAF8;
