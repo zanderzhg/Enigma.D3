@@ -92,8 +92,14 @@ namespace Enigma.D3.MemoryModel.SymbolPatching
             try
             {
                 var pd = ctx.DataSegment.ObjectManager.PlayerDataManager.First(x => x.HeroClass == Enums.HeroClass.None);
-                var pk = 0xbc407c66 ^ pd.ActorID;
-                var f1 = (Func<ulong, ulong>)((c) => c ^ (ulong)pk);
+                var pk1 = (uint)(0xbc407c66 ^ pd.ActorID);
+                var pk2 = (uint)(0x77888deb ^ pd.ACDID);
+                var f1 = (Func<ulong, ulong>)((c) => c ^ pk1);
+                if (pk1 != pk2)
+                {
+                    var pid = (uint)(ctx.Memory.Reader as IProcessImageReader).ProcessID;
+                    f1 = c => (c ^ (pid * c) ^ 0xF89C83F8);
+                }
 
                 symbols.CryptoKeys.RActorACDID = (uint)f1(0x821BCA81D9BCBA5F);
                 symbols.CryptoKeys.PlayerDataActorID = (uint)f1(0x5E4343B43BF8399);
