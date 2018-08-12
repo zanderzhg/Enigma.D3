@@ -61,6 +61,8 @@ namespace Enigma.Memory
 
         public MemoryAddress PebAddress => GetPebAddress();
 
+        public int ProcessID => _process.Id;
+
         private MemoryAddress GetPebAddress()
         {
             var pbi = default(Win32.PROCESS_BASIC_INFORMATION);

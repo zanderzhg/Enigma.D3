@@ -94,6 +94,8 @@ namespace Enigma.Memory
 
         public MemoryAddress PebAddress => Read<MemoryAddress>(Threads[0].Teb + 0x60);
 
+        public int ProcessID => Read<int>(Threads[0].Teb + 0x40);
+
         protected override void UnsafeReadBytesCore(MemoryAddress address, byte[] buffer, int offset, int count)
         {
             var pageFrom = GetPageIndex(address);

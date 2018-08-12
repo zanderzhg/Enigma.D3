@@ -9,5 +9,6 @@ namespace Enigma.Memory
     public interface IProcessImageReader : IHasImageBase, IHasMainModuleVersion
     {
         MemoryAddress PebAddress { get; }
+        int ProcessID { get; }
     }
 }
