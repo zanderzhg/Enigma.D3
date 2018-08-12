@@ -95,6 +95,13 @@
                 <TextBox Name="Log" IsReadOnly="True" Height="300" Width="600" AcceptsReturn="True" AcceptsTab="True" MaxLines="3" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" TextWrapping="WrapWithOverflow" />
             </DockPanel>
         </TabItem>
+        <TabItem Header="Debug">
+            <StackPanel Width="400">
+                <Button Content="Generate Debug Information" Click="Button_Click_2" />
+                    <TextBox Name="DebugInfo" IsReadOnly="True" Background="WhiteSmoke" Height="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
+                <Button Content="Copy to clipboard" Click="Button_Click_3" />
+            </StackPanel>
+        </TabItem>
         <TabItem Header="About" Selector.Selected="TabItem_Selected" Selector.Unselected="TabItem_Unselected">
             <StackPanel Margin="20">
                 <TextBlock>Made by Enigma</TextBlock>

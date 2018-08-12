@@ -554,7 +554,7 @@ namespace Enigma.D3.MapHack
 
         private void OnUpdateException(Exception exception)
         {
-            Trace.WriteLine(exception.Message);
+            Trace.WriteLine(exception);
             Reset();
         }
 

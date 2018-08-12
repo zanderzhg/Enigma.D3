@@ -143,5 +143,42 @@ namespace Enigma.D3.MapHack
                 }
             }
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var ctx = MemoryModel.MemoryContext.Current;
+            var symbols = MemoryModel.SymbolTable.Current;
+            if (ctx == null || symbols == null)
+            {
+                DebugInfo.Text = "No process attached. Unable to generate debug info.";
+                return;
+            }
+
+            var sb = new StringBuilder();
+            sb.AppendLine("[ctx]");
+            sb.AppendLine($"{nameof(ctx.MainModuleVersion)} = {ctx.MainModuleVersion}");
+            sb.AppendLine($"{nameof(ctx.ImageBase)} = {ctx.ImageBase}");
+            sb.AppendLine();
+            sb.AppendLine("[symbols]");
+            sb.AppendLine($"{nameof(symbols.Version)} = {symbols.Version}");
+            foreach (var f in symbols.CryptoKeys.GetType().GetFields())
+                sb.AppendLine($"{nameof(symbols.CryptoKeys)}.{f.Name} = {f.GetValue(symbols.CryptoKeys):X}");
+            sb.AppendLine();
+            sb.AppendLine("[pd]");
+            var pd = ctx.DataSegment.ObjectManager.PlayerDataManager.First(x => x.HeroClass == Enums.HeroClass.None);
+            sb.AppendLine($"{nameof(pd.ACDID)} = {pd.ACDID:X}");
+            sb.AppendLine($"{nameof(pd.ActorID)} = {pd.ActorID:X}");
+            sb.AppendLine($"{nameof(pd.LevelAreaSNO)} = {pd.LevelAreaSNO:X}");
+            sb.AppendLine();
+            sb.AppendLine("[asm]");
+            var dump = ctx.Memory.Reader.ReadBytes(ctx.ImageBase + 0xAD984, 0x400);
+            sb.AppendLine(Convert.ToBase64String(dump));
+            DebugInfo.Text = sb.ToString();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(DebugInfo.Text);
+        }
     }
 }
